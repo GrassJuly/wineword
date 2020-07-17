@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_white"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/dialog_title_tv"
+        style="@style/dialog_text_style"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:gravity="left"
+        android:textColor="@color/color_f36a5a" />
+
+    <ImageView
+        android:id="@+id/dialog_title_line_imv"
+        style="@style/dialog_hLine"
+        android:layout_centerHorizontal="true"
+        android:background="@color/color_f36a5a" />
+
+    <RelativeLayout
+        android:id="@+id/dialog_content_rly"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="30dp" >
+
+        <ProgressBar
+            android:id="@+id/dialog_progress_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:max="100"
+            android:maxHeight="12dp"
+            android:minHeight="12dp" />
+
+        <TextView
+            android:id="@+id/dialog_content_planTv"
+            style="@style/dialog_content_text_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/dialog_progress_bar"
+            android:layout_below="@+id/dialog_progress_bar"
+            android:text="0/0" />
+
+        <TextView
+            android:id="@+id/file_size_tv"
+            style="@style/dialog_content_text_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/dialog_content_planTv"
+            android:layout_alignRight="@+id/dialog_progress_bar"
+            android:text="0/0" />
+
+        <TextView
+            android:id="@+id/dialog_showTxt_tv"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/dialog_progress_bar"
+            android:layout_centerInParent="true"
+            android:textColor="@color/color_3d4245"
+            android:textSize="15sp" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/dialog_bottom_line_imv"
+        style="@style/dialog_hLine"
+        android:layout_above="@+id/dialog_bottom_lly"
+        android:background="@mipmap/dialog_hline" />
+
+    <LinearLayout
+        android:id="@+id/dialog_bottom_lly"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/dialog_button_left"
+            style="@style/dialog_text_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:padding="15dp"
+            android:text="@string/dialog_left_botton"
+            android:textColor="@color/color_3d4245" />
+
+        <ImageView
+            android:id="@+id/im_iline"
+            android:layout_width="2dp"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="3dp"
+            android:layout_marginTop="1dp"
+            android:background="@mipmap/dialog_vline" />
+
+        <TextView
+            android:id="@+id/dialog_button_right"
+            style="@style/dialog_text_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:padding="15dp"
+            android:text="@string/dialog_right_botton"
+             />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/frame_titleBar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    /**
+    * @Created by xiaoyu on 2017/1/9
+    * @Describe：
+    * @Review by：
+    * @Modify by：
+    * @Version : $ v_1.0 on 2017/1/9
+    * @Remark:
+    */
+
+    <RelativeLayout
+        android:id="@+id/mn_home_bar_ll_top"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/dp_48"
+        android:background="@color/color_f36a5a">
+
+        <Button
+            android:id="@+id/mn_home_bar_btn_left"
+            android:layout_width="@dimen/dp_24"
+            android:layout_height="@dimen/dp_24"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_12"
+            android:background="@mipmap/back"
+            android:visibility="invisible" />
+
+        <LinearLayout
+            android:id="@+id/mn_homebar_ll_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/mn_home_bar_tv_title"
+                style="@style/mn_home_bar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center_horizontal"
+                android:maxWidth="@dimen/dp_150"
+                android:singleLine="true"
+                android:text="@string/app_default" />
+
+            <ImageView
+                android:id="@+id/mn_homebar_iv_search"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/dp_5"
+                android:layout_marginTop="@dimen/dp_3"
+                android:scaleType="centerInside" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_centerVertical="true">
+
+            <TextView
+                android:id="@+id/mn_home_bar_tv_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical|right"
+                android:text="@string/app_default"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/sp_16"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/mn_home_bar_iv_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="centerInside"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:src="@mipmap/shipped_select"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <ImageView
+            android:id="@+id/img_base_line"
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/color_white"
+            android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
+</FrameLayout>

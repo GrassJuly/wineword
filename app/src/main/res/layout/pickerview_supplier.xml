@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_white"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/item_tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_44"
+        android:background="@color/color_f4f4f4"
+        android:textColor="@color/color_2a2a2a"
+        android:textSize="@dimen/sp_18"
+        android:gravity="center"
+        android:text="@string/app_default" />
+
+    <com.supplier.widget.pickerview.widget.wheelview.WheelView
+        android:id="@+id/item_supplier"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

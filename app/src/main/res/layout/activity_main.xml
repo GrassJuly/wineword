@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_f1f1f1"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+    /**
+    * @Created by xiaoyu on 2017/1/9
+    * @Describe：
+    * @Review by：
+    * @Modify by：
+    * @Version : $ v_1.0 on 2017/1/9
+    * @Remark:
+    */
+
+    <com.runjing.widget.tabview.TabView
+        android:id="@+id/act_tb_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <include
+        android:id="@+id/frg_ll_nonet"
+        layout="@layout/layout_no_network"
+        android:visibility="gone" />
+    <!--没有定位权限-->
+    <include
+        android:id="@+id/frg_ll_nolocal"
+        layout="@layout/layout_home_local"
+        android:visibility="gone" />
+
+</RelativeLayout>

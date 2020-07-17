@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<!-- disable -->
+	<item android:state_checked="true" android:state_enabled="false">
+		<layer-list>
+			<item>
+				<shape android:shape="oval">
+					<size
+						android:width="@dimen/dp_42"
+						android:height="@dimen/dp_42"/>
+					<solid android:color="@android:color/transparent"/>
+				</shape>
+			</item>
+			<item
+				android:bottom="@dimen/dp_10"
+				android:gravity="center"
+				android:left="@dimen/dp_11"
+				android:right="@dimen/dp_11"
+				android:top="@dimen/dp_11">
+				<shape android:shape="oval">
+					<solid android:color="@color/color_33000000"/>
+				</shape>
+			</item>
+			<item
+				android:bottom="@dimen/dp_11"
+				android:gravity="center"
+				android:left="@dimen/dp_11"
+				android:right="@dimen/dp_11"
+				android:top="@dimen/dp_11">
+				<shape android:shape="oval">
+					<solid android:color="@color/color_aaaaaa"/>
+				</shape>
+			</item>
+		</layer-list>
+	</item>
+
+	<!-- disable -->
+	<item android:state_enabled="false">
+		<layer-list>
+			<item>
+				<shape android:shape="oval">
+					<size
+						android:width="@dimen/dp_42"
+						android:height="@dimen/dp_42"/>
+					<solid android:color="@android:color/transparent"/>
+				</shape>
+			</item>
+			<item
+				android:bottom="@dimen/dp_10"
+				android:gravity="center"
+				android:left="@dimen/dp_11"
+				android:right="@dimen/dp_11"
+				android:top="@dimen/dp_11">
+				<shape android:shape="oval">
+					<solid android:color="@color/color_33000000"/>
+				</shape>
+			</item>
+			<item
+				android:bottom="@dimen/dp_11"
+				android:gravity="center"
+				android:left="@dimen/dp_11"
+				android:right="@dimen/dp_11"
+				android:top="@dimen/dp_11">
+				<shape android:shape="oval">
+					<solid android:color="@color/color_white"/>
+				</shape>
+			</item>
+		</layer-list>
+	</item>
+
+	<!-- checked pressed -->
+	<item android:state_checked="true" android:state_pressed="true">
+		<layer-list>
+			<item>
+				<shape android:shape="oval">
+					<size
+						android:width="@dimen/dp_42"
+						android:height="@dimen/dp_42"/>
+					<solid android:color="@color/color_fad7d4"/>
+				</shape>
+			</item>
+			<item
+				android:bottom="@dimen/dp_10"
+				android:gravity="center"
+				android:left="@dimen/dp_11"
+				android:right="@dimen/dp_11"
+				android:top="@dimen/dp_11">
+				<shape android:shape="oval">
+					<solid android:color="@color/color_33000000"/>
+				</shape>
+			</item>
+			<item
+				android:bottom="@dimen/dp_11"
+				android:gravity="center"
+				android:left="@dimen/dp_11"
+				android:right="@dimen/dp_11"
+				android:top="@dimen/dp_11">
+				<shape android:shape="oval">
+					<solid android:color="@color/color_e73823"/>
+				</shape>
+			</item>
+		</layer-list>
+	</item>
+
+	<!-- unchecked pressed -->
+	<item android:state_checked="false" android:state_pressed="true">
+		<layer-list>
+			<item>
+				<shape android:shape="oval">
+					<size
+						android:width="@dimen/dp_42"
+						android:height="@dimen/dp_42"/>
+					<solid android:color="@color/color_1E000000"/>
+				</shape>
+			</item>
+			<item
+				android:bottom="@dimen/dp_10"
+				android:gravity="center"
+				android:left="@dimen/dp_11"
+				android:right="@dimen/dp_11"
+				android:top="@dimen/dp_11">
+				<shape android:shape="oval">
+					<solid android:color="@color/color_33000000"/>
+				</shape>
+			</item>
+			<item
+				android:bottom="@dimen/dp_11"
+				android:gravity="center"
+				android:left="@dimen/dp_11"
+				android:right="@dimen/dp_11"
+				android:top="@dimen/dp_11">
+				<shape android:shape="oval">
+					<solid android:color="@color/color_ECECEC"/>
+				</shape>
+			</item>
+		</layer-list>
+	</item>
+
+	<!-- checked unpressed -->
+	<item android:state_checked="true" android:state_pressed="false">
+		<layer-list>
+			<item>
+				<shape android:shape="oval">
+					<size
+						android:width="@dimen/dp_42"
+						android:height="@dimen/dp_42"/>
+					<solid android:color="@android:color/transparent"/>
+				</shape>
+			</item>
+			<item
+				android:bottom="@dimen/dp_10"
+				android:gravity="center"
+				android:left="@dimen/dp_11"
+				android:right="@dimen/dp_11"
+				android:top="@dimen/dp_11">
+				<shape android:shape="oval">
+					<solid android:color="@color/color_33000000"/>
+				</shape>
+			</item>
+			<item
+				android:bottom="@dimen/dp_11"
+				android:gravity="center"
+				android:left="@dimen/dp_11"
+				android:right="@dimen/dp_11"
+				android:top="@dimen/dp_11">
+				<shape android:shape="oval">
+					<solid android:color="@color/color_e73823"/>
+				</shape>
+			</item>
+		</layer-list>
+	</item>
+
+	<!-- normal -->
+	<item>
+		<layer-list>
+			<item>
+				<shape android:shape="oval">
+					<size
+						android:width="@dimen/dp_42"
+						android:height="@dimen/dp_42"/>
+					<solid android:color="@android:color/transparent"/>
+				</shape>
+			</item>
+			<item
+				android:bottom="@dimen/dp_10"
+				android:gravity="center"
+				android:left="@dimen/dp_11"
+				android:right="@dimen/dp_11"
+				android:top="@dimen/dp_11">
+				<shape android:shape="oval">
+					<solid android:color="@color/color_33000000"/>
+				</shape>
+			</item>
+			<item
+				android:bottom="@dimen/dp_11"
+				android:gravity="center"
+				android:left="@dimen/dp_11"
+				android:right="@dimen/dp_11"
+				android:top="@dimen/dp_11">
+				<shape android:shape="oval">
+					<solid android:color="@color/color_ECECEC"/>
+				</shape>
+			</item>
+		</layer-list>
+	</item>
+</selector>

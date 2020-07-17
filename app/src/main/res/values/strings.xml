@@ -1,0 +1,70 @@
+<resources>
+
+    <string name="app_name">酒世界</string>
+    <!--<string name="app_test">美农伙伴测试</string>-->
+    <!--<string name="app_default"></string>-->
+    <string name="app_default">京东酒世界</string>
+    <string name="pickerview_cancel">取消</string>
+    <string name="pickerview_submit">确定</string>
+    <string name="pickerview_year">年</string>
+    <string name="pickerview_month">月</string>
+    <string name="pickerview_day">日</string>
+    <string name="pickerview_hours">时</string>
+    <string name="pickerview_minutes">分</string>
+    <string name="pickerview_seconds">秒</string>
+    <string name="main_supplier_search">搜索</string>
+    <string name="dialog_left_botton">取消</string>
+    <string name="dialog_right_botton">确定</string>
+    <string name="app_print">打印</string>
+    <string name="app_print_default">设为默认打印机</string>
+    <string name="app_loginout_toast">登出成功</string>
+    <string name="app_shipped_select_msg">结束时间大于等于起始时间</string>
+    <string name="act_login_phone">请输入您的手机号码</string>
+    <string name="act_login_pwd">请输入您的登录密码</string>
+    <string name="act_login_submit">登录</string>
+    <string name="forget_pwd">请联系后台管理员重置密码</string>
+
+    <string name="login_et_name">手机号/账号/邮箱</string>
+    <string name="login_et_password">密码</string>
+    <string name="forget_password">忘记密码</string>
+    <string name="login">登陆</string>
+    <string name="login_account_entry">请输入账号</string>
+    <string name="login_phone_error">请输入正确手机号</string>
+    <string name="login_email_error">请输入正确邮箱</string>
+    <string name="login_pwd_error">请输入正确密码</string>
+    <string name="one_more">在按一次退出</string>
+    <string name="main_home">首页</string>
+    <string name="main_category">分类</string>
+    <string name="main_order">订单</string>
+    <string name="main_mine">我的</string>
+    <string name="load_refresh">下拉刷新</string>
+    <string name="load_more">努力记载中...</string>
+    <string name="home_quick_order">快接下单</string>
+    <string name="home_zt">自提/外送 天天买好酒</string>
+    <string name="home_nextstore">附近门店</string>
+    <string name="home_order_time">下单买酒29分送达</string>
+    <string name="home_coin">我的酒币</string>
+    <string name="home_one_one">1酒币抵用一元钱</string>
+    <string name="home_service_error">很抱歉，您所在城市未开通29分钟送达服务</string>
+    <string name="home_service_open">已开通29分钟送达服务</string>
+    <string name="home_no_network">您的网络好像不太给力</string>
+    <string name="home_refresh">重新加载</string>
+    <string name="home_local_refuse">定位服务已经关闭</string>
+    <string name="home_local_set">请到-设置-定位服务中开启</string>
+    <string name="home_local_msg">【京东酒世界】定位服务，以便您获取到附近门店信息</string>
+    <string name="home_manual">手动选择</string>
+    <string name="home_local_start">开启定位</string>
+    <string name="home_salf">售后无忧</string>
+    <string name="home_quality">品质保证</string>
+    <string name="home_speed">极速送达</string>
+    <string name="home_search_msg">想喝点什么？搜一搜</string>
+    <string name="home_no_local">无法获取地址</string>
+    <string name="search_local">请输入酒品关键词</string>
+    <string name="search">搜索</string>
+    <string name="search_history">历史记录</string>
+    <string name="search_hot">热门搜索</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="rv_footer_tv">努力加载中…</string>
+
+</resources>

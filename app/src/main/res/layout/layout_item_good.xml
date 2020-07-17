@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <LinearLayout
+        android:id="@+id/lay_ll_order_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/style_radius_bg_gray"
+        android:paddingBottom="@dimen/dp_10"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp_21">
+
+            <ImageView
+                android:id="@+id/lay_iv_good"
+                android:layout_width="@dimen/dp_108"
+                android:layout_height="wrap_content"
+                android:maxHeight="@dimen/dp_140"
+                android:scaleType="centerCrop" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/sp_11"
+            android:layout_marginRight="@dimen/dp_11"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/lay_tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/sp_12"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/lay_tv_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_3"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/sp_12"
+                android:textStyle="bold" />
+
+            <!--            <org.runjing.widget_frame.widget.tabview.tagview.TagContainerLayout-->
+            <!--                android:id="@+id/lay_item_tag"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="@dimen/dp_7"-->
+            <!--                android:padding="@dimen/dp_10"-->
+            <!--                app:container_enable_drag="false"-->
+            <!--                app:horizontal_interval="@dimen/dp_10"-->
+            <!--                app:tag_clickable="true"-->
+            <!--                app:tag_text_color="@dimen/sp_10"-->
+            <!--                app:tag_theme="pure_teal"-->
+            <!--                app:vertical_interval="@dimen/dp_10" />-->
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/sp_11"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginRight="@dimen/dp_16"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/lay_tv_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:textColor="@color/color_F80000"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/lay_tv_favorablePrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@color/color_666666"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

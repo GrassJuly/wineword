@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:lib="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    /**
+    * @Created by xiaoyu on 2017/1/9
+    * @Describe：
+    * @Review by：
+    * @Modify by：
+    * @Version : $ v_1.0 on 2017/1/9
+    * @Remark:
+    */
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/lay_gi_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:scaleType="center"
+        android:src="@drawable/loading_meicai"/>
+
+</LinearLayout>

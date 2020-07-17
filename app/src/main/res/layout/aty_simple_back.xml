@@ -1,0 +1,31 @@
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/act_dl_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/color_f36a5a"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical">
+        /**
+        * @Created by xiaoyu on 2017/1/9
+        * @Describe：
+        * @Review by：
+        * @Modify by：
+        * @Version : $ v_1.0 on 2017/1/9
+        * @Remark:
+        */
+
+        <include layout="@layout/layout_home_titlebar" />
+
+        <FrameLayout
+            android:id="@+id/second_ll_frame"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:background="@color/color_white"
+            android:orientation="vertical" />
+
+    </LinearLayout>
+</androidx.drawerlayout.widget.DrawerLayout>
