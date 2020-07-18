@@ -893,5 +893,14 @@ public class AppMethod {
                 .start();
     }
 
+    /**
+     *
+     * @param str
+     * @return
+     */
+    public static String isEntity(String str) {
+        return StringUtils.isEmpty(str) ? "" : str;
+    }
+
 
 }

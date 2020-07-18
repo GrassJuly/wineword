@@ -6,7 +6,6 @@ import android.widget.TextView;
 
 import com.runjing.base.TitleBarActivity;
 import com.runjing.ui.home.HomeFragment;
-import com.runjing.ui.home.TestHomeFragment;
 import com.runjing.ui.mine.MineFragment;
 import com.runjing.ui.ordre.OrderFragment;
 import com.runjing.ui.sort.SortFragment;
@@ -37,7 +36,7 @@ public class MainActivity extends TitleBarActivity implements TabView.OnTabChild
         super.initWidget();
         tabViewChildList = new ArrayList<>();
         TabViewChild tabViewChild01 = new TabViewChild(R.mipmap.tab_home_main, R.mipmap.tab_home_main1,
-                getString(R.string.main_home), new TestHomeFragment());
+                getString(R.string.main_home), new HomeFragment());
         TabViewChild tabViewChild02 = new TabViewChild(R.mipmap.tab_home_menu, R.mipmap.tab_home_menu1,
                 getString(R.string.main_category), new SortFragment());
         TabViewChild tabViewChild03 = new TabViewChild(R.mipmap.tab_home_persional, R.mipmap.tab_home_persional1,

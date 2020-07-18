@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.runjing.base.SimpleBackPage;
 import com.runjing.base.TitleBarFragment;
 import com.runjing.bean.request.HomeRequest;
@@ -21,14 +22,21 @@ import com.runjing.http.MyRequestCallBack;
 import com.runjing.http.OkHttpUtil;
 import com.runjing.utils.SpacesItemDecoration;
 import com.runjing.widget.LoadingDialog;
-import com.runjing.widget.recyclerview.core.SHSwipeRefreshLayout;
-import com.runjing.widget.recyclerview.view.ShareScrollView;
+import com.runjing.widget.RJRefreshFooter;
+import com.runjing.widget.RJRefreshHeader;
 import com.runjing.wineworld.R;
+import com.scwang.smartrefresh.header.WaterDropHeader;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
+import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.youth.banner.Banner;
 
 import org.runjing.rjframe.ui.BindView;
 import org.runjing.rjframe.utils.DensityUtils;
 
+import androidx.annotation.NonNull;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -44,35 +52,36 @@ import static com.runjing.utils.SpacesItemDecoration.STAGGEREDGRIDLAYOUT;
  * @Version: v_1.0 on 2020.07.16 23:20.
  * @Remark:
  */
-public class HomeFragment extends TitleBarFragment implements SHSwipeRefreshLayout.SHSOnRefreshListener {
+public class HomeFragment extends TitleBarFragment {
 
-    @BindView(id = R.id.frag_sh_content)
-    private SHSwipeRefreshLayout sh_content;
+    @BindView(id = R.id.frag_srl_content)
+    private RefreshLayout refreshLayout;
     @BindView(id = R.id.frg_sv_contennt)
-    private ShareScrollView sv_content;
-    @BindView(id = R.id.frag_ll_title)
-    private LinearLayout ll_title;
-    @BindView(id = R.id.banner)
-    private Banner banner;
-    @BindView(id = R.id.lay_ll_search, click = true)
-    private LinearLayout lay_ll_search;
-    @BindView(id = R.id.lay_rv_content)
-    private RecyclerView rv_content;
-
+    private NestedScrollView sv_content;
+    @BindView(id = R.id.frag_ll_select, click = true)
+    private LinearLayout ll_select;
+    @BindView(id = R.id.frag_tv_address)
+    private TextView tv_address;
+    @BindView(id = R.id.lay_iv_shop)
+    private ImageView iv_shop;
+    @BindView(id = R.id.frag_ll_search, click = true)
+    private LinearLayout ll_search;
     @BindView(id = R.id.lay_ll_order, click = true)
     private LinearLayout ll_order;
     @BindView(id = R.id.lay_ll_store, click = true)
     private LinearLayout ll_store;
     @BindView(id = R.id.lay_ll_coin, click = true)
     private LinearLayout ll_coin;
-    @BindView(id = R.id.frag_ll_select, click = true)
-    private LinearLayout ll_select;
-    @BindView(id = R.id.frag_tv_address)
-    private TextView tv_address;
-    @BindView(id = R.id.frag_iv_shop, click = true)
-    private ImageView iv_shop;
-
-
+    @BindView(id = R.id.banner)
+    private Banner banner;
+    @BindView(id = R.id.lay_ll_store_status)
+    private LinearLayout ll_store_status;
+    @BindView(id = R.id.lay_tv_storemsg)
+    private TextView tv_storemsg;
+    @BindView(id = R.id.lay_tv_store_status)
+    private TextView tv_status;
+    @BindView(id = R.id.lay_rv_content)
+    private RecyclerView rv_content;
     private RecyclerView.LayoutManager mLayoutManager;
     private LoadingDialog loadingDialog;
     private HomeAdapter homeAdapter;
@@ -85,14 +94,33 @@ public class HomeFragment extends TitleBarFragment implements SHSwipeRefreshLayo
     }
 
     @Override
+    protected void setActionBarRes(ActionBarRes actionBarRes) {
+        super.setActionBarRes(actionBarRes);
+        actionBarRes.titleLayoutVisible = 2;
+        actionBarRes.middleLayoutColor = R.color.color_ffffff;
+    }
+
+    @Override
     protected void initWidget(View parentView) {
         super.initWidget(parentView);
-        LayoutInflater inflater = LayoutInflater.from(outsideAty);
-        View view = inflater.inflate(R.layout.layout_recycler_footer, null);
-        sh_content.setFooterView(view);
-        sh_content.setLoadmoreEnable(false);
-        sh_content.setRefreshEnable(false);
-        sh_content.setOnRefreshListener(this);
+        refreshLayout.setRefreshHeader(new RJRefreshHeader(outsideAty).
+                setNormalColor(outsideAty.getResources().getColor(R.color.color_99000000)).
+                setAnimatingColor(outsideAty.getResources().getColor(R.color.color_99000000)).
+                setSpinnerStyle(SpinnerStyle.Scale));
+        View view = LayoutInflater.from(outsideAty).inflate(R.layout.layout_recycler_footer, null);
+        refreshLayout.setRefreshFooter(new RJRefreshFooter(view));
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                refreshlayout.finishRefresh(2000);
+            }
+        });
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                refreshLayout.finishLoadMore(2000);
+            }
+        });
         mLayoutManager = new StaggeredGridLayoutManager(Appconfig.TAG_TWO, StaggeredGridLayoutManager.VERTICAL);
         homeAdapter = new HomeAdapter(getActivity());
         rv_content.setHasFixedSize(false);
@@ -100,6 +128,7 @@ public class HomeFragment extends TitleBarFragment implements SHSwipeRefreshLayo
         rv_content.setNestedScrollingEnabled(false);
         rv_content.setAdapter(homeAdapter);
         rv_content.addItemDecoration(new SpacesItemDecoration(DensityUtils.dip2dp(getActivity(), 7), STAGGEREDGRIDLAYOUT));
+
         setData(HomeData.getHomeData());
     }
 
@@ -163,36 +192,7 @@ public class HomeFragment extends TitleBarFragment implements SHSwipeRefreshLayo
      */
     public void setData(HomeBean homeBean) {
         AppMethod.bannerWeight(outsideAty, banner, homeBean.getImages());
-        homeAdapter.setData(homeBean.getGoods());
-    }
-
-
-    @Override
-    public void onRefresh() {
-        System.out.println("onRefresh() ++++++++++++++");
-    }
-
-    @Override
-    public void onLoading() {
-        System.out.println("onLoading() ++++++++++++++");
-    }
-
-    @Override
-    public void onRefreshPulStateChange(float percent, int state) {
-        System.out.println("onRefreshPulStateChange() ++++++++++++++" + percent + " ----" + state);
-
-    }
-
-    @Override
-    public void onLoadmorePullStateChange(float percent, int state) {
-        System.out.println("onLoadmorePullStateChange() ++++++++++++++" + percent + "  --------- " + state);
-
-    }
-
-    @Override
-    public void move(float lenth) {
-        System.out.println("move() ++++++++++++++" + lenth);
-
+        homeAdapter.setData(homeBean, 0);
     }
 }
 

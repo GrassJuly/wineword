@@ -18,7 +18,7 @@
         * @Remark:
         */
 
-        <include layout="@layout/layout_home_titlebar" />
+        <include android:id="@+id/base_title" layout="@layout/layout_home_titlebar" />
 
         <FrameLayout
             android:id="@+id/second_ll_frame"

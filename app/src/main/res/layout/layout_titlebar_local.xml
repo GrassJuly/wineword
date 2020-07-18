@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/frag_ll_title"
+    style="@style/ll_horizontal"
+    android:layout_height="@dimen/dp_44"
+    android:background="@color/color_F80000">
+
+    <ImageView
+        style="@style/ll_iv_toast"
+        android:layout_marginLeft="@dimen/dp_13"
+        android:src="@mipmap/icon_local" />
+
+    <LinearLayout
+        android:id="@+id/frag_ll_select"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/frag_tv_address"
+            style="@style/ll_tv_n"
+            android:layout_width="wrap_content"
+            android:ellipsize="end"
+            android:maxWidth="@dimen/dp_220"
+            android:singleLine="true"
+            android:text="@string/home_no_local"
+            android:textSize="@dimen/sp_16" />
+
+        <ImageView
+            android:id="@+id/lay_iv_shop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dp_3"
+            android:src="@mipmap/icon_lower_triangle" />
+
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/frag_iv_shop"
+        style="@style/ll_iv_toast"
+        android:layout_marginRight="@dimen/dp_13"
+        android:src="@mipmap/icon_shop" />
+</LinearLayout>
+

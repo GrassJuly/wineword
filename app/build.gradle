@@ -59,6 +59,7 @@ dependencies {
     implementation 'com.tencent.bugly:crashreport:latest.release'
     implementation 'com.jaeger.statusbarutil:library:1.5.1'
     implementation 'com.amap.api:location:3.3.0'
-    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.1'
-    implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.1'//如果使用了特殊的Header
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-andx-11'
+    implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-andx-11'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 }
