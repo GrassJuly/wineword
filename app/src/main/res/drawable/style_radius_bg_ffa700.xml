@@ -10,7 +10,7 @@
 <!--                android:angle="0"-->
 <!--                android:startColor="#0626f5"-->
 <!--                android:endColor="#c95669" />-->
-            <solid android:color="@color/color_f5f5f5"/>
+            <solid android:color="@color/color_ffa710"/>
             <!--设置角的弧度-->
             <!--radius 越大，按钮越圆-->
             <corners android:radius="@dimen/dp_14" />
