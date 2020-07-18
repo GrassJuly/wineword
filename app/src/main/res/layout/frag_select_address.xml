@@ -20,7 +20,7 @@
             android:layout_height="@dimen/dp_29"
             android:layout_marginLeft="@dimen/dp_10"
             android:layout_marginRight="@dimen/dp_10"
-            android:background="@drawable/style_radius_bg_gary"
+            android:background="@drawable/style_radius_bg_gray"
             android:orientation="horizontal">
 
 

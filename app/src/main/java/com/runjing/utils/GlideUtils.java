@@ -2,10 +2,15 @@ package com.runjing.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import org.runjing.rjframe.utils.RJLoger;
 
@@ -36,6 +41,30 @@ public class GlideUtils {
 
     public static GlideUtils getInstance() {
         return GlideLoadUtilsHolder.INSTANCE;
+    }
+
+    /**
+     *
+     * @param imageview
+     * @param url
+     * @param context
+     * @param defultPic
+     */
+    public static void displayImageCenter(final ImageView imageview, String url, Context context, int defultPic) {
+        if (TextUtils.isEmpty(url + "")) {
+            imageview.setImageResource(defultPic);
+        } else {
+            RequestOptions options = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE).placeholder(defultPic).error(defultPic).dontAnimate();
+            Glide.with(context).load(url).apply(options).into(new SimpleTarget<Drawable>() {
+                @Override
+                public void onResourceReady(Drawable drawable, Transition<? super Drawable> transition) {
+                    if(drawable!=null){
+                        imageview.setImageDrawable(drawable);
+                    }
+                }
+            });
+        }
+
     }
 
     /**

@@ -10,20 +10,27 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.model.GlideUrl;
 import com.runjing.base.SimpleBackPage;
+import com.runjing.bean.response.home.CityAdapter;
 import com.runjing.bean.response.home.GoodBean;
 import com.runjing.bean.response.home.HomeBean;
 import com.runjing.bean.response.home.ProvinceBean;
 import com.runjing.bean.response.home.StoreBean;
 import com.runjing.common.AppMethod;
 import com.runjing.common.Appconfig;
+import com.runjing.utils.GlideUtils;
 import com.runjing.wineworld.R;
+
+import org.runjing.rjframe.ui.ViewInject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import static com.runjing.bean.response.home.HomeBean.TYPE_ITEM_CITY;
 import static com.runjing.bean.response.home.HomeBean.TYPE_ITEM_GOOD;
@@ -47,9 +54,10 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         data = new ArrayList<>();
     }
 
-    public void setData(HomeBean data, int type) {
-        if (response != null) {
+    public void setData(HomeBean data) {
+        if (data != null) {
             this.response = data;
+            notifyDataSetChanged();
         }
     }
 
@@ -57,11 +65,11 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (response != null) {
-            if (response.getItemTpye() == TYPE_ITEM_GOOD) {
+            if (viewType == TYPE_ITEM_GOOD) {
                 return new GoodHolder(LayoutInflater.from(context).inflate(R.layout.layout_item_good, null));
-            } else if (response.getItemTpye() == TYPE_ITEM_STORE) {
+            } else if (viewType == TYPE_ITEM_STORE) {
                 return new StoreHolder(LayoutInflater.from(context).inflate(R.layout.layout_store_msg, null));
-            } else if (response.getItemTpye() == TYPE_ITEM_CITY) {
+            } else if (viewType == TYPE_ITEM_CITY) {
                 return new ProvincesHolder(LayoutInflater.from(context).inflate(R.layout.layout_item_proviences, null));
             }
         }
@@ -70,15 +78,15 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-//        if (response != null) {
-//            if (response.getItemTpye() == TYPE_ITEM_GOOD) {
-//                return response.getItemTpye();
-//            } else if (response.getItemTpye() == TYPE_ITEM_STORE) {
-//                return response.getItemTpye();
-//            } else if (response.getItemTpye() == TYPE_ITEM_CITY) {
-//                return response.getItemTpye();
-//            }
-//        }
+        if (response != null) {
+            if (response.getItemTpye() == TYPE_ITEM_GOOD) {
+                ((GoodHolder)holder).setData(response.getGoods(), position);
+            } else if (response.getItemTpye() == TYPE_ITEM_STORE) {
+                ((StoreHolder)holder).setData(response.getStores(), position);
+            } else if (response.getItemTpye() == TYPE_ITEM_CITY) {
+                ((ProvincesHolder)holder).setData(response.getProvinces(), position);
+            }
+        }
     }
 
     @Override
@@ -131,7 +139,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         public void setData(List<GoodBean> goods, int position) {
             if (goods != null && goods.size() > 0) {
-                Glide.with(context).load(data.get(position).getImage()).into(iv_good);
+                GlideUtils.getInstance().displayImageCenter(iv_good, goods.get(position).getImage(), iv_good.getContext(), R.mipmap.ic_launcher);
                 //这个后期根据后台切图动态删除， 我找的图太大 尺寸不对
                 setImageWH(iv_good);
                 tv_name.setText(AppMethod.isEntity(goods.get(position).getName()));
@@ -183,13 +191,39 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 Glide.with(context).load(stores.get(position).getStoreImage()).into(iv_store);
                 tv_name.setText(AppMethod.isEntity(stores.get(position).getName()));
                 tv_address.setText(AppMethod.isEntity(stores.get(position).getAddress()));
+                tv_distance.setText(AppMethod.isEntity(stores.get(position).getDistance()));
+                ll_location.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ViewInject.longToast("导航页面");
+                    }
+                });
+                tv_store.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ViewInject.longToast("门店详情");
+                    }
+                });
             }
         }
     }
 
     public class ProvincesHolder extends RecyclerView.ViewHolder {
+        private TextView tv_provinces;
+        private RecyclerView rv_city;
         public ProvincesHolder(@NonNull View itemView) {
             super(itemView);
+            tv_provinces = itemView.findViewById(R.id.lay_item_tv_proviences);
+            rv_city = itemView.findViewById(R.id.lay_item_rv_city);
+        }
+
+        public void setData(List<ProvinceBean> provinces, int position) {
+            tv_provinces.setText(AppMethod.isEntity(provinces.get(position).getProvince()));
+            CityAdapter adapter = new CityAdapter(tv_provinces.getContext());
+            rv_city.setHasFixedSize(false);
+            rv_city.setLayoutManager(new GridLayoutManager(tv_provinces.getContext(), 3));
+            rv_city.setAdapter(adapter);
+            adapter.setData(provinces.get(position).getCitys());
         }
     }
 

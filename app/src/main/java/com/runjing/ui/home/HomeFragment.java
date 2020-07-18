@@ -8,11 +8,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.core.widget.NestedScrollView;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-
+import com.alibaba.fastjson.JSON;
 import com.runjing.base.SimpleBackPage;
 import com.runjing.base.TitleBarFragment;
 import com.runjing.bean.request.HomeRequest;
@@ -24,6 +20,7 @@ import com.runjing.common.Appconfig;
 import com.runjing.common.BaseUrl;
 import com.runjing.http.MyRequestCallBack;
 import com.runjing.http.OkHttpUtil;
+import com.runjing.utils.RecyclerViewItemDecoration;
 import com.runjing.utils.SpacesItemDecoration;
 import com.runjing.widget.LoadingDialog;
 import com.runjing.widget.RJRefreshFooter;
@@ -37,6 +34,11 @@ import com.youth.banner.Banner;
 
 import org.runjing.rjframe.ui.BindView;
 import org.runjing.rjframe.utils.DensityUtils;
+
+import androidx.annotation.NonNull;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import static com.runjing.utils.SpacesItemDecoration.STAGGEREDGRIDLAYOUT;
 
@@ -56,10 +58,10 @@ public class HomeFragment extends TitleBarFragment {
     @BindView(id = R.id.frg_sv_contennt)
     private NestedScrollView sv_content;
     @BindView(id = R.id.frag_ll_select, click = true)
-    private LinearLayout ll_select;
+    private LinearLayout rl_select;
     @BindView(id = R.id.frag_tv_address)
     private TextView tv_address;
-    @BindView(id = R.id.lay_iv_shop)
+    @BindView(id = R.id.lay_iv_shop, click = true)
     private ImageView iv_shop;
     @BindView(id = R.id.frag_ll_search, click = true)
     private LinearLayout ll_search;
@@ -69,6 +71,8 @@ public class HomeFragment extends TitleBarFragment {
     private LinearLayout ll_store;
     @BindView(id = R.id.lay_ll_coin, click = true)
     private LinearLayout ll_coin;
+    @BindView(id = R.id.lay_banner)
+    private LinearLayout ll_banner;
     @BindView(id = R.id.banner)
     private Banner banner;
     @BindView(id = R.id.lay_ll_store_status)
@@ -189,7 +193,23 @@ public class HomeFragment extends TitleBarFragment {
      */
     public void setData(HomeBean homeBean) {
         AppMethod.bannerWeight(outsideAty, banner, homeBean.getImages());
-        homeAdapter.setData(homeBean, 0);
+        System.out.println("????    " + JSON.toJSONString(homeBean));
+        if (homeBean != null) {
+            if (homeBean.getItemTpye() == HomeBean.TYPE_ITEM_CITY) {
+                ll_store_status.setVisibility(View.VISIBLE);
+                ll_search.setVisibility(View.GONE);
+                ll_banner.setVisibility(View.GONE);
+            } else if (homeBean.getItemTpye() == HomeBean.TYPE_ITEM_GOOD) {
+                ll_store_status.setVisibility(View.GONE);
+                ll_search.setVisibility(View.VISIBLE);
+                ll_banner.setVisibility(View.VISIBLE);
+            }else if (homeBean.getItemTpye() == HomeBean.TYPE_ITEM_STORE) {
+                ll_store_status.setVisibility(View.VISIBLE);
+                ll_search.setVisibility(View.GONE);
+                ll_banner.setVisibility(View.GONE);
+            }
+            homeAdapter.setData(homeBean);
+        }
     }
 }
 

@@ -36,7 +36,7 @@ public class HomeData {
 
         List<GoodBean> goods = new ArrayList<>();
         GoodBean good = new GoodBean();
-        good.setImage("https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1954642065,739414178&fm=26&gp=0.jpg");
+        good.setImage("https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1349551846,2489686808&fm=26&gp=0.jpg");
         good.setName("五粮液酿身佳品52度浓香型");
         good.setDesc("白酒500ml/瓶");
         good.setPrice("¥259.00");

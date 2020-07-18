@@ -52,11 +52,6 @@
                         android:id="@+id/frg_ll_home"
                         layout="@layout/layout_home"
                         android:visibility="visible" />
-                    <!--城市未运营/城市无门店/附近门店休息-->
-                    <include
-                        android:id="@+id/frg_ll_store_"
-                        layout="@layout/layout_store_status"
-                        android:visibility="gone" />
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
 
