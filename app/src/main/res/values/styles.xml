@@ -15,7 +15,6 @@
     <style name="mn_home_bar_title">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/color_white</item>
-        <item name="android:gravity">center</item>
     </style>
     <!--loadingDialog样式-->
     <style name="loadingDialog" parent="@android:style/Theme.Dialog">
@@ -533,7 +532,14 @@
         <item name="android:textColor">@color/color_999999</item>
         <item name="android:gravity">center</item>
     </style>
-
+    <style name="style_local">
+        <item name="android:textSize">@dimen/sp_12</item>
+        <item name="android:textColor">@color/color_333333</item>
+    </style>
+    <style name="style_select_address">
+        <item name="android:textSize">@dimen/sp_14</item>
+        <item name="android:textColor">@color/color_333333</item>
+    </style>
 
     <declare-styleable name="WarpLinearLayout">
         <attr name="grivate" format="enum"><!--对齐方式 !-->

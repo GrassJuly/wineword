@@ -97,6 +97,7 @@ public abstract class TitleBarActivity extends RJActivity  {
                 onBackClick();
                 break;
             case R.id.mn_home_bar_tv_right: // 右侧菜单
+                addClick();
             case R.id.mn_home_bar_iv_right:
                 onMenuClick();
                 break;
@@ -105,6 +106,9 @@ public abstract class TitleBarActivity extends RJActivity  {
                 onSearch();
                 break;
         }
+    }
+
+    private void addClick() {
     }
 
     public void onBackClick() {

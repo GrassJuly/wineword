@@ -30,10 +30,16 @@ public abstract class TitleBarFragment extends RJFragment {
         public int titleLayoutVisible;//头部显示与隐藏
         public int leftButtonId;   //左侧按钮设置图片
         public int middleLayoutColor;//标题背景颜色
-        public int rightButtonId; //右侧按钮设置图片
+        public int topLayoutBack;//标题栏背景色
+        public int rightButtonId; //右侧按钮设置图片i
+        public int middleTitleColor;
+        public int leftButtonResource;
+        public int rightButtonColor;
         public int leftImageVisible; //左侧图片显示与隐藏 1代表显示 否则隐藏
         public int rightImageVisible;//右侧图片显示与隐藏 1代表显示 否则隐藏
         public int rightButtonSizeTag;//搜索标题栏显示与隐藏 1代表显示 否则隐藏
+        public int rightTextVisible;
+        public int rightTextColor;
         public CharSequence rightMsg;//右面标题内容
         public int serchVisible;
         public int[] serchId;
@@ -101,11 +107,16 @@ public abstract class TitleBarFragment extends RJFragment {
     private void styleChanged(ActionBarRes actionBarRes) throws Exception {
         setTitleBarColor(actionBarRes.titleBarColor);
         setTitleLayoutVisible(actionBarRes.titleLayoutVisible);
+        setMiddleColor(actionBarRes.middleTitleColor);
         setMiddleTitle(actionBarRes.middleTitle);
+        setTopLayout(actionBarRes.topLayoutBack);
         setLeftBtnVisible(actionBarRes.leftImageVisible);
+        setLeftBtnRes(actionBarRes.leftButtonResource);
         setRightBtnVisible(actionBarRes);
         setRightButtonSize(actionBarRes.rightButtonSizeTag);
         setRightMsg(actionBarRes.rightMsg);
+        setRightTextVisible(actionBarRes.rightTextVisible);
+        setRightTextColor(actionBarRes.rightTextColor);
 //        setSearchId(actionBarRes.serchId);
         outsideAty.setSearch(actionBarRes.serchId);
         setSearchVisible(actionBarRes.serchVisible);
@@ -119,6 +130,42 @@ public abstract class TitleBarFragment extends RJFragment {
             setMiddleTitleColor(actionBarRes.middleLayoutColor);
         }
     }
+
+    private void setRightTextColor(int rightTextColor) {
+        if (outsideAty != null) {
+          outsideAty.tv_home_right.setTextColor(rightTextColor);
+        }
+    }
+
+    private void setRightTextVisible(int rightTextVisible) {
+        if (outsideAty != null) {
+            if (rightTextVisible == 0) {
+                outsideAty.iv_search.setVisibility(View.GONE);
+            } else if (rightTextVisible == 1) {
+                outsideAty.iv_search.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    public void setTopLayout(int topLayoutBack) {
+        if (outsideAty != null) {
+            outsideAty.ll_base_title.setBackgroundColor(topLayoutBack);
+        }
+    }
+
+    public  void setMiddleColor(int titleBarColor){
+        if (outsideAty != null) {
+                outsideAty.tv_home_middle_title.setTextColor(titleBarColor);
+        }
+    }
+
+    public void setLeftBtnRes(int leftBtnRes){
+        if (outsideAty!=null){
+            outsideAty.btn_home_left.setBackgroundResource(leftBtnRes);
+        }
+    }
+
+
 
     /**
      * @param searchId

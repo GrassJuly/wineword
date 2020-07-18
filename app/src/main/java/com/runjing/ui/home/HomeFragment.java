@@ -8,7 +8,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.android.material.appbar.AppBarLayout;
+import androidx.annotation.NonNull;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
 import com.runjing.base.SimpleBackPage;
 import com.runjing.base.TitleBarFragment;
 import com.runjing.bean.request.HomeRequest;
@@ -25,21 +29,14 @@ import com.runjing.widget.LoadingDialog;
 import com.runjing.widget.RJRefreshFooter;
 import com.runjing.widget.RJRefreshHeader;
 import com.runjing.wineworld.R;
-import com.scwang.smartrefresh.header.WaterDropHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
-import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.youth.banner.Banner;
 
 import org.runjing.rjframe.ui.BindView;
 import org.runjing.rjframe.utils.DensityUtils;
-
-import androidx.annotation.NonNull;
-import androidx.core.widget.NestedScrollView;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import static com.runjing.utils.SpacesItemDecoration.STAGGEREDGRIDLAYOUT;
 
