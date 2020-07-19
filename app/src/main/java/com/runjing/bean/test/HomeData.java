@@ -1,9 +1,12 @@
 package com.runjing.bean.test;
 
 import com.runjing.bean.response.home.BannerBean;
+import com.runjing.bean.response.home.CityBean;
 import com.runjing.bean.response.home.GoodBean;
 import com.runjing.bean.response.home.GoodTagBean;
 import com.runjing.bean.response.home.HomeBean;
+import com.runjing.bean.response.home.ProvinceBean;
+import com.runjing.bean.response.home.StoreBean;
 import com.runjing.ui.home.HomeFragment;
 
 import java.util.ArrayList;
@@ -122,7 +125,53 @@ public class HomeData {
         goods.add(good2);
         goods.add(good3);
         goods.add(good4);
-        homeBean.setGoods(goods);
+//        homeBean.setGoods(goods);
+
+        List<ProvinceBean> provinceBeans = new ArrayList<>();
+        ProvinceBean provinceBean = new ProvinceBean();
+        provinceBean.setProvince("北京");
+        List<CityBean> cityBeans = new ArrayList<>();
+        CityBean cityBean = new CityBean();
+        cityBean.setCity("大兴");
+        cityBeans.add(cityBean);
+        cityBeans.add(cityBean);
+        cityBeans.add(cityBean);
+        cityBeans.add(cityBean);
+        provinceBean.setCitys(cityBeans);
+        ProvinceBean provinceBean1 = new ProvinceBean();
+        provinceBean1.setProvince("天津");
+        List<CityBean> cityBeans1 = new ArrayList<>();
+        CityBean cityBean1 = new CityBean();
+        cityBean1.setCity("河东");
+        cityBeans1.add(cityBean1);
+        cityBeans1.add(cityBean1);
+        cityBeans1.add(cityBean1);
+        cityBeans1.add(cityBean1);
+        cityBeans1.add(cityBean1);
+        cityBeans1.add(cityBean1);
+        provinceBean1.setCitys(cityBeans);
+        provinceBeans.add(provinceBean);
+        provinceBeans.add(provinceBean1);
+        provinceBeans.add(provinceBean1);
+        provinceBeans.add(provinceBean1);
+        provinceBeans.add(provinceBean1);
+        homeBean.setProvinces(provinceBeans);
+
+        List<StoreBean> stores = new ArrayList<>();
+        StoreBean storeBean = new StoreBean();
+        storeBean.setStoreImage("https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3714408895,354969059&fm=26&gp=0.jpg");
+        storeBean.setName("润京旗舰店");
+        storeBean.setAddress("中航国际广场");
+        storeBean.setDistance("3.5km");
+        storeBean.setStatus(0);
+        stores.add(storeBean);
+        stores.add(storeBean);
+        stores.add(storeBean);
+        stores.add(storeBean);
+        stores.add(storeBean);
+//        homeBean.setStores(stores);
+
+
         return homeBean;
     }
 

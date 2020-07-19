@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="app_name">酒世界</string>
+    <string name="app_name">京东酒世界</string>
     <!--<string name="app_test">美农伙伴测试</string>-->
     <!--<string name="app_default"></string>-->
     <string name="app_default">京东酒世界</string>
@@ -72,5 +72,6 @@
     <string name="store_rest">本店已休息</string>
     <string name="store_distance">距离：</string>
     <string name="store_view">进门店逛逛</string>
+    <string name="string_navigation">导航</string>
 
 </resources>

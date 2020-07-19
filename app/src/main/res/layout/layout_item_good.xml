@@ -9,10 +9,11 @@
         android:id="@+id/lay_ll_order_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_10"
         android:background="@drawable/style_radius_bg_gray"
-        android:paddingBottom="@dimen/dp_10"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/dp_10">
 
         <LinearLayout
             android:layout_width="match_parent"

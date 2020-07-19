@@ -3,7 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/dp_50"
+    android:layout_marginTop="@dimen/dp_46"
     android:orientation="vertical">
 
 
@@ -72,10 +72,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/lay_rv_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/dp_10"
-        android:layout_marginTop="@dimen/dp_10"
-        android:layout_marginRight="@dimen/dp_10" />
+        android:layout_height="match_parent" />
 
 
 </LinearLayout>

@@ -14,6 +14,7 @@ public class StoreBean {
     private String name;
     private String address;
     private String distance;
+    private int status;
 
     public String getStoreId() {
         return storeId;
@@ -55,6 +56,14 @@ public class StoreBean {
         this.distance = distance;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "StoreBean{" +
@@ -63,6 +72,7 @@ public class StoreBean {
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", distance='" + distance + '\'' +
+                ", status=" + status +
                 '}';
     }
 }

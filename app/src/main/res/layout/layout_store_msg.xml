@@ -115,7 +115,7 @@
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:singleLine="true"
-                    android:text="@string/app_default"
+                    android:text="@string/string_navigation"
                     android:textColor="@color/color_333333"
                     android:textSize="@dimen/sp_12" />
             </LinearLayout>

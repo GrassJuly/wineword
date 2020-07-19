@@ -173,6 +173,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private TextView tv_name;
         private TextView tv_address;
         private TextView tv_distance;
+        private TextView tv_rest;
         private LinearLayout ll_location;
         private TextView tv_store;
 
@@ -180,6 +181,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             super(itemView);
             iv_store = itemView.findViewById(R.id.lay_item_iv_store);
             tv_name = itemView.findViewById(R.id.lay_item_tv_name);
+            tv_rest = itemView.findViewById(R.id.lay_item_tv_rest);
             tv_address = itemView.findViewById(R.id.lay_item_tv_address);
             tv_distance = itemView.findViewById(R.id.lay_item_tv_distance);
             ll_location = itemView.findViewById(R.id.lay_item_ll_location);
@@ -188,10 +190,15 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         public void setData(List<StoreBean> stores, int position) {
             if (stores != null && stores.size() > 0) {
-                Glide.with(context).load(stores.get(position).getStoreImage()).into(iv_store);
+                GlideUtils.getInstance().displayImageCenter(iv_store, stores.get(position).getStoreImage(), iv_store.getContext(), R.mipmap.ic_launcher);
                 tv_name.setText(AppMethod.isEntity(stores.get(position).getName()));
                 tv_address.setText(AppMethod.isEntity(stores.get(position).getAddress()));
                 tv_distance.setText(AppMethod.isEntity(stores.get(position).getDistance()));
+                if (stores.get(position).getStatus() == 0) {
+                    tv_rest.setVisibility(View.GONE);
+                } else if (stores.get(position).getStatus() == 1) {
+                    tv_rest.setVisibility(View.VISIBLE);
+                }
                 ll_location.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -222,6 +229,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             CityAdapter adapter = new CityAdapter(tv_provinces.getContext());
             rv_city.setHasFixedSize(false);
             rv_city.setLayoutManager(new GridLayoutManager(tv_provinces.getContext(), 3));
+            rv_city.setNestedScrollingEnabled(false);//禁止滑动
             rv_city.setAdapter(adapter);
             adapter.setData(provinces.get(position).getCitys());
         }

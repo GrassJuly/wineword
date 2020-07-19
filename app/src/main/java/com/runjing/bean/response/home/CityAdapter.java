@@ -6,8 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.runjing.common.AppMethod;
 import com.runjing.wineworld.R;
+
+import org.runjing.rjframe.ui.ViewInject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,18 +39,25 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityHolder>  {
     public void setData(List<CityBean> data) {
         if (data != null && data.size() > 0) {
             this.citys = data;
+            notifyDataSetChanged();
         }
     }
 
     @NonNull
     @Override
     public CityHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new CityHolder(LayoutInflater.from(context).inflate(R.layout.layout_item_city, null));
+        return new CityHolder(LayoutInflater.from(context).inflate(R.layout.layout_item_city, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull CityHolder holder, int position) {
         holder.tv_city.setText(AppMethod.isEntity(citys.get(position).getCity()));
+        holder.tv_city.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ViewInject.showCenterToast(holder.tv_city.getContext(), citys.get(position).getCity());
+            }
+        });
     }
 
     @Override

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/lay_item_tv_proviences"
@@ -15,12 +15,12 @@
         android:textColor="@color/color_666666"
         android:textSize="@dimen/sp_14" />
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/lay_item_rv_city"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/color_ffffff"
-        android:padding="@dimen/dp_10"
         android:scrollbars="none" />
 
 

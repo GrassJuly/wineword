@@ -28,6 +28,7 @@ import com.runjing.widget.RJRefreshHeader;
 import com.runjing.wineworld.R;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.youth.banner.Banner;
@@ -37,6 +38,7 @@ import org.runjing.rjframe.utils.DensityUtils;
 
 import androidx.annotation.NonNull;
 import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -65,6 +67,8 @@ public class HomeFragment extends TitleBarFragment {
     private ImageView iv_shop;
     @BindView(id = R.id.frag_ll_search, click = true)
     private LinearLayout ll_search;
+    @BindView(id = R.id.frg_ll_home)
+    private LinearLayout ll_home;
     @BindView(id = R.id.lay_ll_order, click = true)
     private LinearLayout ll_order;
     @BindView(id = R.id.lay_ll_store, click = true)
@@ -108,8 +112,7 @@ public class HomeFragment extends TitleBarFragment {
                 setNormalColor(outsideAty.getResources().getColor(R.color.color_99000000)).
                 setAnimatingColor(outsideAty.getResources().getColor(R.color.color_99000000)).
                 setSpinnerStyle(SpinnerStyle.Scale));
-        View view = LayoutInflater.from(outsideAty).inflate(R.layout.layout_recycler_footer, null);
-        refreshLayout.setRefreshFooter(new RJRefreshFooter(view));
+        refreshLayout.setRefreshFooter(new RJRefreshFooter(LayoutInflater.from(outsideAty).inflate(R.layout.layout_recycler_footer, null)));
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
@@ -122,14 +125,10 @@ public class HomeFragment extends TitleBarFragment {
                 refreshLayout.finishLoadMore(2000);
             }
         });
-        mLayoutManager = new StaggeredGridLayoutManager(Appconfig.TAG_TWO, StaggeredGridLayoutManager.VERTICAL);
         homeAdapter = new HomeAdapter(getActivity());
         rv_content.setHasFixedSize(false);
-        rv_content.setLayoutManager(mLayoutManager);
         rv_content.setNestedScrollingEnabled(false);
         rv_content.setAdapter(homeAdapter);
-        rv_content.addItemDecoration(new SpacesItemDecoration(DensityUtils.dip2dp(getActivity(), 7), STAGGEREDGRIDLAYOUT));
-
         setData(HomeData.getHomeData());
     }
 
@@ -193,22 +192,44 @@ public class HomeFragment extends TitleBarFragment {
      */
     public void setData(HomeBean homeBean) {
         AppMethod.bannerWeight(outsideAty, banner, homeBean.getImages());
-        System.out.println("????    " + JSON.toJSONString(homeBean));
         if (homeBean != null) {
             if (homeBean.getItemTpye() == HomeBean.TYPE_ITEM_CITY) {
                 ll_store_status.setVisibility(View.VISIBLE);
                 ll_search.setVisibility(View.GONE);
                 ll_banner.setVisibility(View.GONE);
+                rv_content.setLayoutManager(new LinearLayoutManager(outsideAty));
+                rv_content.addItemDecoration(new RecyclerViewItemDecoration(RecyclerViewItemDecoration.MODE_HORIZONTAL,
+                        getResources().getColor(R.color.color_eeeeee), DensityUtils.dip2dp(getActivity(), 1), 0, 0));
+                setMargin(ll_home, 0);
             } else if (homeBean.getItemTpye() == HomeBean.TYPE_ITEM_GOOD) {
                 ll_store_status.setVisibility(View.GONE);
                 ll_search.setVisibility(View.VISIBLE);
                 ll_banner.setVisibility(View.VISIBLE);
+                setMargin(ll_home, 46);
+                rv_content.setLayoutManager(new StaggeredGridLayoutManager(Appconfig.TAG_TWO, StaggeredGridLayoutManager.VERTICAL));
+                rv_content.addItemDecoration(new SpacesItemDecoration(DensityUtils.dip2dp(getActivity(), 7), STAGGEREDGRIDLAYOUT));
             }else if (homeBean.getItemTpye() == HomeBean.TYPE_ITEM_STORE) {
                 ll_store_status.setVisibility(View.VISIBLE);
                 ll_search.setVisibility(View.GONE);
                 ll_banner.setVisibility(View.GONE);
+                setMargin(ll_home, 0);
+                rv_content.setLayoutManager(new LinearLayoutManager(outsideAty));
+                rv_content.addItemDecoration(new RecyclerViewItemDecoration(RecyclerViewItemDecoration.MODE_HORIZONTAL,
+                        getResources().getColor(R.color.color_eeeeee), DensityUtils.dip2dp(getActivity(), 1), 0, 0));
             }
             homeAdapter.setData(homeBean);
+        }
+    }
+
+    /**
+     * 动态设置margin
+     * @param ll
+     */
+    public void setMargin(LinearLayout ll, int margin) {
+        if (ll != null) {
+            LinearLayout.LayoutParams params =(LinearLayout.LayoutParams) ll.getLayoutParams();
+            params.topMargin = DensityUtils.dip2dp(ll.getContext(), margin);
+            ll.setLayoutParams(params);
         }
     }
 }

@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="fill_parent">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/frag_al_title"
@@ -40,7 +40,6 @@
                 android:id="@+id/frg_sv_contennt"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/dp_40"
                 android:scrollbars="none">
 
                 <LinearLayout
@@ -52,6 +51,7 @@
                         android:id="@+id/frg_ll_home"
                         layout="@layout/layout_home"
                         android:visibility="visible" />
+
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
 
