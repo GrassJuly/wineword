@@ -13,7 +13,7 @@
             <solid android:color="@color/color_FF4E18"/>
             <!--设置角的弧度-->
             <!--radius 越大，按钮越圆-->
-            <corners android:radius="@dimen/dp_14" />
+            <corners android:radius="@dimen/dp_4" />
             <!--设置边框以及弧度-->
             <!--width 越大边框越大越明显  ， color 设置外边框颜色-->
 <!--            <stroke-->
@@ -29,7 +29,7 @@
 <!--            <solid android:color="@color/color_white"/>-->
             <!--设置角的弧度-->
             <!--radius 越大，按钮越圆-->
-            <corners android:radius="@dimen/dp_14"/>
+            <corners android:radius="@dimen/dp_4"/>
             <!--点击之后的边框-->
             <!--width 越大边框越大越明显  ， color 设置外边框颜色-->
 <!--            <stroke-->
