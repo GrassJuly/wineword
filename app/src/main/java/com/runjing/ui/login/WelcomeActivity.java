@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Intent;
 
 import com.runjing.base.TitleBarActivity;
+import com.runjing.ui.login.GuildActivity;
+import com.runjing.utils.StatusBarUtil;
 import com.runjing.wineworld.R;
 
 import com.runjing.utils.PermissionUtils;
@@ -20,6 +22,12 @@ public class WelcomeActivity extends TitleBarActivity {
         MyApplication.contextApp.addActivity(this);
         setContentView(R.layout.activity_welcome);
         getPermissions();
+    }
+
+    @Override
+    public void initToolBar() {
+        super.initToolBar();
+        StatusBarUtil.setTransparentForWindow(this);
     }
 
     private void getPermissions() {
@@ -43,7 +51,7 @@ public class WelcomeActivity extends TitleBarActivity {
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
-                Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
+                Intent intent = new Intent(WelcomeActivity.this, GuildActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();
