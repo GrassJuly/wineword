@@ -126,7 +126,7 @@ public class HomeData {
         goods.add(good2);
         goods.add(good3);
         goods.add(good4);
-//        homeBean.setGoods(goods);
+        homeBean.setGoods(goods);
 
         List<ProvinceBean> provinceBeans = new ArrayList<>();
         ProvinceBean provinceBean = new ProvinceBean();
@@ -156,7 +156,7 @@ public class HomeData {
         provinceBeans.add(provinceBean1);
         provinceBeans.add(provinceBean1);
         provinceBeans.add(provinceBean1);
-        homeBean.setProvinces(provinceBeans);
+//        homeBean.setProvinces(provinceBeans);
 
         List<StoreBean> stores = new ArrayList<>();
         StoreBean storeBean = new StoreBean();

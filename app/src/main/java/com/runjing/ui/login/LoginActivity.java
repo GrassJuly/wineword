@@ -26,7 +26,7 @@ import java.util.List;
 
 public class LoginActivity extends TitleBarActivity {
 
-    @BindView(id = R.id.act_iv_back)
+    @BindView(id = R.id.act_iv_back, click = true)
     private ImageView iv_back;
     @BindView(id = R.id.act_ll_quick, click = true)
     private LinearLayout ll_quick;
@@ -66,6 +66,9 @@ public class LoginActivity extends TitleBarActivity {
     public void widgetClick(View v) {
         super.widgetClick(v);
         switch (v.getId()) {
+            case R.id.act_iv_back:
+                finish();
+                break;
             case R.id.act_ll_quick:
                 v_quick.setVisibility(View.VISIBLE);
                 v_ap.setVisibility(View.INVISIBLE);

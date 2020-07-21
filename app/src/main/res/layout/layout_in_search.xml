@@ -38,7 +38,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="@dimen/dp_10"
                 android:layout_weight="1"
-                android:hint="@string/main_supplier_search"
+                android:hint="@string/main_runjing_search"
                 android:imeOptions="actionSearch"
                 android:singleLine="true" />
 

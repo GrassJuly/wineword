@@ -140,4 +140,9 @@ public class SimpleBackActivity extends TitleBarActivity {
     public DrawerLayout getDl_content() {
         return dl_content;
     }
+
+    @Override
+    public void OnActionBar() {
+        currentFragment.onActionBar();
+    }
 }

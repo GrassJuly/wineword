@@ -10,6 +10,7 @@ import com.runjing.common.Appconfig;
 
 import org.runjing.rjframe.RJFragment;
 import org.runjing.rjframe.utils.DensityUtils;
+import org.runjing.rjframe.utils.StringUtils;
 
 import androidx.annotation.Nullable;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -24,26 +25,20 @@ import androidx.drawerlayout.widget.DrawerLayout;
  */
 public abstract class TitleBarFragment extends RJFragment {
 
+    //时间有限先兼容现阶段任务， 后期完善
     public class ActionBarRes {
-        public int titleBarColor = Appconfig.DEFAULT_VALUES;
-        public CharSequence middleTitle;//中间标题头
-        public int titleLayoutVisible;//头部显示与隐藏
-        public int leftButtonId;   //左侧按钮设置图片
-        public int middleLayoutColor;//标题背景颜色
-        public int topLayoutBack;//标题栏背景色
-        public int rightButtonId; //右侧按钮设置图片i
-        public int middleTitleColor;
-        public int leftButtonResource;
-        public int rightButtonColor;
-        public int leftImageVisible; //左侧图片显示与隐藏 1代表显示 否则隐藏
-        public int rightImageVisible;//右侧图片显示与隐藏 1代表显示 否则隐藏
-        public int rightButtonSizeTag;//搜索标题栏显示与隐藏 1代表显示 否则隐藏
-        public int rightTextVisible;
-        public int rightTextColor;
-        public CharSequence rightMsg;//右面标题内容
-        public int serchVisible;
-        public int[] serchId;
-
+        public int titleBarColor;
+        public CharSequence middleTitle = "";//中间标题头
+        public int titleLayoutVisible = 1;//头部显示与隐藏
+        public int middleTitleColor;//标题背景颜色
+        public int leftImageId;
+        public int rightImageId;
+        public int leftVisiable = 1;
+        public int rightVisiable;
+        public int searchVisiable;
+        public String leftVal;
+        public String rightVal;
+        public int middleVisiable = 1;
     }
 
     private final ActionBarRes actionBarRes = new ActionBarRes();
@@ -74,17 +69,6 @@ public abstract class TitleBarFragment extends RJFragment {
         onParames(outsideAty.getIntent().getBundleExtra(Appconfig.DATA_KEY));
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        try {
-            setActionBarRes(actionBarRes);
-            styleChanged(actionBarRes);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public void onBackPressed() {
         finish();
     }
@@ -105,242 +89,105 @@ public abstract class TitleBarFragment extends RJFragment {
      * @throws Exception
      */
     private void styleChanged(ActionBarRes actionBarRes) throws Exception {
-        setTitleBarColor(actionBarRes.titleBarColor);
-        setTitleLayoutVisible(actionBarRes.titleLayoutVisible);
-        setMiddleColor(actionBarRes.middleTitleColor);
-        setMiddleTitle(actionBarRes.middleTitle);
-        setTopLayout(actionBarRes.topLayoutBack);
-        setLeftBtnVisible(actionBarRes.leftImageVisible);
-        setLeftBtnRes(actionBarRes.leftButtonResource);
-        setRightBtnVisible(actionBarRes);
-        setRightButtonSize(actionBarRes.rightButtonSizeTag);
-        setRightMsg(actionBarRes.rightMsg);
-        setRightTextVisible(actionBarRes.rightTextVisible);
-        setRightTextColor(actionBarRes.rightTextColor);
-//        setSearchId(actionBarRes.serchId);
-        outsideAty.setSearch(actionBarRes.serchId);
-        setSearchVisible(actionBarRes.serchVisible);
-        if (actionBarRes.leftButtonId != 0) {
-            setLeftBtnImage(actionBarRes.leftButtonId);
-        }
-        if (actionBarRes.rightButtonId != 0) {
-            setRightbtnImage(actionBarRes.rightButtonId);
-        }
-        if (actionBarRes.middleLayoutColor != 0) {
-            setMiddleTitleColor(actionBarRes.middleLayoutColor);
-        }
+        setLeftVisiable(actionBarRes.leftVisiable);
+        setLeftVal(actionBarRes.leftVal);
+        setLeftImage(actionBarRes.leftImageId);
+        setTitle(actionBarRes.middleTitle.toString());
+        setTitleColor(actionBarRes.middleTitleColor);
+        setTitleVisiable(actionBarRes.middleVisiable);
+        setTitleBarVis(actionBarRes.titleLayoutVisible);
+        setRightImg(actionBarRes.rightImageId);
+        setRightVal(actionBarRes.rightVal);
+        setRightVis(actionBarRes.rightVisiable);
+        setSearchVisiable(actionBarRes.searchVisiable);
     }
 
-    private void setRightTextColor(int rightTextColor) {
+    private void setLeftVisiable(int visiable) {
         if (outsideAty != null) {
-          outsideAty.tv_home_right.setTextColor(rightTextColor);
-        }
-    }
-
-    private void setRightTextVisible(int rightTextVisible) {
-        if (outsideAty != null) {
-            if (rightTextVisible == 0) {
-                outsideAty.iv_search.setVisibility(View.GONE);
-            } else if (rightTextVisible == 1) {
-                outsideAty.iv_search.setVisibility(View.VISIBLE);
-            }
-        }
-    }
-
-    public void setTopLayout(int topLayoutBack) {
-        if (outsideAty != null) {
-            outsideAty.ll_base_title.setBackgroundColor(topLayoutBack);
-        }
-    }
-
-    public  void setMiddleColor(int titleBarColor){
-        if (outsideAty != null) {
-                outsideAty.tv_home_middle_title.setTextColor(titleBarColor);
-        }
-    }
-
-    public void setLeftBtnRes(int leftBtnRes){
-        if (outsideAty!=null){
-            outsideAty.btn_home_left.setBackgroundResource(leftBtnRes);
-        }
-    }
-
-
-
-    /**
-     * @param searchId
-     * @throws Exception
-     */
-    public void setSearchId(int[] searchId) throws Exception {
-        if (outsideAty != null) {
-            if (searchId != null && searchId.length > 0) {
-                outsideAty.iv_search.setImageResource(searchId[0]);
-            }
-        }
-    }
-
-    public void setTitleBarColor(int titleBarColor) {
-        if (outsideAty != null) {
-            if (titleBarColor != Appconfig.DEFAULT_VALUES) {
-                StatusBarUtil.setColor(outsideAty, titleBarColor, 0);
-                StatusBarUtil.setLightMode(outsideAty);
-            }
-        }
-    }
-
-    /**
-     * @param visible
-     * @throws Exception
-     */
-    public void setSearchVisible(int visible) throws Exception {
-        if (outsideAty != null) {
-            if (visible == 0) {
-                outsideAty.iv_search.setVisibility(View.GONE);
-            } else if (visible == 1) {
-                outsideAty.iv_search.setVisibility(View.VISIBLE);
-            }
-        }
-    }
-
-    /**
-     * @param msg
-     * @throws Exception
-     */
-    public void setRightMsg(CharSequence msg) throws Exception {
-        if (outsideAty != null) {
-            if (!TextUtils.isEmpty(msg)) {
-                outsideAty.tv_home_right.setText(msg);
-                outsideAty.tv_home_right.setHeight(DensityUtils.dip2dp(getActivity(), 48));
-                outsideAty.tv_home_right.setWidth(DensityUtils.dip2dp(getActivity(), 96));
-            }
-        }
-    }
-
-    /**
-     * 设置标题栏显示与隐藏
-     *
-     * @param visible
-     * @throws Exception
-     */
-    public void setTitleLayoutVisible(int visible) throws Exception {
-        if (outsideAty != null && outsideAty.ll_base_title != null) {
-            if (visible == 1) {
-                outsideAty.ll_base_title.setVisibility(View.GONE);
-            } else if (visible == 2) {
-                outsideAty.ll_base_title.setVisibility(View.VISIBLE);
+            if (visiable == 0) {
+                outsideAty.fm_left.setVisibility(View.INVISIBLE);
             } else {
-                outsideAty.ll_base_title.setVisibility(View.VISIBLE);
+                outsideAty.fm_left.setVisibility(View.VISIBLE);
             }
         }
     }
 
-    /**
-     * 设置中间的标题
-     *
-     * @param txt
-     * @throws Exception
-     */
-    protected void setMiddleTitle(CharSequence txt) throws Exception {
-        if (outsideAty != null && outsideAty.tv_home_middle_title != null) {
-            outsideAty.tv_home_middle_title.setText(txt);
-        }
-    }
-
-    /**
-     * 设置右边按钮的大小
-     *
-     * @param tag
-     * @throws Exception
-     */
-    protected void setRightButtonSize(int tag) throws Exception {
-        if (outsideAty != null && outsideAty.tv_home_right != null) {
-            if (tag == 0) {
-                outsideAty.tv_home_right.setWidth(48);
-            } else if (tag == 1) {
-                outsideAty.tv_home_right.setWidth(48);
-            }
-        }
-
-    }
-
-    /**
-     * 设置左上角按钮显示
-     *
-     * @param visible
-     * @throws Exception
-     */
-    protected void setLeftBtnVisible(int visible) throws Exception {
+    public void setLeftVal(String leftVal) {
         if (outsideAty != null) {
-            if (visible == 1) {
-                outsideAty.btn_home_left.setVisibility(View.VISIBLE);
+            if (!StringUtils.isEmpty(leftVal)) {
+                outsideAty.tv_left.setText(leftVal);
+
+            }
+        }
+    }
+
+    public void setLeftImage(int image) {
+        if (outsideAty != null) {
+            outsideAty.iv_left.setImageResource(image);
+        }
+    }
+
+    public void setTitleVisiable(int visiable) {
+        if (outsideAty != null) {
+            if (visiable == 0) {
+                outsideAty.tv_title.setVisibility(View.GONE);
             } else {
-                outsideAty.btn_home_left.setVisibility(View.INVISIBLE);
+                outsideAty.tv_title.setVisibility(View.VISIBLE);
             }
         }
     }
 
-    /**
-     * 设置右上角按钮显示
-     *
-     * @param actionBarRes
-     * @throws Exception
-     */
-    protected void setRightBtnVisible(ActionBarRes actionBarRes) throws Exception {
+    public void setTitle(String title) {
         if (outsideAty != null) {
-            if (actionBarRes.rightImageVisible == 1) {
-                if (TextUtils.isEmpty(actionBarRes.rightMsg)) {
-                    if (actionBarRes.rightButtonId != 0) {
-                        outsideAty.iv_home_right.setVisibility(View.VISIBLE);
-                        outsideAty.tv_home_right.setVisibility(View.GONE);
-                    } else {
-                        outsideAty.iv_home_right.setVisibility(View.GONE);
-                        outsideAty.tv_home_right.setVisibility(View.GONE);
-                    }
+            outsideAty.tv_title.setText(title);
+        }
+    }
 
-                } else {
-                    outsideAty.tv_home_right.setVisibility(View.VISIBLE);
-                    outsideAty.iv_home_right.setVisibility(View.GONE);
-                }
+    public void setTitleColor(int color) {
+        if (outsideAty != null) {
+            outsideAty.tv_title.setTextColor(color);
+        }
+    }
+
+    public void setSearchVisiable(int visiable) {
+        if (outsideAty != null) {
+            if (visiable == 0) {
+                outsideAty.ll_search.setVisibility(View.GONE);
             } else {
-                outsideAty.tv_home_right.setVisibility(View.GONE);
-                outsideAty.iv_home_right.setVisibility(View.GONE);
+                outsideAty.ll_search.setVisibility(View.VISIBLE);
             }
         }
     }
 
-    /**
-     * 设置左上角按钮图片样式
-     *
-     * @param resId
-     * @throws Exception
-     */
-    protected void setLeftBtnImage(int resId) throws Exception {
+    public void setRightVal(String val) {
         if (outsideAty != null) {
-            outsideAty.btn_home_left.setBackgroundResource(resId);
+            outsideAty.tv_home_right.setText(val);
         }
     }
 
-    /**
-     * 设置右上角按钮图片样式
-     *
-     * @param resId
-     * @throws Exception
-     */
-    protected void setRightbtnImage(int resId) throws Exception {
+    public void setRightImg(int img) {
         if (outsideAty != null) {
-            outsideAty.iv_home_right.setImageResource(resId);
+            outsideAty.iv_right.setImageResource(img);
         }
     }
 
-    /**
-     * 设置标题背景颜色
-     *
-     * @param resId
-     * @throws Exception
-     */
-    protected void setMiddleTitleColor(int resId) throws Exception {
+    public void setRightVis(int vis) {
         if (outsideAty != null) {
-            outsideAty.ll_base_title.setBackgroundResource(resId);
+            if (vis == 0) {
+                outsideAty.fm_right.setVisibility(View.INVISIBLE);
+            } else {
+                outsideAty.fm_right.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    public void setTitleBarVis(int vis) {
+        if (outsideAty != null) {
+            if (vis == 0) {
+                outsideAty.fm_content.setVisibility(View.GONE);
+            } else {
+                outsideAty.fm_content.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -356,7 +203,8 @@ public abstract class TitleBarFragment extends RJFragment {
 
     }
 
-    public void initToolBar(){}
+    public void initToolBar() {
+    }
 
     public void finish() {
         getActivity().finish();
@@ -368,13 +216,6 @@ public abstract class TitleBarFragment extends RJFragment {
     public void onParames(Bundle bundle) {
     }
 
-    /**
-     * @return
-     */
-    public int[] getActionBarRes() {
-        if (actionBarRes != null) return actionBarRes.serchId;
-        return null;
-    }
 
     public void getDrawer(DrawerActionBar drawerActionBar) {
     }
@@ -388,21 +229,6 @@ public abstract class TitleBarFragment extends RJFragment {
     }
 
     /**
-     * 设置右侧图片资源
-     *
-     * @param resId
-     */
-    public void setRightRes(int resId) {
-        if (outsideAty != null) {
-            try {
-                setRightbtnImage(resId);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    /**
      * 获取抽屉布局
      *
      * @return
@@ -412,6 +238,15 @@ public abstract class TitleBarFragment extends RJFragment {
             return ((SimpleBackActivity) outsideAty).getDl_content();
         }
         return null;
+    }
+
+    public void onActionBar() {
+        try {
+            setActionBarRes(actionBarRes);
+            styleChanged(actionBarRes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

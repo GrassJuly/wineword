@@ -105,7 +105,6 @@ public class HomeFragment extends TitleBarFragment {
     protected void setActionBarRes(ActionBarRes actionBarRes) {
         super.setActionBarRes(actionBarRes);
         actionBarRes.titleLayoutVisible = 2;
-        actionBarRes.middleLayoutColor = R.color.color_ffffff;
     }
 
     @Override

@@ -12,7 +12,7 @@
     <string name="pickerview_hours">时</string>
     <string name="pickerview_minutes">分</string>
     <string name="pickerview_seconds">秒</string>
-    <string name="main_supplier_search">搜索</string>
+    <string name="main_runjing_search">搜索</string>
     <string name="dialog_left_botton">取消</string>
     <string name="dialog_right_botton">确定</string>
     <string name="app_print">打印</string>

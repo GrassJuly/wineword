@@ -14,7 +14,7 @@
     <!--标题颜色样式-->
     <style name="mn_home_bar_title">
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/color_white</item>
+        <item name="android:textColor">@color/color_333333</item>
     </style>
     <!--loadingDialog样式-->
     <style name="loadingDialog" parent="@android:style/Theme.Dialog">

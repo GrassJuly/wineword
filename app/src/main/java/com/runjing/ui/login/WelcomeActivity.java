@@ -57,8 +57,8 @@ public class WelcomeActivity extends TitleBarActivity {
             public void run() {
                 Intent intent;
                 if (MMKVUtil.getInstance().decodeBoolean(Appconfig.IS_GUILD)) {
-                    intent = new Intent(WelcomeActivity.this, LoginActivity.class);
-//                    intent = new Intent(WelcomeActivity.this, MainActivity.class);
+//                    intent = new Intent(WelcomeActivity.this, LoginActivity.class);
+                    intent = new Intent(WelcomeActivity.this, MainActivity.class);
                 } else {
                     intent = new Intent(WelcomeActivity.this, GuildActivity.class);
                 }

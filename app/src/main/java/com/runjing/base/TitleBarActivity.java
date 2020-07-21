@@ -3,11 +3,14 @@ package com.runjing.base;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,17 +34,21 @@ import de.greenrobot.event.EventBus;
  * @Version : $ v_1.0 on 2017/1/6.
  * @Remark:
  */
-public abstract class TitleBarActivity extends RJActivity {
-    public FrameLayout frame_titleBar;
-    public RelativeLayout ll_base_title; //基础的标题头
-    public Button btn_home_left;//标题左上角按钮
-    public TextView tv_home_right;//标题右上角按钮
-    public ImageView iv_home_right;//标题右侧图片
-    public TextView tv_home_middle_title;//标题
+public abstract class TitleBarActivity extends RJActivity implements TextWatcher {
+    public FrameLayout fm_content;
+    public FrameLayout fm_left;
+    public TextView tv_left;
+    public ImageView iv_left;
+    public TextView tv_title;
     public LinearLayout ll_search;
-    public ImageView iv_search;
-    private int[] searchId;
+    public EditText et_search;
+    public TextView tv_search;
+    public FrameLayout fm_right;
+    public TextView tv_home_right;
+    public ImageView iv_right;
     private ViewGroup viewGroup;
+
+    public  void OnActionBar(){};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,18 +70,26 @@ public abstract class TitleBarActivity extends RJActivity {
     @Override
     protected void onStart() {
         try {
-            ll_base_title = (RelativeLayout) findViewById(R.id.mn_home_bar_ll_top);
-            ll_search = (LinearLayout) findViewById(R.id.mn_homebar_ll_search);
-            iv_search = (ImageView) findViewById(R.id.mn_homebar_iv_search);
-            btn_home_left = (Button) findViewById(R.id.mn_home_bar_btn_left);
-            tv_home_right = (TextView) findViewById(R.id.mn_home_bar_tv_right);
-            iv_home_right = (ImageView) findViewById(R.id.mn_home_bar_iv_right);
-            tv_home_middle_title = (TextView) findViewById(R.id.mn_home_bar_tv_title);
-            frame_titleBar = (FrameLayout) findViewById(R.id.frame_titleBar);
-            btn_home_left.setOnClickListener(this);
+            fm_content = findViewById(R.id.base_title);
+            fm_left = fm_content.findViewById(R.id.fl_left);
+            tv_left = fm_content.findViewById(R.id.home_bar_tv_left);
+            iv_left = fm_content.findViewById(R.id.home_bar_iv_left);
+            ll_search = fm_content.findViewById(R.id.title_ll_search);
+            et_search = fm_content.findViewById(R.id.title_et_search);
+            tv_search = fm_content.findViewById(R.id.home_bar_tv_search);
+            tv_title = fm_content.findViewById(R.id.home_bar_tv_title);
+            fm_right = fm_content.findViewById(R.id.fl_right);
+            tv_home_right = fm_content.findViewById(R.id.home_bar_tv_right);
+            iv_right = fm_content.findViewById(R.id.home_bar_iv_right);
+            fm_left.setOnClickListener(this);
+            iv_left.setOnClickListener(this);
+            tv_left.setOnClickListener(this);
+            fm_right.setOnClickListener(this);
             tv_home_right.setOnClickListener(this);
-            iv_home_right.setOnClickListener(this);
-            ll_search.setOnClickListener(this);
+            iv_right.setOnClickListener(this);
+            tv_search.setOnClickListener(this);
+            et_search.addTextChangedListener(this);
+            OnActionBar();
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -91,28 +106,29 @@ public abstract class TitleBarActivity extends RJActivity {
     public void widgetClick(View v) {
         super.widgetClick(v);
         switch (v.getId()) {
-            case R.id.mn_home_bar_btn_left: // 左侧返回
+            case R.id.fl_left: // 左侧返回
+            case R.id.home_bar_tv_left:
+            case R.id.home_bar_iv_left:
                 onBackClick();
                 break;
-            case R.id.mn_home_bar_tv_right: // 右侧菜单
-                addClick();
-            case R.id.mn_home_bar_iv_right:
+            case R.id.fl_right: // 右侧菜单
+            case R.id.home_bar_tv_right:
+            case R.id.home_bar_iv_right:
                 onMenuClick();
                 break;
-            case R.id.mn_homebar_ll_search:
-                setSearch(searchId);
+            case R.id.home_bar_tv_search:
                 onSearch();
                 break;
         }
-    }
-
-    private void addClick() {
     }
 
     public void onBackClick() {
     }
 
     public void onMenuClick() {
+    }
+
+    public void onSearchTextChanged(String search) {
     }
 
     public void onSearch() {
@@ -122,57 +138,19 @@ public abstract class TitleBarActivity extends RJActivity {
         StatusBarUtil.setColor(this, getResources().getColor(R.color.color_ffffff));
     }
 
-    /**
-     * @param searchId
-     */
-    public void setSearch(int[] searchId) {
-        try {
-            if (searchId != null) {
-                if (searchId.length > 1) {
-                    if (this.searchId == null) this.searchId = searchId;
-                    if (iv_search != null) {
-                        if (iv_search.getTag() == null) {
-                            iv_search.setImageResource(searchId[0]);
-                            iv_search.setTag(searchId[0]);
-                        } else if (((int) iv_search.getTag()) == searchId[0]) {
-                            iv_search.setImageResource(searchId[1]);
-                            iv_search.setTag(searchId[1]);
-                        } else if (((int) iv_search.getTag()) == searchId[1]) {
-                            iv_search.setImageResource(searchId[0]);
-                            iv_search.setTag(searchId[0]);
-                        }
-                    }
-                } else if (searchId.length == 1) {
-                    iv_search.setImageResource(searchId[0]);
-                    iv_search.setTag(searchId[0]);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
     }
 
-//
-//    @Override
-//    public boolean dispatchTouchEvent(MotionEvent ev) {
-//        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-//            View v = getCurrentFocus();
-//            try {
-//                if (KeyBoardUtil.isShouldHideInput(viewGroup, v, ev)) {
-//                    if (KeyBoardUtil.viewIsEditText(viewGroup, ev)) {
-//                        KeyBoardUtil.hideSoftInput(this, v.getWindowToken());
-//                    }
-//                }
-//            } catch (Throwable throwable) {
-//                throwable.printStackTrace();
-//            }
-//            return super.dispatchTouchEvent(ev);
-//        }
-//        //必不可少，否则所有的组件都不会有TouchEvent了
-//        if (getWindow().superDispatchTouchEvent(ev)) {
-//            return true;
-//        }
-//        return onTouchEvent(ev);
-//    }
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        onSearchTextChanged(s.toString());
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
+    }
 }
 
