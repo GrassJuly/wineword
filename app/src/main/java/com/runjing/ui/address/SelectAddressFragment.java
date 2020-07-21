@@ -61,12 +61,8 @@ public class SelectAddressFragment extends TitleBarFragment {
     protected void setActionBarRes(ActionBarRes actionBarRes) {
         super.setActionBarRes(actionBarRes);
         actionBarRes.titleLayoutVisible = 2;
-        actionBarRes.leftImageVisible = 1;
-        actionBarRes.rightImageVisible = 1;
-        actionBarRes.leftButtonResource = R.mipmap.fh_back;
+        actionBarRes.leftVisiable = 1;
         actionBarRes.middleTitle = "选择收货地址";
-        actionBarRes.middleTitleColor = outsideAty.tv_home_middle_title.getResources().getColor(R.color.color_333333);
-        actionBarRes.topLayoutBack = outsideAty.ll_base_title.getResources().getColor(R.color.color_ffffff);
     }
 
 

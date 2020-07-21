@@ -47,7 +47,6 @@ public class StorListFragment extends TitleBarFragment {
     @Override
     protected void initWidget(View parentView) {
         super.initWidget(parentView);
-        initToolBar();
         initView();
     }
 
@@ -70,7 +69,7 @@ public class StorListFragment extends TitleBarFragment {
         mRecyclerView.setAdapter(new ContentAdapter());
     }
 
-    protected void initToolBar() {
+    public void initToolBar() {
         try {
             Toolbar toolbar = (Toolbar) outsideAty.findViewById(R.id.toolbar);
             if (toolbar != null) {

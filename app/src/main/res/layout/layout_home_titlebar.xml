@@ -2,7 +2,10 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/frame_titleBar"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:paddingLeft="@dimen/dp_12"
+    android:paddingRight="@dimen/dp_12"
+    android:layout_height="wrap_content"
+    android:background="@color/color_ffffff">
     /**
     * @Created by xiaoyu on 2017/1/9
     * @Describe：
@@ -12,85 +15,135 @@
     * @Remark:
     */
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/mn_home_bar_ll_top"
-        android:layout_width="fill_parent"
-        android:layout_height="@dimen/dp_48"
-        android:background="@color/color_f36a5a">
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_44"
+        android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/mn_home_bar_btn_left"
-            android:layout_width="@dimen/dp_24"
-            android:layout_height="@dimen/dp_24"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dp_12"
-            android:background="@mipmap/back"
-            android:visibility="invisible" />
-
-        <LinearLayout
-            android:id="@+id/mn_homebar_ll_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:orientation="horizontal">
+        <FrameLayout
+            android:id="@+id/fl_left"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="match_parent"
+            android:visibility="visible">
 
             <TextView
-                android:id="@+id/mn_home_bar_tv_title"
-                style="@style/mn_home_bar_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:gravity="center_horizontal"
-                android:maxWidth="@dimen/dp_150"
-                android:singleLine="true"
-                android:text="@string/app_default" />
+                android:id="@+id/home_bar_tv_left"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical|right"
+                android:text="@string/main_runjing_search"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/sp_14"
+                android:visibility="gone" />
 
             <ImageView
-                android:id="@+id/mn_homebar_iv_search"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
+                android:id="@+id/home_bar_iv_left"
+                android:layout_width="@dimen/dp_22"
+                android:layout_height="@dimen/dp_22"
+                android:scaleType="centerInside"
+                android:src="@mipmap/icon_title_back"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/dp_5"
-                android:layout_marginTop="@dimen/dp_3"
-                android:scaleType="centerInside" />
+                android:visibility="visible" />
+        </FrameLayout>
+
+
+        <TextView
+            android:id="@+id/home_bar_tv_title"
+            style="@style/mn_home_bar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="@string/app_default"
+            android:visibility="visible" />
+
+    <LinearLayout
+        android:id="@+id/title_ll_search"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_30"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="@drawable/style_radius_bg_fff5f5f5"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/dp_16"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/icon_title_search" />
+
+            <EditText
+                android:id="@+id/title_et_search"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:hint="@string/main_runjing_search"
+                android:paddingLeft="@dimen/dp_2"
+                android:layout_weight="1"
+                android:textColor="@color/color_999999"
+                android:textSize="@dimen/sp_12" />
+        </LinearLayout>
+            <TextView
+                android:id="@+id/home_bar_tv_search"
+                android:layout_width="@dimen/dp_40"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:layout_gravity=""
+                android:gravity="center_vertical|right"
+                android:text="@string/main_runjing_search"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/sp_14"
+                android:visibility="visible" />
         </LinearLayout>
 
         <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginEnd="12dp"
-            android:layout_marginRight="12dp"
-            android:layout_centerVertical="true">
+            android:id="@+id/fl_right"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="match_parent"
+            android:visibility="visible">
 
             <TextView
-                android:id="@+id/mn_home_bar_tv_right"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/home_bar_tv_right"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:gravity="center_vertical|right"
-                android:text="@string/app_default"
-                android:textColor="@color/color_white"
-                android:textSize="@dimen/sp_16"
-                android:visibility="gone"/>
+                android:text="@string/dialog_right_botton"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/sp_14"
+                android:visibility="visible" />
 
             <ImageView
-                android:id="@+id/mn_home_bar_iv_right"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleType="centerInside"
+                android:id="@+id/home_bar_iv_right"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
+                android:scaleType="centerInside"
                 android:src="@mipmap/shipped_select"
                 android:visibility="gone" />
         </FrameLayout>
+    </LinearLayout>
 
-        <ImageView
-            android:id="@+id/img_base_line"
-            android:layout_width="fill_parent"
-            android:layout_height="1px"
-            android:background="@color/color_white"
-            android:layout_alignParentBottom="true"/>
-    </RelativeLayout>
+    <ImageView
+        android:id="@+id/img_base_line"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/dp_1"
+        android:background="@color/font_black"
+        android:layout_gravity="center|bottom"/>
+
 </FrameLayout>

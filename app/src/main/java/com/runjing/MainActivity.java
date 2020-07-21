@@ -1,14 +1,17 @@
 package com.runjing;
 
 import android.app.Fragment;
+import android.view.KeyEvent;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.runjing.base.TitleBarActivity;
+import com.runjing.common.AppMethod;
 import com.runjing.ui.home.HomeFragment;
 import com.runjing.ui.mine.MineFragment;
 import com.runjing.ui.ordre.OrderFragment;
 import com.runjing.ui.sort.SortFragment;
+import com.runjing.utils.StatusBarUtil;
 import com.runjing.widget.tabview.TabView;
 import com.runjing.widget.tabview.TabViewChild;
 import com.runjing.wineworld.R;
@@ -60,5 +63,21 @@ public class MainActivity extends TitleBarActivity implements TabView.OnTabChild
     @Override
     public void onTabChildClick(Fragment fragment, int position, ImageView imageView, TextView textView) {
 
+    }
+
+    @Override
+    public void initToolBar() {
+        super.initToolBar();
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.color_F80000));
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            AppMethod.AppOver(this);
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

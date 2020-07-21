@@ -1,66 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/frag_srl_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="match_parent"
+    android:background="@null"
+    android:fitsSystemWindows="true">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:background="@color/color_ffffff"
+        android:fitsSystemWindows="true">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/frag_al_title"
+        <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="@dimen/dp_375"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:titleEnabled="false">
+
+            <com.youth.banner.Banner
+                android:id="@+id/frag_banner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_scrollFlags="scroll|enterAlways">
+                app:layout_collapseMode="pin"
+                app:navigationIcon="?attr/homeAsUpIndicator" >
 
-                <include layout="@layout/layout_titlebar_local" />
 
             </androidx.appcompat.widget.Toolbar>
-        </com.google.android.material.appbar.AppBarLayout>
 
 
-        <FrameLayout
-            android:id="@+id/frag_fl_conntent"
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:layout_constraintLeft_toLeftOf="@id/frag_al_title"
-            app:layout_constraintTop_toBottomOf="@id/frag_al_title">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <androidx.core.widget.NestedScrollView
-                android:id="@+id/frg_sv_contennt"
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_100"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Second Fragment  1"
+                android:textSize="16sp"
+                tools:ignore="HardcodedText" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_100"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Second Fragment"
+                android:textSize="16sp"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_100"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Second Fragment"
+                android:textSize="16sp"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_100"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Second Fragment"
+                android:textSize="16sp"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_100"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Second Fragment"
+                android:textSize="16sp"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_100"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Second Fragment"
+                android:textSize="16sp"
+                tools:ignore="HardcodedText" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mRecycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/dp_40"
-                android:scrollbars="none">
+                android:clipToPadding="false"
+                android:overScrollMode="never"
+                android:scrollbars="none"
+                android:visibility="gone" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <include
-                        android:id="@+id/frg_ll_home"
-                        layout="@layout/layout_home"
-                        android:visibility="visible" />
-
-                </LinearLayout>
-            </androidx.core.widget.NestedScrollView>
-
-            <include
-                android:id="@+id/frag_ll_search"
-                layout="@layout/layout_search" />
-        </FrameLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-</com.scwang.smartrefresh.layout.SmartRefreshLayout>

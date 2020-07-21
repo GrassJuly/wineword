@@ -2,6 +2,10 @@ package com.runjing.base;
 
 import com.runjing.ui.address.SelectAddressFragment;
 import com.runjing.ui.good.GoodDetailFragment;
+import com.runjing.ui.login.APLoginFragment;
+import com.runjing.ui.web.WebFragment;
+import com.runjing.ui.login.QuickLoginFragment;
+import com.runjing.ui.login.SetPWDFragment;
 import com.runjing.ui.ordre.OrderDetaiFragment;
 import com.runjing.ui.search.SearchFragment;
 import com.runjing.ui.home.HomeFragment;
@@ -31,7 +35,11 @@ public enum SimpleBackPage {
     GoodDetail(7, GoodDetailFragment.class),
     StoreList(8, StorListFragment.class),
     SelectAddress(9, SelectAddressFragment.class),
-    ShopCat(10, ShopCarlFragment.class);
+    ShopCat(10, ShopCarlFragment.class),
+    QuickLogin(11, QuickLoginFragment.class),
+    APLogin(12, APLoginFragment.class),
+    SetPwd(13, SetPWDFragment.class),
+    Web(14, WebFragment.class);
 
 
     private Class<?> clazz;

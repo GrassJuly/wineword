@@ -3,6 +3,7 @@ package com.runjing.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
@@ -117,4 +118,5 @@ public class GlideUtils {
             RJLoger.debug(TAG, "Picture loading failed,context is null");
         }
     }
+
 }
