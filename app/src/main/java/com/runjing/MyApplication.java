@@ -26,22 +26,11 @@ public class MyApplication extends Application {
 
     /*全局常量*/
     public static MyApplication contextApp;
-    public static PreferenceHelper pree;//文件存储
-    public static String BluetoothName;
-    public static String Address;
-    public static String shopCode;
-    public static String accountId;
     public static List<Activity> activityList;
-    public static String isLimitUpdate;
-    //不管是蓝牙连接方还是服务器方，得到socket对象后都传入
-    public static BluetoothSocket bluetoothSocket;
-    public static boolean isConnect;
-    public static String MnBaseUrl;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        isLimitUpdate = Appconfig.LimitError;
         contextApp = this;
         activityList = new LinkedList<Activity>();
         Fresco.initialize(this);

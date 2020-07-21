@@ -21,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.runjing.LoginActivity;
 import com.runjing.MainActivity;
 import com.runjing.MyApplication;
 import com.runjing.base.SimpleBackActivity;
@@ -29,7 +28,10 @@ import com.runjing.base.SimpleBackPage;
 import com.runjing.base.TitleBarActivity;
 import com.runjing.bean.response.home.BannerBean;
 import com.runjing.ui.home.BannerItemAdapter;
+import com.runjing.ui.login.GuildBannerAdapter;
+import com.runjing.ui.login.LoginActivity;
 import com.runjing.utils.ColorPhrase;
+import com.runjing.utils.MMKVUtil;
 import com.runjing.utils.PopupWindowUtil;
 import com.runjing.utils.ToastUtils;
 import com.runjing.widget.MiddlePopupWindow;
@@ -502,60 +504,33 @@ public class AppMethod {
      * @param activity
      * @throws Exception
      */
-    public static void AppOver(Activity activity) throws Exception {
-        if (!isExist) {
-            ViewInject.longToast("再按一次退出");
-            isExist = true;
-            Handler h = new Handler();
-            h.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    isExist = false;
-                }
-            }, 3000);
-        } else {
-            if (Integer.parseInt(android.os.Build.VERSION.SDK) >= android.os.Build.VERSION_CODES.ECLAIR_MR1) {
-                Intent mainActivity = new Intent(Intent.ACTION_MAIN);
-                mainActivity.addCategory(Intent.CATEGORY_HOME);
-                mainActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                activity.startActivity(mainActivity);
-                System.exit(0);//退出程序
+    public static void AppOver(Activity activity) {
+        try {
+            if (!isExist) {
+                ViewInject.longToast("再按一次退出");
+                isExist = true;
+                Handler h = new Handler();
+                h.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        isExist = false;
+                    }
+                }, 3000);
             } else {
-                ActivityManager activityMgr = (ActivityManager) activity.getSystemService(ACTIVITY_SERVICE);
-                activityMgr.restartPackage(activity.getPackageName());
+                if (Integer.parseInt(android.os.Build.VERSION.SDK) >= android.os.Build.VERSION_CODES.ECLAIR_MR1) {
+                    Intent mainActivity = new Intent(Intent.ACTION_MAIN);
+                    mainActivity.addCategory(Intent.CATEGORY_HOME);
+                    mainActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    activity.startActivity(mainActivity);
+                    System.exit(0);//退出程序
+                } else {
+                    ActivityManager activityMgr = (ActivityManager) activity.getSystemService(ACTIVITY_SERVICE);
+                    activityMgr.restartPackage(activity.getPackageName());
+                }
             }
+        }catch (Exception e) {
+            e.printStackTrace();
         }
-    }
-
-    /**
-     * @param activity
-     * @param msg
-     */
-    public static void BackPopwidow(final Activity activity, String msg) {
-        PopupWindowUtil.SingleWindow(activity, msg, new MiddlePopupWindow.PopupWindowSingleCallBack() {
-            @Override
-            public void onSingleButtonClick() {
-                MyApplication.pree.clean(activity, Appconfig.TAG);
-                activity.startActivity(new Intent(activity, LoginActivity.class));
-                MyApplication.contextApp.exit();
-                ViewInject.longToast(activity.getString(R.string.app_loginout_toast));
-                activity.finish();
-            }
-        });
-    }
-
-
-    /**
-     * @param activity
-     * @param bluetoothDevice
-     * @throws Exception
-     */
-    public static void setDeafultPrint(Activity activity, BluetoothDevice bluetoothDevice) throws Exception {
-        MyApplication.pree.write(activity, Appconfig.Bluetooth, "BluetoothName", bluetoothDevice.getName());
-        MyApplication.pree.write(activity, Appconfig.Bluetooth, "Address", bluetoothDevice.getAddress());
-        MyApplication.pree.write(activity, Appconfig.Bluetooth, "BondState", bluetoothDevice.getBondState());
-        MyApplication.BluetoothName = MyApplication.pree.readString(activity, Appconfig.Bluetooth, "BluetoothName");
-        MyApplication.Address = MyApplication.pree.readString(activity, Appconfig.Bluetooth, "Address");
     }
 
 
@@ -805,13 +780,6 @@ public class AppMethod {
         return (int) (pxValue / scale + 0.5f);
     }
 
-    /**
-     * @param activity
-     * @return
-     */
-    public static String isLoginIn(Activity activity) {
-        return MyApplication.pree.readString(activity, Appconfig.TAG, "welcome");
-    }
 
     /**
      * @param enable
@@ -844,36 +812,33 @@ public class AppMethod {
         activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
     }
 
-    /**
-     * @param activity
-     */
-    public static void saveLoginIn(Activity activity) {
-        MyApplication.pree.write(activity, Appconfig.TAG, "welcome", "supplier");
-    }
 
     /**
+     *
      * @param activity
-     * @return
      */
-    public static String getPrintName(Activity activity) {
-        try {
-            String BluetoothName = MyApplication.pree.readString(activity, Appconfig.Bluetooth, "BluetoothName");
-            if (TextUtils.isEmpty(BluetoothName)) {
-                return activity.getString(R.string.app_default);
-            } else {
-                return MyApplication.BluetoothName;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return activity.getString(R.string.app_default);
-        }
-    }
-
     public static void clearAppInfo(Activity activity) {
-        MyApplication.pree.clean(activity, Appconfig.TAG);
+        MMKVUtil.getInstance().clearAll();
         activity.startActivity(new Intent(activity, MainActivity.class));
         MyApplication.contextApp.exit();
         ViewInject.longToast(activity.getString(R.string.app_loginout_toast));
+    }
+
+    /**
+     *
+     * @param context
+     * @param banner
+     * @param images
+     */
+    public static void GuildBanner(TitleBarActivity context, Banner banner, List<BannerBean> images) {
+        GuildBannerAdapter adapter = new GuildBannerAdapter(images);
+        banner.setDelayTime(4500);
+        banner.setBannerRound(0);
+        banner.isAutoLoop(false);
+        banner.addBannerLifecycleObserver(context)
+                .setAdapter(adapter, false)
+                .setIndicator(new CircleIndicator(context))
+                .start();
     }
 
     /**
@@ -887,7 +852,6 @@ public class AppMethod {
         banner.setDelayTime(4500);
         banner.setBannerRound(20);
         banner.addBannerLifecycleObserver(activity)
-
                 .setAdapter(adapter)
                 .setIndicator(new CircleIndicator(activity))
                 .start();

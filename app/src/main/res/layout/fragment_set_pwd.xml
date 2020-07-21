@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:layout_marginTop="@dimen/dp_100"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/dp_22"
+        android:paddingTop="@dimen/dp_20"
+        android:paddingRight="@dimen/dp_22"
+        android:paddingBottom="@dimen/dp_18">
+
+        <EditText
+            android:id="@+id/frag_et_pwd"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
+            android:digits="@string/phone_number_pwd"
+            android:hint="@string/pwd_formit"
+            android:maxLength="20"
+            android:textColor="@color/color_333333"
+            android:textColorHint="@color/color_999999"
+            android:inputType="textPassword"
+            android:tag="@string/tag_no"
+            android:textSize="@dimen/sp_15" />
+
+        <ImageView
+            android:id="@+id/frag_iv_pwddel"
+            android:layout_width="@dimen/dp_17"
+            android:layout_height="@dimen/dp_17"
+            android:layout_marginRight="@dimen/dp_30"
+            android:src="@mipmap/icon_del"/>
+
+        <ImageView
+            android:id="@+id/frag_iv_see"
+            android:layout_width="@dimen/dp_17"
+            android:layout_height="@dimen/dp_17"
+            android:src="@mipmap/icon_nosee"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_1"
+        android:layout_marginLeft="@dimen/dp_23"
+        android:layout_marginRight="@dimen/dp_22"
+        android:background="@color/color_e2e2e2" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="@string/pwd_toast"
+        android:lineSpacingExtra="@dimen/dp_2"
+        android:textColor="@color/color_999999"
+        android:paddingLeft="@dimen/dp_22"
+        android:paddingTop="@dimen/dp_13"
+        android:paddingRight="@dimen/dp_22"
+        android:textSize="@dimen/sp_11" />
+
+
+    <TextView
+        android:id="@+id/frag_tv_login"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_45"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp_145"
+        android:background="@drawable/style_radius_bg_f80000"
+        android:gravity="center"
+        android:text="@string/pwd_finish"
+        android:layout_marginLeft="@dimen/dp_23"
+        android:layout_marginRight="@dimen/dp_23"
+        android:textColor="#ffffff"
+        android:textSize="@dimen/sp_15" />
+
+
+</LinearLayout>

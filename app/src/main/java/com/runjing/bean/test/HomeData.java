@@ -8,6 +8,7 @@ import com.runjing.bean.response.home.HomeBean;
 import com.runjing.bean.response.home.ProvinceBean;
 import com.runjing.bean.response.home.StoreBean;
 import com.runjing.ui.home.HomeFragment;
+import com.youth.banner.Banner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -173,6 +174,21 @@ public class HomeData {
 
 
         return homeBean;
+    }
+
+
+    /**
+     * 导航页面数据
+     * @return
+     */
+    public static List<BannerBean> getBanner() {
+        List<BannerBean> banners = new ArrayList<>();
+        BannerBean bannerBean = new BannerBean();
+        bannerBean.setImage("https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3714408895,354969059&fm=26&gp=0.jpg");
+        banners.add(bannerBean);
+        banners.add(bannerBean);
+        banners.add(bannerBean);
+        return banners;
     }
 
 

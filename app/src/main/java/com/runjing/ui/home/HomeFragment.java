@@ -87,6 +87,8 @@ public class HomeFragment extends TitleBarFragment {
     private TextView tv_status;
     @BindView(id = R.id.lay_rv_content)
     private RecyclerView rv_content;
+    @BindView(id = R.id.lay_ll_nomore)
+    private LinearLayout ll_nomore;
     private RecyclerView.LayoutManager mLayoutManager;
     private LoadingDialog loadingDialog;
     private HomeAdapter homeAdapter;
@@ -97,6 +99,7 @@ public class HomeFragment extends TitleBarFragment {
         loadingDialog = new LoadingDialog(outsideAty);
         return inflater.inflate(R.layout.frag_home, null);
     }
+
 
     @Override
     protected void setActionBarRes(ActionBarRes actionBarRes) {
@@ -191,7 +194,6 @@ public class HomeFragment extends TitleBarFragment {
      * @param homeBean
      */
     public void setData(HomeBean homeBean) {
-        AppMethod.bannerWeight(outsideAty, banner, homeBean.getImages());
         if (homeBean != null) {
             if (homeBean.getItemTpye() == HomeBean.TYPE_ITEM_CITY) {
                 ll_store_status.setVisibility(View.VISIBLE);
@@ -208,6 +210,7 @@ public class HomeFragment extends TitleBarFragment {
                 setMargin(ll_home, 46);
                 rv_content.setLayoutManager(new StaggeredGridLayoutManager(Appconfig.TAG_TWO, StaggeredGridLayoutManager.VERTICAL));
                 rv_content.addItemDecoration(new SpacesItemDecoration(DensityUtils.dip2dp(getActivity(), 7), STAGGEREDGRIDLAYOUT));
+                AppMethod.bannerWeight(outsideAty, banner, homeBean.getImages());
             }else if (homeBean.getItemTpye() == HomeBean.TYPE_ITEM_STORE) {
                 ll_store_status.setVisibility(View.VISIBLE);
                 ll_search.setVisibility(View.GONE);

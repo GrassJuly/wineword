@@ -14,9 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.jaeger.library.StatusBarUtil;
 import com.runjing.common.Appconfig;
 import com.runjing.utils.KeyBoardUtil;
+import com.runjing.utils.StatusBarUtil;
 import com.runjing.wineworld.R;
 
 import org.runjing.rjframe.RJActivity;
@@ -31,7 +31,7 @@ import de.greenrobot.event.EventBus;
  * @Version : $ v_1.0 on 2017/1/6.
  * @Remark:
  */
-public abstract class TitleBarActivity extends RJActivity  {
+public abstract class TitleBarActivity extends RJActivity {
     public FrameLayout frame_titleBar;
     public RelativeLayout ll_base_title; //基础的标题头
     public Button btn_home_left;//标题左上角按钮
@@ -46,9 +46,7 @@ public abstract class TitleBarActivity extends RJActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        if (Appconfig.DEFAULT_VALUES!= initTitleColor()){
-            StatusBarUtil.setColor(this, initTitleColor(), 0);
-        }
+        initToolBar();
         if (getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
             //TODO后期记得记载进来
 //            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -120,8 +118,8 @@ public abstract class TitleBarActivity extends RJActivity  {
     public void onSearch() {
     }
 
-    public int initTitleColor() {
-        return Appconfig.DEFAULT_VALUES;
+    public void initToolBar() {
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.color_ffffff));
     }
 
     /**

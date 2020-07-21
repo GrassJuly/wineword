@@ -23,9 +23,9 @@ public class BaseRequest {
     private String shopsCode;//商户编码
 
     public BaseRequest() {
-        this.accountId = MyApplication.accountId;
+//        this.accountId = MyApplication.accountId;
         this.appVersion = SystemTool.getAppVersionName(MyApplication.contextApp);
-        shopsCode = MyApplication.shopCode;
+//        shopsCode = MyApplication.shopCode;
     }
 
     public String getShopsCode() {

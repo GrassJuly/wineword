@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:layout_gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/dp_22"
+        android:paddingRight="@dimen/dp_22">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/phone_start"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_17" />
+
+        <View
+            android:layout_width="@dimen/dp_1"
+            android:layout_height="@dimen/dp_22"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_gravity="center_vertical"
+            android:background="@color/color_e2e2e2" />
+
+        <EditText
+            android:id="@+id/frag_et_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
+            android:digits="@string/phone_number"
+            android:hint="@string/phone_input"
+            android:maxLength="11"
+            android:textColor="@color/color_333333"
+            android:textColorHint="@color/color_999999"
+            android:textSize="@dimen/sp_15" />
+
+        <ImageView
+            android:id="@+id/frag_iv_del"
+            android:layout_width="@dimen/dp_17"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/icon_del"
+            android:scaleType="fitCenter"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_1"
+        android:layout_marginLeft="@dimen/dp_23"
+        android:layout_marginRight="@dimen/dp_22"
+        android:background="@color/color_e2e2e2" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:layout_gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/dp_22"
+        android:paddingRight="@dimen/dp_22">
+
+        <EditText
+            android:id="@+id/frag_et_code"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
+            android:digits="@string/phone_number"
+            android:hint="@string/phone_code"
+            android:maxLength="11"
+            android:textColor="@color/color_333333"
+            android:textColorHint="@color/color_999999"
+            android:textSize="@dimen/sp_15" />
+
+        <View
+            android:layout_width="@dimen/dp_1"
+            android:layout_height="@dimen/dp_22"
+            android:layout_marginRight="@dimen/dp_30"
+            android:background="@color/color_e2e2e2"
+            android:layout_gravity="center_vertical"/>
+
+        <TextView
+            android:id="@+id/frag_tv_sendcode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/phone_stare_code"
+            android:textColor="@color/color_999999"
+            android:textSize="@dimen/sp_13"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_1"
+        android:layout_marginLeft="@dimen/dp_23"
+        android:layout_marginRight="@dimen/dp_22"
+        android:background="@color/color_e2e2e2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp_20"
+        android:text="@string/account_no_registmsg"
+        android:textColor="@color/color_666666"
+        android:textSize="@dimen/sp_11" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:layout_gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/dp_22"
+        android:paddingTop="@dimen/dp_4"
+        android:paddingRight="@dimen/dp_22">
+
+        <ImageView
+            android:id="@+id/frag_iv_isagree"
+            android:layout_width="@dimen/dp_12"
+            android:layout_height="@dimen/dp_12"
+            android:layout_marginTop="@dimen/dp_2"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/icon_no_select"
+            android:tag="@string/tag_no" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/frag_tv_isagree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="@dimen/dp_2"
+                android:gravity="center"
+                android:text="@string/app_default"
+                android:textColor="@color/color_666666"
+                android:textSize="@dimen/sp_11" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/frag_tv_login"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_45"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="@dimen/dp_23"
+        android:layout_marginTop="@dimen/dp_60"
+        android:layout_marginRight="@dimen/dp_23"
+        android:background="@drawable/style_radius_bg_4df80000"
+        android:gravity="center"
+        android:text="@string/act_login_submit"
+        android:textColor="#ffffff"
+        android:textSize="@dimen/sp_15" />
+</LinearLayout>

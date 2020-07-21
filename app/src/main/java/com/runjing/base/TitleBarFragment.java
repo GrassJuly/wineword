@@ -356,6 +356,8 @@ public abstract class TitleBarFragment extends RJFragment {
 
     }
 
+    public void initToolBar(){}
+
     public void finish() {
         getActivity().finish();
     }
