@@ -62,11 +62,6 @@ public class DetailBannerAdapter extends BannerAdapter<BannerBean, DetailBannerA
         GlideUtils.getInstance().displayImageCenter(holder.imageView, bannerBeans.get(position).getImage(), holder.imageView.getContext(), R.mipmap.iv_default);
         holder.tv_count.setText((position + 1) + "/" + size);
         holder.tv_count.setVisibility(View.VISIBLE);
-        if (position == bannerBeans.size() - 1) {
-            holder.tv_go.setVisibility(View.VISIBLE);
-        } else {
-            holder.tv_go.setVisibility(View.GONE);
-        }
         holder.tv_go.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
