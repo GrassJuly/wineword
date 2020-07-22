@@ -852,10 +852,8 @@ public class AppMethod {
         DetailBannerAdapter adapter = new DetailBannerAdapter(images);
         banner.setDelayTime(4500);
         banner.setBannerRound(0);
-        banner.isAutoLoop(false);
         banner.addBannerLifecycleObserver(context)
-                .setAdapter(adapter, false)
-                .setIndicator(new CircleIndicator(context))
+                .setAdapter(adapter, true)
                 .start();
     }
 

@@ -103,7 +103,7 @@ public class GoodDetailFragment extends TitleBarFragment implements GradationScr
 
     @Override
     public void onGlobalLayout() {
-        height = 50;
+        height = 40;
 //        height = banner.getHeight() / 3;
 //        System.out.println("Height -------" + banner.getHeight());
 //        System.out.println("Height -------" + height);

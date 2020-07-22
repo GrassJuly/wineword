@@ -463,8 +463,8 @@
 
                     <TextView
                         android:id="@+id/frag_tv_store"
-                        android:layout_width="@dimen/dp_48"
-                        android:layout_height="@dimen/dp_28"
+                        android:layout_width="@dimen/dp_68"
+                        android:layout_height="@dimen/dp_24"
                         android:background="@drawable/style_radius_bg_f80000"
                         android:gravity="center"
                         android:text="@string/string_intostore"
@@ -496,8 +496,8 @@
                         android:id="@+id/lay_tv_store_status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/string_gooddetail"
                         android:layout_centerInParent="true"
+                        android:text="@string/string_gooddetail"
                         android:textColor="@color/color_333333"
                         android:textSize="@dimen/sp_16"
                         android:textStyle="bold" />
@@ -505,18 +505,56 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/dp_10"
                         android:layout_toRightOf="@id/lay_tv_store_status"
-                        android:layout_centerVertical="true"
                         android:src="@mipmap/line_read_right" />
                 </RelativeLayout>
 
             </LinearLayout>
 
             <WebView
-                android:id="@+id/frag_wb_pic"
+                android:id="@+id/frag_wv_content"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent">
+
+            </WebView>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_400"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/guild1" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_400"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/guild1" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_400"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/guild1" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_400"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/guild1" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_400"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/guild1" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_400"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/guild1" />
 
         </LinearLayout>
     </com.runjing.widget.GradationScrollView>
