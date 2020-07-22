@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
 import com.runjing.common.AppMethod;
 import com.runjing.wineworld.R;
 
@@ -51,7 +50,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityHolder>  {
 
     @Override
     public void onBindViewHolder(@NonNull CityHolder holder, int position) {
-        holder.tv_city.setText(AppMethod.isEntity(citys.get(position).getCity()));
+        holder.tv_city.setText(AppMethod.setDefault(citys.get(position).getCity()));
         holder.tv_city.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

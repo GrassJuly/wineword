@@ -2,9 +2,9 @@
 <resources>
     <color name="colorPrimary">#F80000</color>
     <color name="colorPrimaryDark">#F80000</color>
-    <color name="colorAccent">#F80000</color>
+    <color name="colorAccent">#ffffff</color>
     <color name="mn_home_title_bg">#32CD00</color>
-    <color name="mn_common_transparent">#00000000</color>
+    <color name="common_transparent">#00000000</color>
     <color name="color_white">#ffffff</color>
     <color name="color_26ffffff">#26ffffff</color>
     <color name="color_black">#000000</color>
@@ -85,5 +85,6 @@
     <color name="color_5899E4">#5899E4</color>
     <color name="color_4DF80000">#4DF80000</color>
     <color name="color_FFF5F5F5">#FFF5F5F5</color>
+    <color name="color_FFC3C3C3">#FFC3C3C3</color>
 
 </resources>

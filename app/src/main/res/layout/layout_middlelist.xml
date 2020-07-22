@@ -43,7 +43,7 @@
             android:layout_weight="200"
             android:dividerHeight="@dimen/dp_0"
             android:divider="@color/color_eeeeee"
-            android:listSelector="@color/mn_common_transparent"
+            android:listSelector="@color/common_transparent"
             android:scrollbars="none" />
 
         <LinearLayout

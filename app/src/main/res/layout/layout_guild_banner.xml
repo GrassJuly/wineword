@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
-        android:src="@mipmap/guild1" />
+        android:src="@mipmap/iv_default" />
 
     <TextView
         android:id="@+id/lay_tv_go"
@@ -21,6 +21,20 @@
         android:text="@string/string_experience"
         android:textColor="@color/color_FF4E18"
         android:textSize="@dimen/sp_20"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/lay_tv_numIndicator"
+        android:layout_width="@dimen/dp_30"
+        android:layout_height="wrap_content"
+        android:background="@drawable/style_bg_33000000_9"
+        android:layout_margin="@dimen/dp_14"
+        android:gravity="center"
+        android:padding="@dimen/dp_3"
+        android:layout_gravity="right|bottom"
+        android:textSize="@dimen/sp_10"
+        android:text="1/10"
+        android:textColor="#ffffff"
         android:visibility="gone"/>
 
 </FrameLayout>

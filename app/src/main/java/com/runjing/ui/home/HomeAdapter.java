@@ -9,8 +9,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.model.GlideUrl;
 import com.runjing.base.SimpleBackPage;
 import com.runjing.bean.response.home.CityAdapter;
 import com.runjing.bean.response.home.GoodBean;
@@ -30,7 +28,6 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import static com.runjing.bean.response.home.HomeBean.TYPE_ITEM_CITY;
 import static com.runjing.bean.response.home.HomeBean.TYPE_ITEM_GOOD;
@@ -142,10 +139,10 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 GlideUtils.getInstance().displayImageCenter(iv_good, goods.get(position).getImage(), iv_good.getContext(), R.mipmap.ic_launcher);
                 //这个后期根据后台切图动态删除， 我找的图太大 尺寸不对
                 setImageWH(iv_good);
-                tv_name.setText(AppMethod.isEntity(goods.get(position).getName()));
-                tv_desc.setText(AppMethod.isEntity(goods.get(position).getDesc()));
-                tv_price.setText(AppMethod.isEntity(goods.get(position).getPrice()));
-                tv_favprice.setText(AppMethod.isEntity(goods.get(position).getFavorablePrice()));
+                tv_name.setText(AppMethod.setDefault(goods.get(position).getName()));
+                tv_desc.setText(AppMethod.setDefault(goods.get(position).getDesc()));
+                tv_price.setText(AppMethod.setDefault(goods.get(position).getPrice()));
+                tv_favprice.setText(AppMethod.setDefault(goods.get(position).getFavorablePrice()));
                 ll_detail.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -191,9 +188,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         public void setData(List<StoreBean> stores, int position) {
             if (stores != null && stores.size() > 0) {
                 GlideUtils.getInstance().displayImageCenter(iv_store, stores.get(position).getStoreImage(), iv_store.getContext(), R.mipmap.ic_launcher);
-                tv_name.setText(AppMethod.isEntity(stores.get(position).getName()));
-                tv_address.setText(AppMethod.isEntity(stores.get(position).getAddress()));
-                tv_distance.setText(AppMethod.isEntity(stores.get(position).getDistance()));
+                tv_name.setText(AppMethod.setDefault(stores.get(position).getName()));
+                tv_address.setText(AppMethod.setDefault(stores.get(position).getAddress()));
+                tv_distance.setText(AppMethod.setDefault(stores.get(position).getDistance()));
                 if (stores.get(position).getStatus() == 0) {
                     tv_rest.setVisibility(View.GONE);
                 } else if (stores.get(position).getStatus() == 1) {
@@ -225,7 +222,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
 
         public void setData(List<ProvinceBean> provinces, int position) {
-            tv_provinces.setText(AppMethod.isEntity(provinces.get(position).getProvince()));
+            tv_provinces.setText(AppMethod.setDefault(provinces.get(position).getProvince()));
             CityAdapter adapter = new CityAdapter(tv_provinces.getContext());
             rv_city.setHasFixedSize(false);
             rv_city.setLayoutManager(new GridLayoutManager(tv_provinces.getContext(), 3));

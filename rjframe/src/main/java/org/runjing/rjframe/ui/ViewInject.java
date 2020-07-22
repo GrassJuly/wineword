@@ -1,5 +1,6 @@
 package org.runjing.rjframe.ui;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.view.Gravity;
 import android.widget.Toast;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 public class ViewInject {
 
     public static Toast mToast = null;
+
     private ViewInject() {
     }
 
@@ -55,6 +57,7 @@ public class ViewInject {
     public static void toast(Context context, String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
+
     /**
      * 显示居中默认toast
      *
@@ -71,13 +74,25 @@ public class ViewInject {
         mToast.show();
     }
 
+    /**
+     * @param context
+     * @param toast
+     */
+    public static void showCenterToast(Fragment context, String toast) {
+        if (mToast == null) {
+            mToast = Toast.makeText(context.getActivity(), toast, Toast.LENGTH_LONG);
+            mToast.setGravity(Gravity.CENTER, 0, 0);
+        } else {
+            mToast.setText(toast);
+        }
+        mToast.show();
+    }
+
     public static void cancel() {
         if (mToast != null) {
             mToast.cancel();
         }
     }
-
-
 
 
 }

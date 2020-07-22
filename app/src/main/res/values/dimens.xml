@@ -157,6 +157,7 @@
     <dimen name="sp_18">18sp</dimen>
     <dimen name="sp_20">20sp</dimen>
     <dimen name="sp_22">22sp</dimen>
+    <dimen name="sp_25">25sp</dimen>
 
     <!-- 顶部按钮栏高度 -->
     <dimen name="pickerview_topbar_height">44dp</dimen>
@@ -170,4 +171,5 @@
     <!-- 选项文字大小 需要配合 bools.xml 的 pickerview_customTextSize 为 true 才有效果-->
     <dimen name="pickerview_textsize">20sp</dimen>
     <dimen name="dp_negative">-1dp</dimen>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
