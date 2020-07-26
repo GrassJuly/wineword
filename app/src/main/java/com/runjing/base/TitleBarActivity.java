@@ -5,26 +5,19 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.runjing.common.Appconfig;
-import com.runjing.utils.KeyBoardUtil;
 import com.runjing.utils.StatusBarUtil;
 import com.runjing.wineworld.R;
 
 import org.runjing.rjframe.RJActivity;
-
-import de.greenrobot.event.EventBus;
 
 /**
  * @Created by xiaoyu on 2017/1/6.
@@ -42,7 +35,6 @@ public abstract class TitleBarActivity extends RJActivity implements TextWatcher
     public TextView tv_title;
     public LinearLayout ll_search;
     public EditText et_search;
-    public TextView tv_search;
     public LinearLayout fm_right;
     public TextView tv_home_right;
     public ImageView iv_right;
@@ -55,7 +47,7 @@ public abstract class TitleBarActivity extends RJActivity implements TextWatcher
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         initToolBar();
         if (getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
-            //TODO后期记得记载进来
+            //TODO 后期记得记载进来
 //            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
         ViewGroup contentFrameLayout = (ViewGroup) findViewById(Window.ID_ANDROID_CONTENT);
@@ -68,15 +60,19 @@ public abstract class TitleBarActivity extends RJActivity implements TextWatcher
     }
 
     @Override
+    public void initWidget() {
+        super.initWidget();
+    }
+
+    @Override
     protected void onStart() {
         try {
             fm_content = findViewById(R.id.base_title);
-            fm_left = fm_content.findViewById(R.id.fl_left);
+            fm_left = fm_content.findViewById(R.id.home_fl_left);
             tv_left = fm_content.findViewById(R.id.home_bar_tv_left);
             iv_left = fm_content.findViewById(R.id.home_bar_iv_left);
             ll_search = fm_content.findViewById(R.id.title_ll_search);
             et_search = fm_content.findViewById(R.id.title_et_search);
-            tv_search = fm_content.findViewById(R.id.home_bar_tv_search);
             tv_title = fm_content.findViewById(R.id.home_bar_tv_title);
             fm_right = fm_content.findViewById(R.id.fl_right);
             tv_home_right = fm_content.findViewById(R.id.home_bar_tv_right);
@@ -87,9 +83,7 @@ public abstract class TitleBarActivity extends RJActivity implements TextWatcher
             fm_right.setOnClickListener(this);
             tv_home_right.setOnClickListener(this);
             iv_right.setOnClickListener(this);
-            tv_search.setOnClickListener(this);
             et_search.addTextChangedListener(this);
-            OnActionBar();
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -97,16 +91,16 @@ public abstract class TitleBarActivity extends RJActivity implements TextWatcher
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
+    protected void onResume() {
+        super.onResume();
+        OnActionBar();
     }
 
     @Override
     public void widgetClick(View v) {
         super.widgetClick(v);
         switch (v.getId()) {
-            case R.id.fl_left: // 左侧返回
+            case R.id.home_fl_left: // 左侧返回
             case R.id.home_bar_tv_left:
             case R.id.home_bar_iv_left:
                 onBackClick();
@@ -115,9 +109,6 @@ public abstract class TitleBarActivity extends RJActivity implements TextWatcher
             case R.id.home_bar_tv_right:
             case R.id.home_bar_iv_right:
                 onMenuClick();
-                break;
-            case R.id.home_bar_tv_search:
-                onSearch();
                 break;
         }
     }
@@ -129,6 +120,7 @@ public abstract class TitleBarActivity extends RJActivity implements TextWatcher
     }
 
     public void onSearchTextChanged(String search) {
+        System.out.println("走吗？   11 ---  " +search);
     }
 
     public void onSearch() {
@@ -136,6 +128,7 @@ public abstract class TitleBarActivity extends RJActivity implements TextWatcher
 
     public void initToolBar() {
         StatusBarUtil.setColor(this, getResources().getColor(R.color.color_ffffff));
+        StatusBarUtil.setDarkMode(this);
     }
 
     @Override

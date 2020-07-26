@@ -2,19 +2,19 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/frame_titleBar"
     android:layout_width="match_parent"
-    android:paddingLeft="@dimen/dp_12"
-    android:paddingRight="@dimen/dp_12"
-    android:layout_height="wrap_content"
-    android:background="@color/color_ffffff">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/mn_home_bar_ll_top"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_44"
+        android:background="@color/color_ffffff"
+        android:paddingLeft="@dimen/dp_12"
+        android:paddingRight="@dimen/dp_12"
         android:orientation="horizontal">
 
         <LinearLayout
-            android:id="@+id/fl_left"
+            android:id="@+id/home_fl_left"
             android:layout_width="@dimen/dp_40"
             android:layout_height="match_parent"
             android:orientation="horizontal">
@@ -34,9 +34,9 @@
                 android:id="@+id/home_bar_iv_left"
                 android:layout_width="@dimen/dp_22"
                 android:layout_height="@dimen/dp_22"
+                android:layout_gravity="center_vertical"
                 android:scaleType="centerInside"
                 android:src="@mipmap/icon_title_back"
-                android:layout_gravity="center_vertical"
                 android:visibility="visible" />
         </LinearLayout>
 
@@ -53,61 +53,53 @@
             android:text="@string/app_default"
             android:visibility="visible" />
 
-    <LinearLayout
-        android:id="@+id/title_ll_search"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/dp_30"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="1"
-        android:visibility="gone">
-
         <LinearLayout
+            android:id="@+id/title_ll_search"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/dp_30"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:background="@drawable/style_radius_bg_fff5f5f5"
-            android:orientation="horizontal">
+            android:visibility="gone">
 
-            <ImageView
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/dp_16"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/icon_title_search" />
-
-            <EditText
-                android:id="@+id/title_et_search"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@null"
-                android:gravity="center_vertical"
-                android:hint="@string/main_runjing_search"
-                android:paddingLeft="@dimen/dp_2"
                 android:layout_weight="1"
-                android:textColor="@color/color_999999"
-                android:textSize="@dimen/sp_12" />
-        </LinearLayout>
-            <TextView
-                android:id="@+id/home_bar_tv_search"
-                android:layout_width="@dimen/dp_40"
-                android:layout_height="match_parent"
-                android:background="@android:color/transparent"
-                android:layout_gravity=""
-                android:gravity="center_vertical|right"
-                android:text="@string/main_runjing_search"
-                android:textColor="@color/color_333333"
-                android:textSize="@dimen/sp_14"
-                android:visibility="visible" />
+                android:background="@drawable/style_radius_bg_fff5f5f5"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp_16"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/icon_title_search" />
+
+                <EditText
+                    android:id="@+id/title_et_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:hint="@string/main_runjing_search"
+                    android:singleLine="true"
+                    android:paddingLeft="@dimen/dp_2"
+                    android:textColor="@color/color_666666"
+                    android:textColorHint="@color/color_999999"
+                    android:textSize="@dimen/sp_12" />
+            </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/fl_right"
             android:layout_width="@dimen/dp_40"
             android:layout_height="match_parent"
-            android:visibility="visible"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="invisible">
 
             <TextView
                 android:id="@+id/home_bar_tv_right"
@@ -136,6 +128,6 @@
         android:id="@+id/img_base_line"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/dp_1"
-        android:layout_gravity="center|bottom"/>
+        android:layout_gravity="center|bottom" />
 
 </FrameLayout>

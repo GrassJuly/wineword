@@ -14,6 +14,11 @@
     * @Remark:
     */
 
+    <include
+        android:id="@+id/base_title"
+        layout="@layout/layout_home_titlebar"
+        android:visibility="gone" />
+
     <com.runjing.widget.tabview.TabView
         android:id="@+id/act_tb_menu"
         android:layout_width="match_parent"

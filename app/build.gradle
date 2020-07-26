@@ -1,5 +1,8 @@
 apply plugin: 'com.android.application'
 
+def appVersionName = '1.0'
+def appVersionCode = 10
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
@@ -15,12 +18,15 @@ android {
             //设置支持的SO库架构（开发者可以根据需要，选择一个或多个平台的so）
             abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "x86", "arm64-v8a", "x86_64"
         }
+        multiDexEnabled true
     }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    signingConfigs {
+        config {
+            storeFile file("wineworld.keystore")
+            storePassword "Qy15120023256"
+            keyAlias "wineworld"
+            keyPassword "Qy15120023256"
         }
     }
 
@@ -40,9 +46,42 @@ android {
         }
     }
 
-    aaptOptions{
+    aaptOptions {
         cruncherEnabled = false
         useNewCruncher = false
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+            buildConfigField "boolean", "LOG_FLAG_TYPE", "false"
+        }
+        debug {
+            signingConfig signingConfigs.config
+        }
+    }
+    //修改生成的apk名字
+    applicationVariants.all { variant ->
+        if (variant.buildType.name.equals('release')) {
+            variant.outputs.each { output ->
+                def appName = 'wineworld'
+                def oldFile = output.outputFile
+                def buildName
+                def releaseApkName
+                variant.productFlavors.each { product ->
+                    buildName = product.name
+                }
+                releaseApkName = appName + '_' + getDate() + '_v' + appVersionCode + '_' + buildName + '.apk'
+//                output.outputFile = new File(oldFile.parent, releaseApkName)
+                variant.outputs.all {
+                    outputFileName = releaseApkName
+                }
+
+            }
+        }
     }
 
 }
@@ -51,11 +90,11 @@ dependencies {
 //    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 //    implementation files('libs\\arm64-v8a\\Android_Map3D_SDK_V7.5.0_20200610.jar')
-    implementation files('libs\\arm64-v8a\\AMap_Location_V5.1.0_20200708.jar')
+//    implementation files('libs\\arm64-v8a\\AMap_Location_V5.1.0_20200708.jar')
     implementation project(':rjframe')
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation files('libs\\AMap_Search_V7.3.0_20200331.jar')
+//    implementation files('libs\\AMap_Search_V7.3.0_20200331.jar')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
@@ -81,6 +120,21 @@ dependencies {
     implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-andx-11'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.yanzhenjie.recyclerview:x:1.3.2'
+
     api files('libs/wjlogin_android_sdk_v5.5.12.jar')
     compile(name: 'AndroidVerifySDK-release-3.6.0-0.0.6', ext: 'aar')
+
+    implementation 'com.amap.api:location:latest.integration'
+    implementation 'com.amap.api:search:latest.integration'
+    implementation 'com.amap.api:navi-3dmap:latest.integration'
+    implementation 'com.android.support:multidex:1.0.3'
+
+
+}
+
+//获取时间戳
+def getDate() {
+    def date = new Date()
+    def formattedDate = date.format('yyMMddHHmm')
+    return formattedDate
 }

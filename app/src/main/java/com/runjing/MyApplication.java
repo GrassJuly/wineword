@@ -18,6 +18,8 @@ import org.runjing.rjframe.utils.PreferenceHelper;
 import java.util.LinkedList;
 import java.util.List;
 
+import androidx.multidex.MultiDex;
+
 /**
  * @Created by xiaoyu on 2017/1/10.
  * @Describe：全局变量
@@ -31,6 +33,7 @@ public class MyApplication extends Application {
     /*全局常量*/
     public static MyApplication contextApp;
     public static List<Activity> activityList;
+    public static String isLimitUpdate;
 
     @Override
     public void onCreate() {
@@ -39,17 +42,10 @@ public class MyApplication extends Application {
         activityList = new LinkedList<Activity>();
         Fresco.initialize(this);
         MMKV.initialize(this);
-
         //线上检测
         CrashReport.initCrashReport(getApplicationContext(), "92a7c20823", false);
+        MultiDex.install(this);
     }
-
-
-
-
-
-
-
 
     // 添加Activity到容器中
     public void addActivity(Activity activity) {

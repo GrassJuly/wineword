@@ -20,7 +20,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -29,14 +28,20 @@ import com.runjing.MyApplication;
 import com.runjing.base.SimpleBackActivity;
 import com.runjing.base.SimpleBackPage;
 import com.runjing.base.TitleBarActivity;
+import com.runjing.bean.request.UpgradeRequest;
 import com.runjing.bean.response.home.BannerBean;
+import com.runjing.bean.response.update.UpgradeBean;
+import com.runjing.bean.response.update.UpgradeResponse;
+import com.runjing.http.MyRequestCallBack;
+import com.runjing.http.OkHttpUtil;
 import com.runjing.ui.good.DetailBannerAdapter;
 import com.runjing.ui.home.BannerItemAdapter;
 import com.runjing.ui.login.GuildBannerAdapter;
 import com.runjing.utils.ColorPhrase;
 import com.runjing.utils.MMKVUtil;
+import com.runjing.utils.PermissionUtils;
 import com.runjing.utils.PopupWindowUtil;
-import com.runjing.utils.ToastUtils;
+import com.runjing.widget.LibAutoUpdate;
 import com.runjing.widget.MiddlePopupWindow;
 import com.runjing.widget.pickerview.SupplierPickerView;
 import com.runjing.widget.pickerview.TimePickerView;
@@ -46,16 +51,15 @@ import com.youth.banner.indicator.CircleIndicator;
 
 import org.runjing.rjframe.ui.ViewInject;
 import org.runjing.rjframe.utils.StringUtils;
+import org.runjing.rjframe.utils.SystemTool;
 
 import java.io.File;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -156,22 +160,6 @@ public class AppMethod {
         intent.putExtra(Appconfig.DATA_KEY, bundle);
         a.startActivityForResult(intent, code);
     }
-
-    /**
-     * 跳转到SimpleBackActivity时，只能使用该方法跳转
-     *
-     * @param code 启动码
-     * @param page 要显示的Fragment
-     * @param data 传递的Bundle数据
-     */
-//    public static void postShowForResult(Fragment fragment, int code,
-//                                         SimpleBackPage page, Bundle data) {
-//        Intent intent = new Intent(fragment.getActivity(),
-//                SimpleBackActivity.class);
-//        intent.putExtra(Appconfig.CONTENT_KEY, page.getValue());
-//        intent.putExtra(Appconfig.DATA_KEY, data);
-//        fragment.startActivityForResult(intent, code);
-//    }
 
     /**
      * activity  跳转到SimpleBackActivity时，只能使用该方法跳转
@@ -588,59 +576,6 @@ public class AppMethod {
 
     /**
      * @param context
-     * @param textView
-     * @param timeview
-     * @param type
-     * @param imageView
-     * @return
-     * @throws Throwable
-     */
-    public static TimePickerView AppTimePicker(final Context context, final TextView textView,
-                                               final TextView timeview, final int type,
-                                               final ImageView imageView) throws Throwable {
-        TimePickerView mTimePickerView = new TimePickerView(context, TimePickerView.Type.ALL);
-        mTimePickerView.setOnTimeSelectListener(new TimePickerView.OnTimeSelectListener() {
-            @Override
-            public void onTimeSelect(Date date) {
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
-                try {
-                    String time = timeview.getText().toString().trim();
-                    if (TextUtils.isEmpty(time)) {
-                        textView.setText(format.format(date));
-                        imageView.setImageResource(R.mipmap.icon_delate);
-                    } else {
-                        Date date1 = format.parse(time);
-                        if (type == Appconfig.TAG_ZERO) {
-                            if (date.getTime() >= date1.getTime()) {
-                                ToastUtils.showToast(context, context.getString(R.string.app_shipped_select_msg));
-                                textView.setText(R.string.app_default);
-                                imageView.setImageResource(R.mipmap.right_24px);
-                            } else {
-                                textView.setText(format.format(date));
-                                imageView.setImageResource(R.mipmap.icon_delate);
-                            }
-                        } else {
-                            if (date.getTime() >= date1.getTime()) {
-                                textView.setText(format.format(date));
-                                imageView.setImageResource(R.mipmap.icon_delate);
-                            } else {
-                                ToastUtils.showToast(context, context.getString(R.string.app_shipped_select_msg));
-                                textView.setText(R.string.app_default);
-                                imageView.setImageResource(R.mipmap.right_24px);
-                            }
-                        }
-                    }
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        mTimePickerView.show();
-        return mTimePickerView;
-    }
-
-    /**
-     * @param context
      * @param title
      * @param data
      * @param textView
@@ -893,6 +828,7 @@ public class AppMethod {
 
     /**
      * 设置中划线
+     *
      * @param textView
      */
     public static void setTextViewLine(TextView textView) {
@@ -922,6 +858,68 @@ public class AppMethod {
         Matcher matcher = pattern.matcher(str);
         boolean result = matcher.matches();
         return result;
+    }
+
+    /**
+     * @param context
+     * @param persions
+     * @param listener
+     */
+    public static void getPermissions(Activity context, int requestCode, String[] persions, PermissionUtils.OnPermissionListener listener) {
+        PermissionUtils.requestPermissionsResult(context, requestCode, persions, listener);
+    }
+
+    /**
+     * 升级
+     * @param context
+     */
+    public static void updateApp(final Activity context) {
+        UpgradeRequest request = new UpgradeRequest();
+        request.setAppCode("mnSupplier");
+        OkHttpUtil.postRequest(BaseUrl.AppUpdate, request, UpgradeRequest.class, new MyRequestCallBack<UpgradeResponse>() {
+                    @Override
+                    public void onPostResponse(UpgradeResponse response) {
+                        try {
+                            /*TODO::看着不爽你就删了他，反正我是不删，咋滴*/
+                            if (response == null) return;
+                            if (response.resultCode.equals(Appconfig.RequestSuccess)) {
+                                UpgradeBean upgradeBean = response.getData();
+                                String newVersion = upgradeBean.getAppVersion();
+                                if (newVersion != null && !newVersion.equals("")) {
+                                    String currentVersion = SystemTool
+                                            .getAppVersionName(context);
+                                    if (!newVersion.equals(currentVersion)) {
+                                        LibAutoUpdate autoUpdate = new LibAutoUpdate(context,
+                                                BaseUrl.BASE_PIC_URL + upgradeBean.getAppUrl(), Appconfig.TAG_ZERO,
+                                                upgradeBean.getAppVersion(), upgradeBean.getAppDescribe(),
+                                                upgradeBean.getAppForce(), AppMethod.getPackName(context), false);
+                                        Appconfig.isFource = upgradeBean.getAppForce();
+                                        if (Appconfig.isDownLoad.equals("F")) {
+                                            autoUpdate.checkUpByVersionName();
+                                        }
+                                        if (TextUtils.isEmpty(upgradeBean.getLimitUpdate())
+                                                && Appconfig.isDownLoad.equals("T")) {
+                                            MyApplication.isLimitUpdate = Appconfig.isLimtCode;
+                                        }
+                                    }
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onPostErrorResponse(Exception e, String msg) {
+                    }
+
+                    @Override
+                    public void onNoNetWork() {
+
+                    }
+                }
+
+        );
     }
 
 }

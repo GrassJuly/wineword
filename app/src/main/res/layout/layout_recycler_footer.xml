@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/rv_footer_nomore"
+        android:text="@string/rv_footer_tv"
         android:layout_marginLeft="@dimen/dp_3"
         android:layout_marginTop="@dimen/dp_5"
         android:textColor="@color/color_666666"

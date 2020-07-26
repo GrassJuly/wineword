@@ -78,7 +78,7 @@
 
     <include
         android:id="@+id/lay_ll_nomore"
-        layout="@layout/layout_recycler_footer"
+        layout="@layout/layout_recycler_nomore"
         android:visibility="gone"/>
 
 

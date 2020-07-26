@@ -4,14 +4,16 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.jaeger.library.StatusBarUtil;
 import com.runjing.MainActivity;
 import com.runjing.common.Appconfig;
+import com.runjing.utils.StatusBarUtil;
+import com.runjing.wineworld.R;
 
 import org.runjing.rjframe.RJFragment;
-import org.runjing.rjframe.utils.DensityUtils;
+import org.runjing.rjframe.ui.ViewInject;
 import org.runjing.rjframe.utils.StringUtils;
 
+import androidx.annotation.IntRange;
 import androidx.annotation.Nullable;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -27,22 +29,33 @@ public abstract class TitleBarFragment extends RJFragment {
 
     //时间有限先兼容现阶段任务， 后期完善
     public class ActionBarRes {
-        public int titleBarColor;
-        public CharSequence middleTitle = "";//中间标题头
-        public int titleLayoutVisible = 1;//头部显示与隐藏
-        public int middleTitleColor;//标题背景颜色
-        public int leftImageId;
-        public int rightImageId;
-        public int leftVisiable = 1;
-        public int rightVisiable;
-        public int searchVisiable;
-        public String leftVal;
-        public String rightVal;
+        /*标题是否显示*/
         public int middleVisiable = 1;
+        /*标题背景颜色*/
+        public int titleBarColor = R.color.color_ffffff;
+        /*标题文字*/
+        public CharSequence middleTitle;//中间标题头
+        /*标题颜色*/
+        public int middleTitleColor = R.color.color_ffffff;//标题背景颜色
+        /*标题是否显示*/
+        public int titleLayoutVisible = 0;//头部显示与隐藏
+        /*标题左面图片*/
+        public int leftImageId = Appconfig.DEFAULT_VALUE_LONG;
+        /*标题有面图片*/
+        public int rightImageId = R.mipmap.icon_title_back;
+        /*标题左侧是否显示*/
+        public int leftVisiable = 1;
+        /*标题右侧是否显示*/
+        public int rightVisiable;
+        /*中间搜索是否显示*/
+        public int searchVisiable;
+        /*左侧文字*/
+        public String leftVal;
+        /*右侧文字*/
+        public String rightVal;
     }
 
     private final ActionBarRes actionBarRes = new ActionBarRes();
-    //    private  DrawerActionBar drawerActionBar = new DrawerActionBar();
     private View view;
     protected TitleBarActivity outsideAty;
 
@@ -53,6 +66,7 @@ public abstract class TitleBarFragment extends RJFragment {
         } else if (getActivity() instanceof MainActivity) {
             outsideAty = (MainActivity) getActivity();
         }
+        initToolBar();
         super.onCreate(savedInstanceState);
     }
 
@@ -88,43 +102,52 @@ public abstract class TitleBarFragment extends RJFragment {
      * @param actionBarRes
      * @throws Exception
      */
-    private void styleChanged(ActionBarRes actionBarRes) throws Exception {
+    private void styleChanged(ActionBarRes actionBarRes) {
+        setTitleBarVis(actionBarRes.titleLayoutVisible);
+        setTitle(actionBarRes.middleTitle);
+        setTitleColor(actionBarRes.middleTitleColor);
         setLeftVisiable(actionBarRes.leftVisiable);
-        setLeftVal(actionBarRes.leftVal);
         setLeftImage(actionBarRes.leftImageId);
-        setTitle(actionBarRes.middleTitle.toString());
         setTitleColor(actionBarRes.middleTitleColor);
         setTitleVisiable(actionBarRes.middleVisiable);
-        setTitleBarVis(actionBarRes.titleLayoutVisible);
         setRightImg(actionBarRes.rightImageId);
         setRightVal(actionBarRes.rightVal);
         setRightVis(actionBarRes.rightVisiable);
         setSearchVisiable(actionBarRes.searchVisiable);
     }
 
-    private void setLeftVisiable(int visiable) {
+    public void setTitleBarVis(int vis) {
         if (outsideAty != null) {
-            if (visiable == 0) {
+            if (vis == 0) {
+                outsideAty.fm_content.setVisibility(View.GONE);
+            } else {
+                outsideAty.fm_content.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    public void setTitleBarCol(int color) {
+        if (outsideAty != null) {
+            outsideAty.fm_content.setBackgroundColor(color);
+        }
+    }
+
+    private void setLeftVisiable(int vis) {
+        if (outsideAty != null) {
+            if (vis == 0) {
                 outsideAty.fm_left.setVisibility(View.INVISIBLE);
             } else {
                 outsideAty.fm_left.setVisibility(View.VISIBLE);
-                outsideAty.iv_left.setVisibility(View.VISIBLE);
             }
         }
     }
 
-    public void setLeftVal(String leftVal) {
-        if (outsideAty != null) {
-            if (!StringUtils.isEmpty(leftVal)) {
-                outsideAty.tv_left.setText(leftVal);
-
-            }
-        }
-    }
 
     public void setLeftImage(int image) {
         if (outsideAty != null) {
-            outsideAty.iv_left.setImageResource(image);
+            if (image != Appconfig.DEFAULT_VALUE_LONG) {
+                outsideAty.iv_left.setImageResource(image);
+            }
         }
     }
 
@@ -133,12 +156,12 @@ public abstract class TitleBarFragment extends RJFragment {
             if (visiable == 0) {
                 outsideAty.tv_title.setVisibility(View.GONE);
             } else {
-                outsideAty.tv_title.setVisibility(View.VISIBLE);
+                outsideAty.fm_right.setVisibility(View.GONE);
             }
         }
     }
 
-    public void setTitle(String title) {
+    public void setTitle(CharSequence title) {
         if (outsideAty != null) {
             outsideAty.tv_title.setText(title);
         }
@@ -154,8 +177,12 @@ public abstract class TitleBarFragment extends RJFragment {
         if (outsideAty != null) {
             if (visiable == 0) {
                 outsideAty.ll_search.setVisibility(View.GONE);
+                outsideAty.tv_title.setVisibility(View.VISIBLE);
+                outsideAty.fm_right.setVisibility(View.INVISIBLE);
             } else {
                 outsideAty.ll_search.setVisibility(View.VISIBLE);
+                outsideAty.tv_title.setVisibility(View.GONE);
+                outsideAty.fm_right.setVisibility(View.GONE);
             }
         }
     }
@@ -167,8 +194,9 @@ public abstract class TitleBarFragment extends RJFragment {
     }
 
     public void setRightImg(int img) {
-        if (outsideAty != null) {
+        if (outsideAty != null && img != 0) {
             outsideAty.iv_right.setImageResource(img);
+            outsideAty.fm_right.setVisibility(View.VISIBLE);
         }
     }
 
@@ -178,16 +206,6 @@ public abstract class TitleBarFragment extends RJFragment {
                 outsideAty.fm_right.setVisibility(View.INVISIBLE);
             } else {
                 outsideAty.fm_right.setVisibility(View.VISIBLE);
-            }
-        }
-    }
-
-    public void setTitleBarVis(int vis) {
-        if (outsideAty != null) {
-            if (vis == 0) {
-                outsideAty.fm_content.setVisibility(View.GONE);
-            } else {
-                outsideAty.fm_content.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -241,13 +259,19 @@ public abstract class TitleBarFragment extends RJFragment {
         return null;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        onActionBar();
+    }
+
     public void onActionBar() {
-        try {
-            setActionBarRes(actionBarRes);
-            styleChanged(actionBarRes);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        setActionBarRes(actionBarRes);
+        styleChanged(actionBarRes);
+    }
+
+    public void onSearchTextChanged(String search) {
+
     }
 
 }

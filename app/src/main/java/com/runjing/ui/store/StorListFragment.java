@@ -1,25 +1,29 @@
 package com.runjing.ui.store;
 
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.android.material.appbar.AppBarLayout;
 import com.runjing.base.TitleBarFragment;
+import com.runjing.bean.response.home.HomeBean;
+import com.runjing.bean.test.HomeData;
+import com.runjing.utils.RecyclerViewItemDecoration;
+import com.runjing.utils.StatusBarUtil;
+import com.runjing.widget.RJRefreshFooter;
+import com.runjing.widget.RJRefreshHeader;
 import com.runjing.wineworld.R;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.runjing.rjframe.ui.BindView;
+import org.runjing.rjframe.utils.DensityUtils;
 
-import java.lang.reflect.Field;
-
-import androidx.appcompat.widget.Toolbar;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,123 +37,92 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 public class StorListFragment extends TitleBarFragment {
 
+    @BindView(id = R.id.frag_srl_content)
+    private RefreshLayout refreshLayout;
+    @BindView(id = R.id.frag_ll_store_status)
+    private LinearLayout ll_store_status;
+    @BindView(id = R.id.frag_tv_storemsg)
+    private TextView tv_storemsg;
+    @BindView(id = R.id.frag_tv_store_status)
+    private TextView tv_storeStaus;
+    @BindView(id = R.id.frag_rv_content)
+    private RecyclerView rv_content;
+    private StoreAdapter adapter;
 
-//    @BindView(id = R.id.toolbar)
-//    private Toolbar toolbar;
-//    @BindView(id = R.id.frag_al_title)
-//    private AppBarLayout app_bar;
-    @BindView(id= R.id.lay_rv_content)
-    private RecyclerView mRecyclerView;
     @Override
     protected View inflaterView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
-        return inflater.inflate(R.layout.frag_good_detail, null);
+        return inflater.inflate(R.layout.fragment_store_list, null);
     }
+
+    @Override
+    protected void setActionBarRes(ActionBarRes actionBarRes) {
+        super.setActionBarRes(actionBarRes);
+        actionBarRes.titleLayoutVisible = 1;
+        actionBarRes.titleBarColor = R.color.color_F80000;
+        actionBarRes.leftVisiable = 1;
+        actionBarRes.middleTitle ="门店列表";
+    }
+
+    @Override
+    public void initToolBar() {
+        super.initToolBar();
+        StatusBarUtil.setColor(outsideAty, getResources().getColor(R.color.color_ffffff));
+        StatusBarUtil.setDarkMode(outsideAty);
+    }
+
     @Override
     protected void initWidget(View parentView) {
         super.initWidget(parentView);
-        initView();
-    }
-
-    private void initView() {
-//        final int alphaMaxOffset = dpToPx(150);
-//        toolbar.getBackground().setAlpha(0);
-//        app_bar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-//            @Override
-//            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-//                // 设置 toolbar 背景
-//                if (verticalOffset > -alphaMaxOffset) {
-//                    toolbar.getBackground().setAlpha(255 * -verticalOffset / alphaMaxOffset);
-//                } else {
-//                    toolbar.getBackground().setAlpha(255);
-//                }
-//            }
-//        });
-
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(outsideAty));
-        mRecyclerView.setAdapter(new ContentAdapter());
-    }
-
-    public void initToolBar() {
-        try {
-            Toolbar toolbar = (Toolbar) outsideAty.findViewById(R.id.toolbar);
-            if (toolbar != null) {
-                // 沉浸模式
-                int statusBarHeight = getStatusBarHeight();
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    openAndroidLStyle();
-
-                    toolbar.setPadding(0, statusBarHeight, 0, 0);
-                    toolbar.getLayoutParams().height = dpToPx(46) + statusBarHeight;
-                }
+        refreshLayout.setRefreshHeader(new RJRefreshHeader(outsideAty).
+                setNormalColor(outsideAty.getResources().getColor(R.color.color_99000000)).
+                setAnimatingColor(outsideAty.getResources().getColor(R.color.color_99000000)).
+                setSpinnerStyle(SpinnerStyle.Scale));
+        refreshLayout.setRefreshFooter(new RJRefreshFooter(LayoutInflater.from(outsideAty).inflate(R.layout.layout_recycler_footer, null)));
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                refreshlayout.finishRefresh(2000);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                refreshLayout.finishLoadMore(2000);
+            }
+        });
+        adapter = new StoreAdapter(getActivity());
+        rv_content.setHasFixedSize(false);
+        rv_content.setNestedScrollingEnabled(false);
+        rv_content.setAdapter(adapter);
+        setData(HomeData.getHomeData());
     }
+
 
     /**
-     * 开启沉浸式模式支持
+     * 设置数据
+     *
+     * @param homeBean
      */
-    public void openAndroidLStyle() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = outsideAty.getWindow();
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.TRANSPARENT);
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            outsideAty.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
-    }
-
-    /**
-     * 获取状态栏高度
-     */
-    public int getStatusBarHeight() {
-        try {
-            Class<?> c = Class.forName("com.android.internal.R$dimen");
-            Object obj = c.newInstance();
-            Field field = c.getField("status_bar_height");
-            int x = Integer.parseInt(field.get(obj).toString());
-            return getResources().getDimensionPixelSize(x);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return 0;
-    }
-
-    /**
-     * dp转换为px
-     */
-    public static int dpToPx(float dp) {
-        return (int) (dp * Resources.getSystem().getDisplayMetrics().density + 0.5f);
-    }
-
-    private class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentHolder> {
-        @Override
-        public ContentAdapter.ContentHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ContentHolder(LayoutInflater.from(outsideAty).inflate(android.R.layout.simple_list_item_1, parent, false));
-        }
-
-        @Override
-        public void onBindViewHolder(ContentAdapter.ContentHolder holder, int position) {
-            holder.itemTv.setText("item");
-        }
-
-        @Override
-        public int getItemCount() {
-            return 35;
-        }
-
-        class ContentHolder extends RecyclerView.ViewHolder {
-
-            private TextView itemTv;
-
-            public ContentHolder(View itemView) {
-                super(itemView);
-                itemTv = (TextView) itemView.findViewById(android.R.id.text1);
+    public void setData(HomeBean homeBean) {
+        if (homeBean != null) {
+            if (homeBean.getItemTpye() == HomeBean.TYPE_ITEM_CITY) {
+                ll_store_status.setVisibility(View.VISIBLE);
+                rv_content.setLayoutManager(new LinearLayoutManager(outsideAty));
+                rv_content.addItemDecoration(new RecyclerViewItemDecoration(RecyclerViewItemDecoration.MODE_HORIZONTAL,
+                        getResources().getColor(R.color.color_eeeeee), DensityUtils.dip2dp(getActivity(), 1), 0, 0));
+            }else if (homeBean.getItemTpye() == HomeBean.TYPE_ITEM_STORE) {
+                ll_store_status.setVisibility(View.VISIBLE);
+                rv_content.setLayoutManager(new LinearLayoutManager(outsideAty));
+                rv_content.addItemDecoration(new RecyclerViewItemDecoration(RecyclerViewItemDecoration.MODE_HORIZONTAL,
+                        getResources().getColor(R.color.color_eeeeee), DensityUtils.dip2dp(getActivity(), 1), 0, 0));
             }
         }
+        adapter.setData(homeBean);
+    }
+
+    @Override
+    public void onBackClick() {
+        super.onBackClick();
+        finish();
     }
 }

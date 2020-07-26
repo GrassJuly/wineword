@@ -83,9 +83,9 @@ public class MainActivity extends TitleBarActivity implements TabView.OnTabChild
                 getString(R.string.main_home), new HomeFragment());
         TabViewChild tabViewChild02 = new TabViewChild(R.mipmap.tab_home_menu, R.mipmap.tab_home_menu1,
                 getString(R.string.main_category), new SortFragment());
-        TabViewChild tabViewChild03 = new TabViewChild(R.mipmap.tab_home_persional, R.mipmap.tab_home_persional1,
+        TabViewChild tabViewChild03 = new TabViewChild(R.mipmap.tab_home_order, R.mipmap.tab_home_order1,
                 getString(R.string.main_order), new OrderFragment());
-        TabViewChild tabViewChild04 = new TabViewChild(R.mipmap.tab_home_persional, R.mipmap.tab_home_persional1,
+        TabViewChild tabViewChild04 = new TabViewChild(R.mipmap.tab_home_mine, R.mipmap.tab_home_mine1,
                 getString(R.string.main_mine), new MineFragment());
         tabViewChildList.add(tabViewChild01);
         tabViewChildList.add(tabViewChild02);

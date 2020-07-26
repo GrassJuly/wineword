@@ -7,7 +7,6 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/frag_rl_tab"
         android:background="@null"
         android:fitsSystemWindows="true">
 
@@ -68,7 +67,7 @@
                     android:orientation="horizontal"
                     android:paddingLeft="@dimen/dp_10"
                     android:paddingRight="@dimen/dp_10"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="wrap_content"

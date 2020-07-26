@@ -12,6 +12,7 @@ package com.runjing.common;
  */
 public class BaseUrl {
 
+    public final static String BASE_PIC_URL = "http://101.201.41.220/interface_supplier/";//线上正式环境
     public final static String RjBaseUrl = "http://101.201.41.220/interface_supplier/";//线上正式环境
 //    public final static String RjBaseUrl = "http://101.201.47.90:7080/interface_supplier/";//预生产环境
 //    public final static String RjBaseUrl = "http://123.56.178.125:8080/interface_supplier/";//测试环境

@@ -63,7 +63,7 @@
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
                     android:scaleType="centerCrop"
-                    android:src="@mipmap/icon_shop"
+                    android:src="@mipmap/icon_shop_del"
                     android:tag="@string/tag_no" />
 
             </LinearLayout>
@@ -75,7 +75,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_1"
             android:background="@color/color_fafafa"
-            android:clickable="false"/>
+            android:clickable="false" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -85,6 +85,36 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_50"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/guild1" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_50"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/guild1" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_50"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/guild1" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_50"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/guild1" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_50"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/guild1" />
 
                 <ImageView
                     android:layout_width="match_parent"

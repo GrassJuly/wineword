@@ -33,10 +33,10 @@ import com.runjing.utils.EmptyUtil;
 import com.runjing.utils.LocalUtil;
 import com.runjing.utils.RecyclerViewItemDecoration;
 
-import com.runjing.utils.ToastUtils;
 import com.runjing.wineworld.R;
 
 import org.runjing.rjframe.ui.BindView;
+import org.runjing.rjframe.ui.ViewInject;
 import org.runjing.rjframe.utils.DensityUtils;
 
 import java.util.ArrayList;
@@ -92,9 +92,8 @@ public class SelectAddressFragment extends TitleBarFragment implements PoiSearch
         super.setActionBarRes(actionBarRes);
         actionBarRes.titleLayoutVisible = 1;
 //        actionBarRes.leftVisiable = 1;
-//        actionBarRes.middleTitle = "选择收货地址";
+        actionBarRes.middleTitle = "选择收货地址";
     }
-
 
     @Override
     protected void initData() {
@@ -204,7 +203,7 @@ public class SelectAddressFragment extends TitleBarFragment implements PoiSearch
                         }
                     }
                 } else {
-                    ToastUtils.showToast(outsideAty, "对不起，没有搜索到相关数据！");
+                    ViewInject.showCenterToast(outsideAty, "对不起，没有搜索到相关数据！");
                 }
             }
         }

@@ -7,6 +7,7 @@ import android.widget.ImageView;
 
 import com.runjing.MyApplication;
 import com.runjing.common.Appconfig;
+import com.runjing.utils.KeyBoardUtil;
 import com.runjing.widget.LoadingDialog;
 import com.runjing.wineworld.R;
 
@@ -47,14 +48,14 @@ public class SimpleBackActivity extends TitleBarActivity {
         if (value != -1) {
             try {
 
-                if (value!= 330){
+                if (value != 330) {
 
                     currentFragment = (TitleBarFragment) SimpleBackPage
                             .getPageByValue(value).newInstance();
                     changeFragment(currentFragment);
 
 
-                }else{
+                } else {
 
                     drawerActionBar = new DrawerActionBar();
                     currentFragment = (TitleBarFragment) SimpleBackPage.getPageByValue(value).newInstance();
@@ -125,6 +126,14 @@ public class SimpleBackActivity extends TitleBarActivity {
         super.onSearch();
         if (currentFragment != null) {
             currentFragment.onSearch();
+        }
+    }
+
+    @Override
+    public void onSearchTextChanged(String search) {
+        super.onSearchTextChanged(search);
+        if (currentFragment != null) {
+            currentFragment.onSearchTextChanged(search);
         }
     }
 

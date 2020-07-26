@@ -33,7 +33,7 @@ public class SearchFragment extends TitleBarFragment {
     protected void setActionBarRes(ActionBarRes actionBarRes) {
         super.setActionBarRes(actionBarRes);
         actionBarRes.titleLayoutVisible = Appconfig.DEFAULT_VALUE_LONG;
-        actionBarRes.titleBarColor = getResources().getColor(R.color.color_ffffff);
+        actionBarRes.titleBarColor = R.color.color_ffffff;
     }
 
     @Override

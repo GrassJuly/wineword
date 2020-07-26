@@ -25,7 +25,7 @@
             style="@style/ll_tv_n"
             android:layout_width="wrap_content"
             android:ellipsize="end"
-            android:maxWidth="@dimen/dp_220"
+            android:maxWidth="@dimen/dp_160"
             android:minWidth="@dimen/dp_20"
             android:singleLine="true"
             android:text="@string/home_no_local"

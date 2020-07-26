@@ -14,13 +14,15 @@
         <!-- 设置key -->
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="4370b2e5ae95cea0a2eaa29c61959855"
-            tools:replace="android:value"/>
+            android:value="a478be3215918b036fe96ddf7da40ca5"
+            tools:replace="android:value" />
+        <!--            android:value="4370b2e5ae95cea0a2eaa29c61959855"-->
 
         <!-- 定位需要的服务 适配Android Q需要加上android:foregroundServiceType="location"-->
         <service
             android:name="com.amap.api.location.APSService"
             android:foregroundServiceType="location" />
+
         <activity
             android:name="com.runjing.ui.login.WelcomeActivity"
             android:theme="@style/TranslucentTheme">
@@ -39,9 +41,9 @@
         <activity
             android:name="com.runjing.MainActivity"
             android:configChanges="screenSize|keyboardHidden|orientation"
+            android:launchMode="singleTask"
             android:theme="@style/TranslucentTheme"
-            android:windowSoftInputMode="stateHidden|adjustPan"
-            android:launchMode="singleTask"/>
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name="com.runjing.base.SimpleBackActivity"
             android:configChanges="screenSize|keyboardHidden|orientation"
@@ -49,14 +51,14 @@
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
 
-
+        <!--对接时 是否可删在做考虑-->
         <provider
+
+            android:name="jd.wjlogin_sdk.common.communion.WJLoginUnionProvider"
 
             android:authorities="com.runjing.wineworld.WJLoginUnionProvider"
 
-            android:exported="true"
-
-            android:name="jd.wjlogin_sdk.common.communion.WJLoginUnionProvider">
+            android:exported="true">
 
         </provider>
 
@@ -70,7 +72,7 @@
 
 
     <!-- 不是SDK需要的权限，是示例中的后台唤醒定位需要的权限 -->
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <!-- 联网权限 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
@@ -88,9 +90,9 @@
     <!--在Android10.0里，获取定位权限需要增加以下权限。-->
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
-    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION"/>
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
     <!-- 用于提高GPS定位速度 -->
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <!--用于访问GPS定位-->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
     <!--用于获取运营商信息，用于支持提供运营商信息相关的接口-->
@@ -105,26 +107,10 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
     <!--用于写入缓存数据到扩展存储卡-->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
-
-
-
-
     <!-- 更改设置 -->
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
-
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <!--如果设置了target >= 28 如果需要启动后台定位则必须声明这个权限-->
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-
-
-    <!--京东登陆权限-->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
 
 </manifest>

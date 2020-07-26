@@ -41,6 +41,7 @@ public class OpenCityFragment extends TitleBarFragment {
     private TextView tv_xzcs_sq_address;
     @BindView(id = R.id.lv_select_pirvoce)
     private RecyclerView rec_select_pirvoce;
+
     @Override
     protected View inflaterView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
         loadingDialog = new LoadingDialog(outsideAty);
@@ -66,6 +67,7 @@ public class OpenCityFragment extends TitleBarFragment {
         tv_xzcs_sq_address.setText(LocalUtil.address);
 
     }
+
     /**
      * 设置数据
      *
@@ -76,6 +78,7 @@ public class OpenCityFragment extends TitleBarFragment {
     }
 
     private LoadingDialog loadingDialog;
+
     public void getData() {
 //        loadingDialog.show();
 //        HomeRequest homeRequest = new HomeRequest();

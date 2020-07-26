@@ -117,17 +117,9 @@ public class HomeFragment extends TitleBarFragment {
         return inflater.inflate(R.layout.frag_home, null);
     }
 
-
-    @Override
-    protected void setActionBarRes(ActionBarRes actionBarRes) {
-        super.setActionBarRes(actionBarRes);
-        actionBarRes.titleLayoutVisible = 2;
-    }
-
     @Override
     protected void initWidget(View parentView) {
         super.initWidget(parentView);
-
         refreshLayout.setRefreshHeader(new RJRefreshHeader(outsideAty).
                 setNormalColor(outsideAty.getResources().getColor(R.color.color_99000000)).
                 setAnimatingColor(outsideAty.getResources().getColor(R.color.color_99000000)).

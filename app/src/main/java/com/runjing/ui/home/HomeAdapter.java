@@ -65,9 +65,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             if (viewType == TYPE_ITEM_GOOD) {
                 return new GoodHolder(LayoutInflater.from(context).inflate(R.layout.layout_item_good, null));
             } else if (viewType == TYPE_ITEM_STORE) {
-                return new StoreHolder(LayoutInflater.from(context).inflate(R.layout.layout_store_msg, null));
+                return new StoreHolder(LayoutInflater.from(context).inflate(R.layout.layout_store_msg, parent, false));
             } else if (viewType == TYPE_ITEM_CITY) {
-                return new ProvincesHolder(LayoutInflater.from(context).inflate(R.layout.layout_item_proviences, null));
+                return new ProvincesHolder(LayoutInflater.from(context).inflate(R.layout.layout_item_proviences, parent, false));
             }
         }
         return null;

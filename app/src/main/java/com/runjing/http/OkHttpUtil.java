@@ -9,9 +9,9 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.fdlm.util.DESUtil;
 import com.runjing.MyApplication;
 import com.runjing.common.AppMethod;
-import com.runjing.utils.ToastUtils;
 import com.squareup.okhttp.Request;
 
+import org.runjing.rjframe.ui.ViewInject;
 import org.runjing.rjframe.utils.RJLoger;
 import org.runjing.rjframe.utils.SystemTool;
 
@@ -70,7 +70,7 @@ public class OkHttpUtil {
                     }catch(NullPointerException e3){
                         RJLoger.debug("返回数据为null");
                     } catch (IllegalArgumentException e1) {
-                        ToastUtils.showToast(MyApplication.contextApp, "请求时间超时,请重试");
+                        ViewInject.showCenterToast(MyApplication.contextApp, "请求时间超时,请重试");
                     } catch (Exception e2) {
                         e2.printStackTrace();
                     }
@@ -84,7 +84,7 @@ public class OkHttpUtil {
                         if (!TextUtils.isEmpty(response)) {
                             callback.onPostResponse(JSON.parseObject(response, clazz));
                             if (!SystemTool.checkNet(MyApplication.contextApp)) {
-                                ToastUtils.showToast(MyApplication.contextApp, "当前无网络链接,请检查网络");
+                                ViewInject.showCenterToast(MyApplication.contextApp, "当前无网络链接,请检查网络");
                             }
                         } else {
                             response = "{resultCode:\"119\",resultInfo:\"系统未知错误请联系客服人员\"}";

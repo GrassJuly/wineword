@@ -25,13 +25,19 @@ public class WelcomeActivity extends TitleBarActivity {
     public void setRootView() {
         MyApplication.contextApp.addActivity(this);
         setContentView(R.layout.activity_welcome);
-        getPermissions();
+//        getPermissions();
     }
 
     @Override
     public void initToolBar() {
         super.initToolBar();
         StatusBarUtil.setTransparentForWindow(this);
+    }
+
+    @Override
+    public void initWidget() {
+        super.initWidget();
+        initView();
     }
 
     private void getPermissions() {
