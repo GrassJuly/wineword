@@ -8,7 +8,7 @@
 
     android:useLevel="false">
 
-    <solid android:color="@color/mn_common_transparent" />
+    <solid android:color="@color/common_transparent" />
 
     <stroke
 

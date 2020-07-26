@@ -1,9 +1,12 @@
 package com.runjing.ui.login;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +14,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.jd.verify.Verify;
 import com.runjing.base.BaseResponse;
 import com.runjing.base.TitleBarFragment;
 import com.runjing.bean.request.HomeRequest;
@@ -20,10 +25,20 @@ import com.runjing.common.BaseUrl;
 import com.runjing.http.MyRequestCallBack;
 import com.runjing.http.OkHttpUtil;
 import com.runjing.utils.TimerCount;
+import com.runjing.utils.UserUtil;
 import com.runjing.wineworld.R;
 
+import org.json.JSONObject;
 import org.runjing.rjframe.ui.BindView;
 import org.runjing.rjframe.ui.ViewInject;
+
+import jd.wjlogin_sdk.common.WJLoginHelper;
+import jd.wjlogin_sdk.common.listener.OnCommonCallback;
+import jd.wjlogin_sdk.common.listener.OnDataCallback;
+import jd.wjlogin_sdk.common.listener.PhoneLoginFailProcessor;
+import jd.wjlogin_sdk.model.ErrorResult;
+import jd.wjlogin_sdk.model.FailResult;
+import jd.wjlogin_sdk.model.SuccessResult;
 
 /**
  * @Created: qianxs  on 2020.07.20 19:37.
@@ -34,6 +49,7 @@ import org.runjing.rjframe.ui.ViewInject;
  * @Remark:
  */
 public class QuickLoginFragment extends TitleBarFragment {
+    private static final String TAG = QuickLoginFragment.class.getName();
 
     @BindView(id = R.id.frag_et_phone)
     private EditText et_phone;
@@ -50,6 +66,11 @@ public class QuickLoginFragment extends TitleBarFragment {
     @BindView(id = R.id.frag_tv_login, click = true)
     private Button tv_login;
     private TimerCount timer;
+    private WJLoginHelper helper;
+    private Verify verify;
+    private String countryCode = "86";
+    private String sid = "";
+    private String phoneNum = "";
 
 
     @Override
@@ -60,6 +81,8 @@ public class QuickLoginFragment extends TitleBarFragment {
     @Override
     protected void initWidget(View parentView) {
         super.initWidget(parentView);
+        helper = UserUtil.getWJLoginHelper();
+        verify = Verify.getInstance();
         tv_isagree.setText(AppMethod.setDiffCollors(
                 "{" + getResources().getString(R.string.login_isagree_next) + "}" +
                         getResources().getString(R.string.login_isagree_last),
@@ -195,6 +218,56 @@ public class QuickLoginFragment extends TitleBarFragment {
             }
         });
     }
+
+    public void onLoginJD() {
+        String phoneNum = et_phone.getText().toString();
+        if ("86".equals(countryCode) && (!phoneNum.startsWith("1") || phoneNum.length() < 11 || phoneNum.length() > 12 || !AppMethod.isNumber(phoneNum))) {
+            ViewInject.showCenterToast(getActivity(), "手机号码格式错误");
+            return;
+        }
+        /**
+         * 中国手机号位数11位（号段限制保留）；
+         * 香港、澳门、台湾是6-10位；852,853,886
+         */
+        if (!AppMethod.isNumber(phoneNum)) {
+            ViewInject.showCenterToast(getActivity(), "手机号码格式错误");
+            return;
+        } else if ((TextUtils.equals("852", countryCode) || TextUtils.equals("853", countryCode) || TextUtils.equals("886", countryCode))) {
+            if (phoneNum.length() < 6 || phoneNum.length() > 10) {
+                ViewInject.showCenterToast(getActivity(), "手机号码格式错误");
+                return;
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public void onSubmit() {
         if (TextUtils.isEmpty(et_phone.getText())) {

@@ -13,7 +13,7 @@ import java.util.UUID;
 public class Appconfig {
     //http
     public static String LoginSuccess = "113";//登录  请求成功8
-    public static String RequestSuccess = "116";//网络 请求成功
+    public static String RequestSuccess = "200";//网络 请求成功
     public static String LoadMorePageSize = "15";//请求数据条数
     public static String RESPONSE_CODE_RESULTS = "100";//数据查询有数据
     public static String RESPONSE_CODE_NO_DATA = "110";//数据查询无数据

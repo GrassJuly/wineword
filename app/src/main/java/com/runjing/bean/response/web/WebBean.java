@@ -1,4 +1,4 @@
-package com.runjing.bean.response;
+package com.runjing.bean.response.web;
 
 import java.io.Serializable;
 

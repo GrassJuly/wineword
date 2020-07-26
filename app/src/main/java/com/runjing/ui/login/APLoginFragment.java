@@ -17,17 +17,15 @@ import com.runjing.base.BaseResponse;
 import com.runjing.base.SimpleBackPage;
 import com.runjing.base.TitleBarFragment;
 import com.runjing.bean.request.HomeRequest;
-import com.runjing.bean.response.WebBean;
+import com.runjing.bean.response.web.WebBean;
 import com.runjing.common.AppMethod;
 import com.runjing.common.Appconfig;
 import com.runjing.common.BaseUrl;
 import com.runjing.http.MyRequestCallBack;
 import com.runjing.http.OkHttpUtil;
-import com.runjing.utils.TimerCount;
 import com.runjing.wineworld.R;
 
 import org.runjing.rjframe.ui.BindView;
-import org.runjing.rjframe.ui.ViewInject;
 
 /**
  * @Created: qianxs  on 2020.07.20 19:37.

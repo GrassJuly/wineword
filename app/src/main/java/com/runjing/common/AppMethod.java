@@ -2,17 +2,20 @@ package com.runjing.common;
 
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Paint;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.RelativeSizeSpan;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -27,9 +30,9 @@ import com.runjing.base.SimpleBackActivity;
 import com.runjing.base.SimpleBackPage;
 import com.runjing.base.TitleBarActivity;
 import com.runjing.bean.response.home.BannerBean;
+import com.runjing.ui.good.DetailBannerAdapter;
 import com.runjing.ui.home.BannerItemAdapter;
 import com.runjing.ui.login.GuildBannerAdapter;
-import com.runjing.ui.login.LoginActivity;
 import com.runjing.utils.ColorPhrase;
 import com.runjing.utils.MMKVUtil;
 import com.runjing.utils.PopupWindowUtil;
@@ -53,6 +56,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import androidx.fragment.app.Fragment;
 
@@ -316,6 +321,7 @@ public class AppMethod {
         return StringUtils.isEmpty(str) ? "" : str;
     }
 
+
     /**
      * 设置默认数据
      *
@@ -528,7 +534,7 @@ public class AppMethod {
                     activityMgr.restartPackage(activity.getPackageName());
                 }
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -814,7 +820,6 @@ public class AppMethod {
 
 
     /**
-     *
      * @param activity
      */
     public static void clearAppInfo(Activity activity) {
@@ -825,7 +830,6 @@ public class AppMethod {
     }
 
     /**
-     *
      * @param context
      * @param banner
      * @param images
@@ -842,7 +846,21 @@ public class AppMethod {
     }
 
     /**
-     *
+     * @param context
+     * @param banner
+     * @param images
+     */
+    public static void DetailBanner(TitleBarActivity context, Banner banner, List<BannerBean> images) {
+        DetailBannerAdapter adapter = new DetailBannerAdapter(images);
+        banner.setDelayTime(4500);
+        banner.setBannerRound(0);
+        banner.isAutoLoop(false);
+        banner.addBannerLifecycleObserver(context)
+                .setAdapter(adapter, true)
+                .start();
+    }
+
+    /**
      * @param activity
      * @param banner
      * @param images
@@ -858,13 +876,52 @@ public class AppMethod {
     }
 
     /**
+     * //调用
+     * SpannableString spannableString = changTVsize("53.9");
+     * chooseMoviePrice.setText(spannableString);
      *
-     * @param str
+     * @param value
      * @return
      */
-    public static String isEntity(String str) {
-        return StringUtils.isEmpty(str) ? "" : str;
+    public static SpannableString changTVsize(String value) {
+        SpannableString spannableString = new SpannableString(value);
+        if (value.contains(".")) {
+            spannableString.setSpan(new RelativeSizeSpan(0.6f), value.indexOf("."), value.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        return spannableString;
     }
 
+    /**
+     * 设置中划线
+     * @param textView
+     */
+    public static void setTextViewLine(TextView textView) {
+        if (textView != null) {
+            textView.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG); //中划线 
+            textView.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
+        }
+    }
+
+    private static String replaceAction(String str, String regular) {
+        return str.replaceAll(regular, "*");
+    }
+
+    // 判断字符串是否是数字
+    public static boolean isNumber(String str) {
+        Pattern pattern = Pattern.compile("[0-9]{1,}");
+        Matcher matcher = pattern.matcher(str);
+        boolean result = matcher.matches();
+        return result;
+    }
+
+    //^[A-Za-z0-9]+$
+
+    // 判断字符串是否是数字和字母
+    public static boolean isNumberAndLeter(String str) {
+        Pattern pattern = Pattern.compile("^[A-Za-z0-9]+$");
+        Matcher matcher = pattern.matcher(str);
+        boolean result = matcher.matches();
+        return result;
+    }
 
 }

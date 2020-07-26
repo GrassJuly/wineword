@@ -1,123 +1,685 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@null"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/color_ffffff"
-        android:fitsSystemWindows="true">
-
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_375"
-            android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:titleEnabled="false">
-
-            <com.youth.banner.Banner
-                android:id="@+id/frag_banner"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_collapseMode="pin"
-                app:navigationIcon="?attr/homeAsUpIndicator" >
-
-
-            </androidx.appcompat.widget.Toolbar>
-
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.core.widget.NestedScrollView
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_above="@id/frag_rl_tab"
+        android:background="@null"
+        android:fitsSystemWindows="true">
 
-        <LinearLayout
-            android:id="@+id/container"
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:background="@color/color_ffffff"
+            android:fitsSystemWindows="true"
+            android:theme="@style/AppTheme.AppBarOverlay">
 
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_100"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="Second Fragment  1"
-                android:textSize="16sp"
-                tools:ignore="HardcodedText" />
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_100"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="Second Fragment"
-                android:textSize="16sp"
-                tools:ignore="HardcodedText" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_100"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="Second Fragment"
-                android:textSize="16sp"
-                tools:ignore="HardcodedText" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_100"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="Second Fragment"
-                android:textSize="16sp"
-                tools:ignore="HardcodedText" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_100"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="Second Fragment"
-                android:textSize="16sp"
-                tools:ignore="HardcodedText" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_100"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="Second Fragment"
-                android:textSize="16sp"
-                tools:ignore="HardcodedText" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/mRecycler"
+            <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:overScrollMode="never"
-                android:scrollbars="none"
-                android:visibility="gone" />
+                android:fitsSystemWindows="true"
+                android:theme="@style/AppTheme.AppBarOverlay"
+                app:contentScrim="?attr/titleColor"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:titleEnabled="false">
 
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+                <com.youth.banner.Banner
+                    android:id="@+id/frag_banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_375"
+                    app:layout_scrollFlags="scroll|enterAlways" />
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_44"
+                    app:contentInsetStart="@dimen/dp_0"
+                    app:layout_collapseMode="pin"
+                    app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                    <include layout="@layout/layout_title_detail" />
+
+                </androidx.appcompat.widget.Toolbar>
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <com.runjing.widget.GradationScrollView
+            android:id="@+id/frag_gs_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/frag_ll_snakill"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_55"
+                    android:background="@mipmap/snakill_bg"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/dp_10"
+                    android:paddingRight="@dimen/dp_10"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="¥"
+                                android:textColor="@color/color_ffffff"
+                                android:textSize="@dimen/sp_15" />
+
+                            <TextView
+                                android:id="@+id/frag_tv_price_"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="290.00"
+                                android:textColor="@color/color_ffffff"
+                                android:textSize="@dimen/sp_25" />
+                        </LinearLayout>
 
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/frag_tv_price"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="¥290.00"
+                                android:textColor="@color/color_ffffff"
+                                android:textSize="@dimen/sp_12" />
+
+                            <TextView
+                                android:id="@+id/frag_tv_stock_s"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/dp_10"
+                                android:text="本店库存：100"
+                                android:textColor="@color/color_ffffff"
+                                android:textSize="@dimen/sp_12" />
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="@dimen/dp_6"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_5"
+                            android:text="@string/snakill_finish"
+                            android:textColor="@color/color_F80000"
+                            android:textSize="@dimen/sp_12" />
+
+                        <com.runjing.widget.seckill.SecondDownTimerView
+                            android:id="@+id/frag_st_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_5"
+                            android:layout_marginRight="@dimen/dp_10" />
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_ffffff"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/dp_10"
+                        android:paddingRight="@dimen/dp_10">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="¥"
+                                android:textColor="@color/color_F80000"
+                                android:textSize="@dimen/sp_15" />
+
+                            <TextView
+                                android:id="@+id/frag_tv_price_n"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="290.00"
+                                android:textColor="@color/color_F80000"
+                                android:textSize="@dimen/sp_25" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/frag_tv_price_p"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="@dimen/dp_5"
+                            android:text="¥290.00"
+                            android:textColor="@color/color_333333"
+                            android:textSize="@dimen/sp_15" />
+
+                        <ImageView
+                            android:id="@+id/frag_iv_plus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="@dimen/dp_2"
+                            android:layout_marginRight="@dimen/dp_10"
+                            android:src="@mipmap/icon_plus" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:gravity="right">
+
+                            <TextView
+                                android:id="@+id/frag_tv_stock"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/style_radius_bg_ffc3c3c3"
+                                android:gravity="right"
+                                android:padding="@dimen/dp_3"
+                                android:text="已售完"
+                                android:textColor="@color/color_333333"
+                                android:textSize="@dimen/sp_12" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/frag_tv_realprice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_10"
+                        android:text="290.00"
+                        android:textColor="@color/color_666666"
+                        android:textSize="@dimen/sp_12" />
+
+                    <TextView
+                        android:id="@+id/frag_tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_10"
+                        android:layout_marginTop="@dimen/dp_8"
+                        android:lineSpacingExtra="@dimen/dp_2"
+                        android:paddingBottom="@dimen/dp_12"
+                        android:text="@string/pwd_toast"
+                        android:textColor="@color/color_333333"
+                        android:textSize="@dimen/sp_15" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_10"
+                        android:background="@color/color_fafafa" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/dp_10"
+                        android:paddingTop="@dimen/dp_10"
+                        android:paddingRight="@dimen/dp_10">
+
+                        <TextView
+                            android:layout_width="@dimen/dp_60"
+                            android:layout_height="wrap_content"
+                            android:text="@string/string_Discount"
+                            android:textColor="@color/color_333333"
+                            android:textSize="@dimen/sp_15" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/frag_rv_discount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <ImageView
+                            android:id="@+id/frag_iv_discount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/right_24px"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_10"
+                        android:background="@color/color_fafafa" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dp_10">
+
+                        <TextView
+                            android:layout_width="@dimen/dp_60"
+                            android:layout_height="wrap_content"
+                            android:text="@string/string_service"
+                            android:textColor="@color/color_333333"
+                            android:textSize="@dimen/sp_15" />
+
+                        <LinearLayout
+                            android:layout_width="@dimen/dp_120"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:src="@mipmap/icon_choose_h" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/dp_7"
+                                android:text="@string/string_min29"
+                                android:textColor="@color/color_666666"
+                                android:textSize="@dimen/sp_13" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:src="@mipmap/icon_choose_h" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="@dimen/dp_7"
+                                android:text="@string/string_man"
+                                android:textColor="@color/color_666666"
+                                android:textSize="@dimen/sp_13" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:src="@mipmap/icon_choose_h" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="@dimen/dp_7"
+                                android:text="@string/string_all"
+                                android:textColor="@color/color_666666"
+                                android:textSize="@dimen/sp_13" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/dp_10"
+                        android:paddingRight="@dimen/dp_10"
+                        android:paddingBottom="@dimen/dp_10">
+
+
+                        <LinearLayout
+                            android:layout_width="@dimen/dp_120"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dp_60"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:src="@mipmap/icon_choose_h" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="@dimen/dp_7"
+                                android:text="@string/string_quity"
+                                android:textColor="@color/color_666666"
+                                android:textSize="@dimen/sp_13" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:src="@mipmap/icon_choose_ll" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="@dimen/dp_7"
+                                android:text="@string/string_severn"
+                                android:textColor="@color/color_666666"
+                                android:textSize="@dimen/sp_13" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_10"
+                        android:background="@color/color_fafafa" />
+
+                    <LinearLayout
+                        android:id="@+id/frag_ll_store"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_70"
+                        android:background="@color/color_ffffff"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dp_10">
+
+                        <ImageView
+                            android:id="@+id/frag_iv_store"
+                            android:layout_width="@dimen/dp_60"
+                            android:layout_height="@dimen/dp_60"
+                            android:scaleType="centerCrop"
+                            android:src="@mipmap/iv_default" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/frag_tv_storename"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/app_default"
+                                android:textColor="@color/color_333333"
+                                android:textSize="@dimen/sp_14" />
+
+                            <TextView
+                                android:id="@+id/frag_tv_dis"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/app_default"
+                                android:textColor="@color/color_666666"
+                                android:textSize="@dimen/sp_12" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/frag_tv_store"
+                            android:layout_width="@dimen/dp_68"
+                            android:layout_height="@dimen/dp_24"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/style_radius_bg_f80000"
+                            android:gravity="center"
+                            android:text="@string/string_intostore"
+                            android:textColor="@color/color_ffffff"
+                            android:textSize="@dimen/sp_12" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_10"
+                        android:background="@color/color_fafafa" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dp_10">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="@dimen/dp_10"
+                            android:layout_toLeftOf="@id/lay_tv_store_status"
+                            android:src="@mipmap/line_red_left" />
+
+                        <TextView
+                            android:id="@+id/lay_tv_store_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="@string/string_gooddetail"
+                            android:textColor="@color/color_333333"
+                            android:textSize="@dimen/sp_16"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/dp_10"
+                            android:layout_toRightOf="@id/lay_tv_store_status"
+                            android:src="@mipmap/line_read_right" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <WebView
+                    android:id="@+id/frag_wv_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </WebView>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_400"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/guild1" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_400"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/guild1" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_400"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/guild1" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_400"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/guild1" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_400"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/guild1" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_400"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/guild1" />
+
+            </LinearLayout>
+        </com.runjing.widget.GradationScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <include
+            android:id="@+id/frag_il_shop"
+            layout="@layout/layout_shop_pop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/frag_rl_tab"
+            android:visibility="gone"/>
+
+        <RelativeLayout
+            android:id="@+id/frag_rl_tab"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50"
+            android:layout_alignParentBottom="true"
+            android:background="@color/color_ffffff"
+            android:paddingRight="@dimen/dp_10">
+
+            <TextView
+                android:id="@+id/frag_tv_add"
+                android:layout_width="@dimen/dp_94"
+                android:layout_height="@dimen/dp_35"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/frag_tv_settlement"
+                android:background="@mipmap/bg_red_shop"
+                android:gravity="center"
+                android:text="@string/string_add_shop"
+                android:textColor="@color/color_ffffff"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:id="@+id/frag_tv_settlement"
+                android:layout_width="@dimen/dp_94"
+                android:layout_height="@dimen/dp_35"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@mipmap/bg_gray_shop"
+                android:gravity="center"
+                android:text="@string/string_add_settlement"
+                android:textColor="@color/color_ffffff"
+                android:textSize="@dimen/sp_14" />
+
+
+            <LinearLayout
+                android:id="@+id/frag_ll_shopMoney"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="@dimen/dp_55"
+                android:layout_toLeftOf="@+id/frag_tv_add"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/frag_tv_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:text="¥20000000.00"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/sp_15" />
+
+                <TextView
+                    android:id="@+id/frag_tv_reducemoney"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:text="已减¥20000000.00"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/sp_10" />
+            </LinearLayout>
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginBottom="@dimen/dp_10">
+
+        <ImageView
+            android:id="@+id/frag_iv_shop"
+            android:layout_width="@dimen/dp_45"
+            android:layout_height="@dimen/dp_50"
+            android:scaleType="centerCrop"
+            android:tag="@string/tag_no"
+            android:src="@mipmap/icon_shop_yellow" />
+
+        <TextView
+            android:id="@+id/frag_tv_shopNum"
+            android:layout_width="@dimen/dp_14"
+            android:layout_height="@dimen/dp_14"
+            android:layout_gravity="right"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@drawable/cycle_fff80000"
+            android:text="10"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/sp_10" />
+
+    </FrameLayout>
+
+
+</RelativeLayout>

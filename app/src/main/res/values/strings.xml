@@ -1,5 +1,5 @@
 <resources>
-
+    <string name="appbar_scrolling_view_behavior">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
     <string name="app_name">京东酒世界</string>
     <!--<string name="app_test">美农伙伴测试</string>-->
     <!--<string name="app_default"></string>-->
@@ -94,5 +94,27 @@
     <string name="tag_yes">true</string>
     <string name="tag_no">false</string>
     <string name="pwd_formit">请设置为8-20位字符</string>
+    <string name="good_name">商品</string>
+    <string name="good_detail">详情</string>
+    <string name="snakill_finish">秒杀倒计时结束</string>
+    <string name="string_Discount">优惠</string>
+    <string name="string_min29">29分钟送达</string>
+    <string name="string_man">慢必赔</string>
+    <string name="string_all">全程溯源</string>
+    <string name="string_quity">配置保证</string>
+    <string name="string_severn">不支持7天无理由退货</string>
+    <string name="string_service">服务</string>
+    <string name="string_intostore">进店逛逛</string>
+    <string name="string_gooddetail">商品详情</string>
+    <string name="string_seckill">秒杀</string>
+    <string name="string_buyfree">买赠</string>
+    <string name="string_fullreduction">满减</string>
+    <string name="string_fullgrowth">满赠</string>
+    <string name="string_winemoneydeduction">酒币抵扣</string>
+    <string name="string_moneyforwine">买酒送币</string>
+    <string name="string_freefreight">免运费</string>
+    <string name="string_add_shop">加入购物车</string>
+    <string name="string_clear_shop">清空购物车</string>
+    <string name="string_add_settlement">结算</string>
 
 </resources>
