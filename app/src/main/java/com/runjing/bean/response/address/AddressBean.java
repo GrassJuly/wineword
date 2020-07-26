@@ -6,6 +6,15 @@ public class AddressBean {
     private String phone;
     private String mark;
     private String address;
+    private String poiAddress;
+
+    public String getPoiAddress() {
+        return poiAddress;
+    }
+
+    public void setPoiAddress(String poiAddress) {
+        this.poiAddress = poiAddress;
+    }
 
     public String getName() {
         return name;

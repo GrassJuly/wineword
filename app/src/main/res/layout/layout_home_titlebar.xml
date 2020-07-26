@@ -6,14 +6,6 @@
     android:paddingRight="@dimen/dp_12"
     android:layout_height="wrap_content"
     android:background="@color/color_ffffff">
-    /**
-    * @Created by xiaoyu on 2017/1/9
-    * @Describe：
-    * @Review by：
-    * @Modify by：
-    * @Version : $ v_1.0 on 2017/1/9
-    * @Remark:
-    */
 
     <LinearLayout
         android:id="@+id/mn_home_bar_ll_top"
@@ -21,11 +13,11 @@
         android:layout_height="@dimen/dp_44"
         android:orientation="horizontal">
 
-        <FrameLayout
+        <LinearLayout
             android:id="@+id/fl_left"
             android:layout_width="@dimen/dp_40"
             android:layout_height="match_parent"
-            android:visibility="visible">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/home_bar_tv_left"
@@ -46,7 +38,7 @@
                 android:src="@mipmap/icon_title_back"
                 android:layout_gravity="center_vertical"
                 android:visibility="visible" />
-        </FrameLayout>
+        </LinearLayout>
 
 
         <TextView
@@ -110,11 +102,12 @@
                 android:visibility="visible" />
         </LinearLayout>
 
-        <FrameLayout
+        <LinearLayout
             android:id="@+id/fl_right"
             android:layout_width="@dimen/dp_40"
             android:layout_height="match_parent"
-            android:visibility="visible">
+            android:visibility="visible"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/home_bar_tv_right"
@@ -136,14 +129,13 @@
                 android:scaleType="centerInside"
                 android:src="@mipmap/shipped_select"
                 android:visibility="gone" />
-        </FrameLayout>
+        </LinearLayout>
     </LinearLayout>
 
     <ImageView
         android:id="@+id/img_base_line"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/dp_1"
-        android:background="@color/font_black"
         android:layout_gravity="center|bottom"/>
 
 </FrameLayout>

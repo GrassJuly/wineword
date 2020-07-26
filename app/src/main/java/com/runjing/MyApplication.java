@@ -4,6 +4,10 @@ import android.app.Activity;
 import android.app.Application;
 import android.bluetooth.BluetoothSocket;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.runjing.common.Appconfig;
 import com.tencent.bugly.crashreport.CrashReport;
@@ -35,9 +39,17 @@ public class MyApplication extends Application {
         activityList = new LinkedList<Activity>();
         Fresco.initialize(this);
         MMKV.initialize(this);
+
         //线上检测
         CrashReport.initCrashReport(getApplicationContext(), "92a7c20823", false);
     }
+
+
+
+
+
+
+
 
     // 添加Activity到容器中
     public void addActivity(Activity activity) {

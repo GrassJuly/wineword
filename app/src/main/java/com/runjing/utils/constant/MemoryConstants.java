@@ -29,6 +29,12 @@ public final class MemoryConstants {
      */
     public static final int GB   = 1073741824;
 
+    public static final int  TYPEONE = 1;
+
+    public static final int  TYPETWO = 2;
+
+    public static final int  TYPETHREE = 3;
+
     @IntDef({BYTE, KB, MB, GB})
     @Retention(RetentionPolicy.SOURCE)
     public @interface Unit {

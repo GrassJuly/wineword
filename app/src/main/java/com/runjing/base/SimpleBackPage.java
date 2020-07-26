@@ -1,5 +1,6 @@
 package com.runjing.base;
 
+import com.runjing.ui.address.OpenCityFragment;
 import com.runjing.ui.address.SelectAddressFragment;
 import com.runjing.ui.good.GoodDetailFragment;
 import com.runjing.ui.login.APLoginFragment;
@@ -39,7 +40,8 @@ public enum SimpleBackPage {
     QuickLogin(11, QuickLoginFragment.class),
     APLogin(12, APLoginFragment.class),
     SetPwd(13, SetPWDFragment.class),
-    Web(14, WebFragment.class);
+    Web(14, WebFragment.class),
+    OpenCity(15,OpenCityFragment .class);
 
 
     private Class<?> clazz;

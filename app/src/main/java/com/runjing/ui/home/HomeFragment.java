@@ -1,6 +1,11 @@
 package com.runjing.ui.home;
 
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +13,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
+import androidx.annotation.NonNull;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
+
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
+import com.amap.api.location.AMapLocationQualityReport;
+import com.runjing.MainActivity;
+import com.runjing.MyApplication;
 import com.runjing.base.SimpleBackPage;
 import com.runjing.base.TitleBarFragment;
 import com.runjing.bean.request.HomeRequest;
@@ -20,6 +38,7 @@ import com.runjing.common.Appconfig;
 import com.runjing.common.BaseUrl;
 import com.runjing.http.MyRequestCallBack;
 import com.runjing.http.OkHttpUtil;
+import com.runjing.utils.LocalUtil;
 import com.runjing.utils.RecyclerViewItemDecoration;
 import com.runjing.utils.SpacesItemDecoration;
 import com.runjing.widget.LoadingDialog;
@@ -28,7 +47,6 @@ import com.runjing.widget.RJRefreshHeader;
 import com.runjing.wineworld.R;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
-import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.youth.banner.Banner;
@@ -36,11 +54,7 @@ import com.youth.banner.Banner;
 import org.runjing.rjframe.ui.BindView;
 import org.runjing.rjframe.utils.DensityUtils;
 
-import androidx.annotation.NonNull;
-import androidx.core.widget.NestedScrollView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import java.security.MessageDigest;
 
 import static com.runjing.utils.SpacesItemDecoration.STAGGEREDGRIDLAYOUT;
 
@@ -62,7 +76,7 @@ public class HomeFragment extends TitleBarFragment {
     @BindView(id = R.id.frag_ll_select, click = true)
     private LinearLayout rl_select;
     @BindView(id = R.id.frag_tv_address)
-    private TextView tv_address;
+    public static TextView tv_address;
     @BindView(id = R.id.lay_iv_shop, click = true)
     private ImageView iv_shop;
     @BindView(id = R.id.frag_ll_search, click = true)
@@ -93,7 +107,10 @@ public class HomeFragment extends TitleBarFragment {
     private LoadingDialog loadingDialog;
     private HomeAdapter homeAdapter;
     private int mSuspensionHeight;
-
+    public static AMapLocationClient locationClient = null;
+    public static AMapLocationClientOption locationOption = null;
+    public static String strLocation;
+    private String lat,lon,city,address;
     @Override
     protected View inflaterView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
         loadingDialog = new LoadingDialog(outsideAty);
@@ -110,6 +127,7 @@ public class HomeFragment extends TitleBarFragment {
     @Override
     protected void initWidget(View parentView) {
         super.initWidget(parentView);
+
         refreshLayout.setRefreshHeader(new RJRefreshHeader(outsideAty).
                 setNormalColor(outsideAty.getResources().getColor(R.color.color_99000000)).
                 setAnimatingColor(outsideAty.getResources().getColor(R.color.color_99000000)).
@@ -137,8 +155,13 @@ public class HomeFragment extends TitleBarFragment {
     @Override
     protected void initData() {
         super.initData();
+        initLocation();
+        startLocation();
 //        getData();
     }
+
+
+
 
     @Override
     protected void widgetClick(View v) {
@@ -187,6 +210,9 @@ public class HomeFragment extends TitleBarFragment {
         });
     }
 
+
+
+
     /**
      * 设置数据
      *
@@ -234,6 +260,62 @@ public class HomeFragment extends TitleBarFragment {
             ll.setLayoutParams(params);
         }
     }
+
+
+    /**
+     * 开启定位
+     */
+    public static void startLocation(){
+        //根据控件的选择，重新设置定位参数
+        resetOption();
+        // 设置定位参数
+        locationClient.setLocationOption(locationOption);
+        // 启动定位
+        locationClient.startLocation();
+    }
+
+    public static void resetOption() {
+        // 设置是否需要显示地址信息
+        locationOption.setNeedAddress(true);
+        /**
+         * 设置是否优先返回GPS定位结果，如果30秒内GPS没有返回定位结果则进行网络定位
+         * 注意：只有在高精度模式下的单次定位有效，其他方式无效
+         */
+        locationOption.setGpsFirst(true);
+
+        locationOption.setOnceLocationLatest(true);
+
+        try{
+            // 设置发送定位请求的时间间隔,最小值为1000，如果小于1000，按照1000算
+            locationOption.setInterval(1000);
+        }catch(Throwable e){
+            e.printStackTrace();
+        }
+
+        try{
+            // 设置网络请求超时时间
+            locationOption.setHttpTimeOut(30000);
+        }catch(Throwable e){
+            e.printStackTrace();
+        }
+
+    }
+
+
+    /*
+  初始化定位
+   */
+    public static void initLocation(){
+        //初始化client
+        locationClient = new AMapLocationClient(MyApplication.contextApp.getApplicationContext());
+        locationOption = LocalUtil.getDefaultOption();
+        //设置定位参数
+        locationClient.setLocationOption(locationOption);
+        // 设置定位监听
+        locationClient.setLocationListener(new LocalUtil(tv_address).locationListener);
+    }
+
+
 }
 
 

@@ -7,19 +7,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:id="@+id/lay_near"
+        android:id="@+id/lay_search_res"
         android:gravity="center_vertical"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tv_near_address"
+            android:id="@+id/tv_search_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/style_select_address"
             android:layout_marginLeft="@dimen/dp_10"
-            android:layout_marginTop="@dimen/dp_12"
-            android:layout_marginBottom="@dimen/dp_12"
+            android:layout_marginTop="@dimen/dp_6"
+            android:layout_marginBottom="@dimen/dp_2"
+            android:text="bbbbbbbbbbbbbb"
             />
-
+        <TextView
+            android:id="@+id/tv_select_result_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginBottom="@dimen/dp_6"
+            android:textColor="@color/color_666666"
+            android:textSize="@dimen/sp_12"
+            android:text="aaaaaaaaaaaaaaaaa"
+            />
     </LinearLayout>
 </LinearLayout>

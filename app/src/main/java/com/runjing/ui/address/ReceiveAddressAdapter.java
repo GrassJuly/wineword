@@ -13,24 +13,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.runjing.base.SimpleBackPage;
 import com.runjing.bean.response.address.AddressBean;
 import com.runjing.bean.response.home.GoodBean;
-import com.runjing.bean.response.home.HomeBean;
-import com.runjing.bean.response.home.StoreBean;
+
 import com.runjing.common.AppMethod;
 import com.runjing.common.Appconfig;
-import com.runjing.ui.home.HomeAdapter;
+
 import com.runjing.wineworld.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static com.runjing.bean.response.home.HomeBean.TYPE_ITEM_CITY;
-import static com.runjing.bean.response.home.HomeBean.TYPE_ITEM_GOOD;
-import static com.runjing.bean.response.home.HomeBean.TYPE_ITEM_STORE;
 
+/**
+ * 选择地址定位adapter
+ */
 public class ReceiveAddressAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Activity context;
     private GoodBean response;
@@ -44,23 +41,33 @@ public class ReceiveAddressAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
 
-    @NonNull
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (mType == 1) {
+        if (mType == Appconfig.TAG_ONE) {
             return new ReceiveAddressAdapter.AddressHolder(LayoutInflater.from(context).inflate(R.layout.layout_rec_address_item, null));
-        } else {
+        } else if(mType == Appconfig.TAG_TWO){
             return new ReceiveAddressAdapter.NearAddressHolder(LayoutInflater.from(context).inflate(R.layout.layout_near_address_item, null));
+        }else if(mType == Appconfig.TAG_THREE){
+            return new ReceiveAddressAdapter.SearchAddressHolder(LayoutInflater.from(context).inflate(R.layout.layout_search_result_item, null));
         }
+        return null;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (mType == 1) {
-            ((AddressHolder) holder).setData(mList, position);
-        } else {
-            ((NearAddressHolder)holder).setData(mList, position);
+        switch (mType){
+            case  Appconfig.TAG_ONE:
+                ((AddressHolder) holder).setData(mList, position);
+                break;
+            case  Appconfig.TAG_TWO:
+                ((NearAddressHolder)holder).setData(mList, position);
+                break;
+            case  Appconfig.TAG_THREE:
+                ((SearchAddressHolder) holder).setData(mList, position);
+                break;
         }
+
     }
 
     @Override
@@ -76,7 +83,9 @@ public class ReceiveAddressAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     }
 
-
+    /**
+     * 收货地址
+     */
     public class AddressHolder extends RecyclerView.ViewHolder {
         private Button btnMark;
         private TextView tv_name;
@@ -98,29 +107,27 @@ public class ReceiveAddressAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         public void setData(List<AddressBean> goods, int position) {
             if (goods != null && goods.size() > 0) {
 
-                tv_name.setText(AppMethod.isEntity(goods.get(position).getName()));
-                if ("1".equals(AppMethod.isEntity(goods.get(position).getMark()))) {
+                tv_name.setText(AppMethod.setDefault(goods.get(position).getName()));
+                if ("1".equals(AppMethod.setDefault(goods.get(position).getMark()))) {
                     btnMark.setText("公司");
-                } else if ("2".equals(AppMethod.isEntity(goods.get(position).getMark()))) {
+                } else if ("2".equals(AppMethod.setDefault(goods.get(position).getMark()))) {
                     btnMark.setText("家");
                 } else {
                     btnMark.setVisibility(View.GONE);
                 }
 
-                tv_address.setText(AppMethod.isEntity(goods.get(position).getAddress()));
-                tv_phone.setText(AppMethod.isEntity(goods.get(position).getPhone()));
-                lay_address.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        AppMethod.postShowWith(context, SimpleBackPage.Home);
-                    }
-                });
+                tv_address.setText(AppMethod.setDefault(goods.get(position).getAddress()));
+                tv_phone.setText(AppMethod.setDefault(goods.get(position).getPhone()));
+
             }
         }
     }
 
+    /**
+     * 附近地址
+     */
     public class NearAddressHolder extends RecyclerView.ViewHolder {
-        private TextView tv_near_address;
+        private TextView tv_near_address,tv_select_address;
         private LinearLayout lay_near_address;
 
 
@@ -128,19 +135,46 @@ public class ReceiveAddressAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             super(itemView);
 
             tv_near_address = itemView.findViewById(R.id.tv_near_address);
+
             lay_near_address = itemView.findViewById(R.id.lay_near);
+
         }
 
         public void setData(List<AddressBean> goods, int position) {
             if (goods != null && goods.size() > 0) {
 
-                tv_near_address.setText(AppMethod.isEntity(goods.get(position).getAddress()));
-                lay_near_address.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        AppMethod.postShowWith(context, SimpleBackPage.Home);
-                    }
-                });
+                tv_near_address.setText(AppMethod.setDefault(goods.get(position).getAddress()));
+//                lay_near_address.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//
+//                    }
+//                });
+            }
+        }
+    }
+
+    /**
+     * 搜索地址
+     */
+    public class SearchAddressHolder extends RecyclerView.ViewHolder {
+        private TextView tv_near_address,tv_select_address;
+        private LinearLayout lay_near_address;
+
+
+        public SearchAddressHolder(@NonNull View itemView) {
+            super(itemView);
+
+            tv_near_address = itemView.findViewById(R.id.tv_search_name);
+            tv_select_address = itemView.findViewById(R.id.tv_select_result_address);
+            lay_near_address = itemView.findViewById(R.id.lay_search_res);
+        }
+
+        public void setData(List<AddressBean> goods, int position) {
+            if (goods != null && goods.size() > 0) {
+                tv_select_address.setText(AppMethod.setDefault(goods.get(position).getPoiAddress()));
+                tv_near_address.setText(AppMethod.setDefault(goods.get(position).getAddress()));
+                lay_near_address.setOnClickListener(v -> AppMethod.postShowWith(context, SimpleBackPage.Home));
             }
         }
     }

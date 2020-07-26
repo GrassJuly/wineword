@@ -36,14 +36,14 @@ import de.greenrobot.event.EventBus;
  */
 public abstract class TitleBarActivity extends RJActivity implements TextWatcher {
     public FrameLayout fm_content;
-    public FrameLayout fm_left;
+    public LinearLayout fm_left;
     public TextView tv_left;
     public ImageView iv_left;
     public TextView tv_title;
     public LinearLayout ll_search;
     public EditText et_search;
     public TextView tv_search;
-    public FrameLayout fm_right;
+    public LinearLayout fm_right;
     public TextView tv_home_right;
     public ImageView iv_right;
     private ViewGroup viewGroup;

@@ -20,7 +20,7 @@ public class Appconfig {
     public static String RESPONSE_CODE_NORESULTS = "101";//数据查询 无数据
     public static String ACCOUNT_REPEAT = "3008";//账户重复，请联系客服
 
-    public static String CONTENT_KEY = "mn_content_key";
+    public static String CONTENT_KEY = "rj_content_key";
     public static String DATA_KEY = "rj_data_key";
     public static final int DEFAULT_VALUES = -1000;//默认 数据
     public static int DEFAULT_VALUE_LONG = 1;

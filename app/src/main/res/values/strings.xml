@@ -116,5 +116,6 @@
     <string name="string_add_shop">加入购物车</string>
     <string name="string_clear_shop">清空购物车</string>
     <string name="string_add_settlement">结算</string>
+    <string name ="shouquan_address">未授权定位服务</string>
 
 </resources>

@@ -108,6 +108,7 @@ public abstract class TitleBarFragment extends RJFragment {
                 outsideAty.fm_left.setVisibility(View.INVISIBLE);
             } else {
                 outsideAty.fm_left.setVisibility(View.VISIBLE);
+                outsideAty.iv_left.setVisibility(View.VISIBLE);
             }
         }
     }

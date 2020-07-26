@@ -61,7 +61,7 @@
                 android:background="@color/color_999999" />
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/edit_poi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -103,8 +103,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginRight="@dimen/dp_28"
                 android:layout_weight="1"
-                android:text="未授权定位服务" />
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:text="@string/shouquan_address" />
 
             <ImageView
                 android:id="@+id/imageView3"
@@ -115,7 +118,7 @@
                  />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/tv_re_local"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -139,7 +142,8 @@
             android:layout_height="@dimen/dp_40"
             android:layout_marginTop="@dimen/dp_7"
             android:background="@color/color_ffffff"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:id="@+id/layout_my_rece_add">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -212,7 +216,7 @@
             android:background="@color/color_f1f1f1" />
         <!--     附近地址-->
         <LinearLayout
-            android:id="@+id/ll_near_address"
+            android:id="@+id/ll_title_near_address"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -221,17 +225,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_40"
                 android:background="@color/color_ffffff"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:id="@+id/ll_near_address">
 
 
                 <ImageView
-
-                    android:layout_width="@dimen/dp_14"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/dp_10"
-                    android:src="@mipmap/icon_local_black"
-                    />
+                    android:src="@mipmap/icon_local_black" />
 
                 <TextView
                     style="@style/style_select_address"
@@ -240,6 +243,7 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/dp_5"
                     android:layout_weight="1"
+                    android:id="@+id/tv_title_near_add"
                     android:text="@string/my_near_address" />
 
             </LinearLayout>
