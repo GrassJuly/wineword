@@ -56,6 +56,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import androidx.fragment.app.Fragment;
 
@@ -852,6 +854,7 @@ public class AppMethod {
         DetailBannerAdapter adapter = new DetailBannerAdapter(images);
         banner.setDelayTime(4500);
         banner.setBannerRound(0);
+        banner.isAutoLoop(false);
         banner.addBannerLifecycleObserver(context)
                 .setAdapter(adapter, true)
                 .start();
@@ -897,6 +900,28 @@ public class AppMethod {
             textView.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG); //中划线 
             textView.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
         }
+    }
+
+    private static String replaceAction(String str, String regular) {
+        return str.replaceAll(regular, "*");
+    }
+
+    // 判断字符串是否是数字
+    public static boolean isNumber(String str) {
+        Pattern pattern = Pattern.compile("[0-9]{1,}");
+        Matcher matcher = pattern.matcher(str);
+        boolean result = matcher.matches();
+        return result;
+    }
+
+    //^[A-Za-z0-9]+$
+
+    // 判断字符串是否是数字和字母
+    public static boolean isNumberAndLeter(String str) {
+        Pattern pattern = Pattern.compile("^[A-Za-z0-9]+$");
+        Matcher matcher = pattern.matcher(str);
+        boolean result = matcher.matches();
+        return result;
     }
 
 }

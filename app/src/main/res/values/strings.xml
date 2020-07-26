@@ -106,5 +106,15 @@
     <string name="string_service">服务</string>
     <string name="string_intostore">进店逛逛</string>
     <string name="string_gooddetail">商品详情</string>
+    <string name="string_seckill">秒杀</string>
+    <string name="string_buyfree">买赠</string>
+    <string name="string_fullreduction">满减</string>
+    <string name="string_fullgrowth">满赠</string>
+    <string name="string_winemoneydeduction">酒币抵扣</string>
+    <string name="string_moneyforwine">买酒送币</string>
+    <string name="string_freefreight">免运费</string>
+    <string name="string_add_shop">加入购物车</string>
+    <string name="string_clear_shop">清空购物车</string>
+    <string name="string_add_settlement">结算</string>
 
 </resources>

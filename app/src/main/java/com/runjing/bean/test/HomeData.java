@@ -1,5 +1,7 @@
 package com.runjing.bean.test;
 
+import com.alibaba.fastjson.JSON;
+import com.runjing.bean.response.good.GoodDetailBean;
 import com.runjing.bean.response.home.BannerBean;
 import com.runjing.bean.response.home.CityBean;
 import com.runjing.bean.response.home.GoodBean;

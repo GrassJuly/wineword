@@ -4,8 +4,15 @@ import android.content.Context;
 
 import android.view.View;
 
+import com.runjing.base.BasePop;
 import com.runjing.widget.BackPopupWindow;
 import com.runjing.widget.MiddlePopupWindow;
+import com.runjing.widget.ShoptPopupWindow;
+
+import org.runjing.rjframe.ui.ViewInject;
+
+import java.util.List;
+import java.util.concurrent.TransferQueue;
 
 
 /**
@@ -98,5 +105,18 @@ public class PopupWindowUtil {
             }
         });
         mWindow.show();
+    }
+
+    /**
+     * @param context
+     * @param popWindowCallBack
+     */
+    public static void showPopShopCar(Context context, View view, List<BasePop> list, final ShoptPopupWindow.PopupWindowCallBack popWindowCallBack) {
+        try {
+            ShoptPopupWindow mWindow = ShoptPopupWindow.getInstance(context).builder();
+            mWindow.showUp(view);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

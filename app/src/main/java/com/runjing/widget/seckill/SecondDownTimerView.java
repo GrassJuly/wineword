@@ -21,27 +21,27 @@ public class SecondDownTimerView extends BaseCountDownTimerView {
 
 	@Override
 	protected String getStrokeColor() {
-		return "CC9999";
+		return "FFF80000";
 	}
 
 	@Override
 	protected String getTextColor() {
-		return "6666CC";
+		return "FFFFFFFF";
 	}
 
 	@Override
 	protected int getCornerRadius() {
-		return 2;
+		return 4;
 	}
 
 	@Override
 	protected int getTextSize() {
-		return 18;
+		return 11;
 	}
 
 	@Override
 	protected String getBackgroundColor() {
-		return "FF9966";
+		return "FFF80000";
 	}
 	
 }

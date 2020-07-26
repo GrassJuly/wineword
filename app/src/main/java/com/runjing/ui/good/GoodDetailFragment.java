@@ -1,10 +1,12 @@
 package com.runjing.ui.good;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,16 +15,33 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.runjing.base.BasePop;
+import com.runjing.base.BaseRequest;
+import com.runjing.base.BaseResponse;
 import com.runjing.base.TitleBarFragment;
+import com.runjing.bean.request.HomeRequest;
+import com.runjing.bean.response.good.GoodDetailBaseBean;
+import com.runjing.bean.response.good.GoodDetailBean;
 import com.runjing.bean.test.HomeData;
 import com.runjing.common.AppMethod;
+import com.runjing.common.Appconfig;
+import com.runjing.common.BaseUrl;
+import com.runjing.http.MyRequestCallBack;
+import com.runjing.http.OkHttpUtil;
+import com.runjing.ui.home.HomeAdapter;
+import com.runjing.utils.PopupWindowUtil;
 import com.runjing.utils.StatusBarUtil;
 import com.runjing.widget.GradationScrollView;
+import com.runjing.widget.ShoptPopupWindow;
+import com.runjing.widget.seckill.SecondDownTimerView;
 import com.runjing.wineworld.R;
 import com.youth.banner.Banner;
 
 import org.runjing.rjframe.ui.BindView;
 import org.runjing.rjframe.ui.ViewInject;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * @Created: qianxs  on 2020.07.16 23:21.
@@ -56,7 +75,61 @@ public class GoodDetailFragment extends TitleBarFragment implements GradationScr
     private Banner banner;
     @BindView(id = R.id.frag_gs_content)
     private GradationScrollView gs_content;
+    @BindView(id = R.id.frag_ll_snakill)
+    private LinearLayout ll_snakill;
+    @BindView(id = R.id.frag_tv_price)
+    private TextView tv_priceS_;
+    @BindView(id = R.id.frag_tv_price)
+    private TextView tv_priceS;
+    @BindView(id = R.id.frag_tv_stock_s)
+    private TextView tv_stockS;
+    @BindView(id = R.id.frag_st_time)
+    private SecondDownTimerView st_time;
+    @BindView(id = R.id.frag_tv_price_n)
+    private TextView tv_priceN;
+    @BindView(id = R.id.frag_tv_price_p)
+    private TextView tv_priceP;
+    @BindView(id = R.id.frag_iv_plus)
+    private ImageView iv_plus;
+    @BindView(id = R.id.frag_tv_stock)
+    private TextView tv_stock;
+    @BindView(id = R.id.frag_tv_realprice)
+    private TextView tv_realprice;
+    @BindView(id = R.id.frag_tv_name)
+    private TextView tv_name;
+    @BindView(id = R.id.frag_rv_discount)
+    private RecyclerView rv_discount;
+    @BindView(id = R.id.frag_iv_discount, click = true)
+    private ImageView iv_discount;
+    @BindView(id = R.id.frag_iv_store)
+    private ImageView iv_store;
+    @BindView(id = R.id.frag_tv_storename)
+    private TextView tv_storename;
+    @BindView(id = R.id.frag_tv_dis)
+    private TextView tv_dis;
+    @BindView(id = R.id.frag_tv_store, click = true)
+    private TextView tv_store;
+    @BindView(id = R.id.frag_wv_content)
+    private WebView wb_content;
+    @BindView(id = R.id.frag_rl_tab)
+    private RelativeLayout rl_tab;
+    @BindView(id = R.id.frag_il_shop, click = true)
+    private RelativeLayout rl_shop;
+    @BindView(id = R.id.frag_iv_shop, click = true)
+    private ImageView iv_shop;
+    @BindView(id = R.id.frag_tv_shopNum)
+    private TextView tv_shopNum;
+    @BindView(id = R.id.frag_tv_money)
+    private TextView tv_money;
+    @BindView(id = R.id.frag_tv_reducemoney)
+    private TextView tv_reduceMoney;
+    @BindView(id = R.id.frag_tv_add, click = true)
+    private TextView tv_add;
+    @BindView(id = R.id.frag_tv_settlement, click = true)
+    private TextView tv_settlement;
+
     private int height;
+    private DiscountAdapter adapter;
 
     @Override
     protected View inflaterView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
@@ -68,15 +141,27 @@ public class GoodDetailFragment extends TitleBarFragment implements GradationScr
         super.setActionBarRes(actionBarRes);
         actionBarRes.titleLayoutVisible = 0;
         StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.color_ffffff));
+        StatusBarUtil.setDarkMode(getActivity());
+    }
+
+    @Override
+    protected void initData() {
+        super.initData();
+        getData();
     }
 
     @Override
     protected void initWidget(View parentView) {
         super.initWidget(parentView);
-        AppMethod.DetailBanner(outsideAty, banner, HomeData.getBanner());
         //获取顶部图片高度后，设置滚动监听
         ViewTreeObserver vto = banner.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(this);
+        adapter = new DiscountAdapter(getActivity());
+        rv_discount.setHasFixedSize(false);
+        rv_discount.setNestedScrollingEnabled(false);
+        rv_discount.setLayoutManager(new LinearLayoutManager(outsideAty));
+        rv_discount.setAdapter(adapter);
+        setData(null);
     }
 
     @Override
@@ -97,6 +182,22 @@ public class GoodDetailFragment extends TitleBarFragment implements GradationScr
                 case R.id.lay_iv_share:
                     ViewInject.showCenterToast(this, "分享");
                     break;
+                case R.id.frag_iv_shop:
+                    if (getResources().getString(R.string.tag_no).equals(v.getTag())) {
+                        iv_shop.setTag(getResources().getString(R.string.tag_yes));
+                        rl_shop.setVisibility(View.GONE);
+                        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.color_ffffff));
+                    } else {
+                        iv_shop.setTag(getResources().getString(R.string.tag_no));
+                        rl_shop.setVisibility(View.VISIBLE);
+                        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.color_ffffff), 66);
+                    }
+                    break;
+                case R.id.frag_tv_add:
+                    AppMethod.showMsg(getActivity(), "测试");
+                    break;
+                case R.id.frag_tv_settlement:
+                    break;
             }
         }
     }
@@ -112,7 +213,7 @@ public class GoodDetailFragment extends TitleBarFragment implements GradationScr
 
     @Override
     public void onScrollChanged(GradationScrollView scrollView, int x, int y, int oldx, int oldy) {
-        System.out.println("y +++++++++  " + y);
+//        System.out.println("y +++++++++  " + y);
         if (y <= 0) {   //设置标题的背景颜色
             iv_back.setImageResource(R.mipmap.icon_back_c);
             ll_title.setVisibility(View.INVISIBLE);
@@ -129,4 +230,31 @@ public class GoodDetailFragment extends TitleBarFragment implements GradationScr
             iv_share.setImageResource(R.mipmap.icon_share_h);
         }
     }
+
+    public void getData() {
+        OkHttpUtil.postRequest(BaseUrl.AppMain, new BaseRequest(), GoodDetailBaseBean.class, new MyRequestCallBack<GoodDetailBaseBean>() {
+            @Override
+            public void onPostResponse(GoodDetailBaseBean response) {
+                if (Appconfig.RequestSuccess.equals(response.resultCode)) {
+                    setData(response.getData());
+                }
+            }
+
+            @Override
+            public void onPostErrorResponse(Exception e, String msg) {
+
+            }
+
+            @Override
+            public void onNoNetWork() {
+
+            }
+        });
+    }
+
+    public void setData(GoodDetailBean response) {
+        AppMethod.DetailBanner(outsideAty, banner, HomeData.getBanner());
+        adapter.setData(response);
+    }
+
 }
