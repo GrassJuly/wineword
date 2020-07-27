@@ -19,3 +19,10 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keepclasseswithmembernames class * {
+native <methods>;
+}
+
+-keep class jd.wjlogin_sdk.** {*;}
+-keep class com.jd.verify.** {*;}

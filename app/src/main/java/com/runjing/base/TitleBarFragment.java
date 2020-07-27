@@ -266,8 +266,12 @@ public abstract class TitleBarFragment extends RJFragment {
     }
 
     public void onActionBar() {
-        setActionBarRes(actionBarRes);
-        styleChanged(actionBarRes);
+        try {
+            setActionBarRes(actionBarRes);
+            styleChanged(actionBarRes);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void onSearchTextChanged(String search) {

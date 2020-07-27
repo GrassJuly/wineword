@@ -19,9 +19,11 @@ import androidx.annotation.NonNull;
 import com.runjing.base.TitleBarActivity;
 import com.runjing.common.AppMethod;
 import com.runjing.ui.home.HomeFragment;
+import com.runjing.ui.login.WelcomeActivity;
 import com.runjing.ui.mine.MineFragment;
 import com.runjing.ui.ordre.OrderFragment;
 import com.runjing.ui.sort.SortFragment;
+import com.runjing.utils.PermissionUtils;
 import com.runjing.utils.StatusBarUtil;
 import com.runjing.widget.tabview.TabView;
 import com.runjing.widget.tabview.TabViewChild;
@@ -44,7 +46,8 @@ public class MainActivity extends TitleBarActivity implements TabView.OnTabChild
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.READ_PHONE_STATE
+            Manifest.permission.READ_PHONE_STATE,
+            BACKGROUND_LOCATION_PERMISSION
     };
     private static String BACKGROUND_LOCATION_PERMISSION = "android.permission.ACCESS_BACKGROUND_LOCATION";
 
@@ -59,25 +62,34 @@ public class MainActivity extends TitleBarActivity implements TabView.OnTabChild
     @Override
     public void setRootView() {
         MyApplication.contextApp.addActivity(this);
-        if(Build.VERSION.SDK_INT > 28
-                && getApplicationContext().getApplicationInfo().targetSdkVersion > 28) {
-            needPermissions = new String[] {
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.READ_PHONE_STATE,
-                    BACKGROUND_LOCATION_PERMISSION
-            };
-        }
+//        if(Build.VERSION.SDK_INT > 28
+//                && getApplicationContext().getApplicationInfo().targetSdkVersion > 28) {
+//            needPermissions = new String[] {
+//                    Manifest.permission.ACCESS_COARSE_LOCATION,
+//                    Manifest.permission.ACCESS_FINE_LOCATION,
+//                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//                    Manifest.permission.READ_EXTERNAL_STORAGE,
+//                    Manifest.permission.READ_PHONE_STATE,
+//                    BACKGROUND_LOCATION_PERMISSION
+//            };
+//        }
         setContentView(R.layout.activity_main);
+        PermissionUtils.requestPermissionsResult(this, 1, needPermissions
+                , new PermissionUtils.OnPermissionListener() {
+                    @Override
+                    public void onPermissionGranted() {
+                    }
 
+                    @Override
+                    public void onPermissionDenied() {
+                        PermissionUtils.showTipsDialog(MainActivity.this);
+                    }
+                });
     }
 
     @Override
     public void initWidget() {
         super.initWidget();
-
         tabViewChildList = new ArrayList<>();
         TabViewChild tabViewChild01 = new TabViewChild(R.mipmap.tab_home_main, R.mipmap.tab_home_main1,
                 getString(R.string.main_home), new HomeFragment());
@@ -95,10 +107,6 @@ public class MainActivity extends TitleBarActivity implements TabView.OnTabChild
         tabView.setTabViewChild(tabViewChildList, getFragmentManager());
         tabView.setOnTabChildClickListener(this);
     }
-
-
-
-
 
     @Override
     public void onTabChildClick(Fragment fragment, int position) {
@@ -126,16 +134,16 @@ public class MainActivity extends TitleBarActivity implements TabView.OnTabChild
         return super.onKeyDown(keyCode, event);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (Build.VERSION.SDK_INT >= 23
-                && getApplicationInfo().targetSdkVersion >= 23) {
-            if (isNeedCheck) {
-                checkPermissions(needPermissions);
-            }
-        }
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        if (Build.VERSION.SDK_INT >= 23
+//                && getApplicationInfo().targetSdkVersion >= 23) {
+//            if (isNeedCheck) {
+//                checkPermissions(needPermissions);
+//            }
+//        }
+//    }
 
     /**
      *
@@ -240,16 +248,16 @@ public class MainActivity extends TitleBarActivity implements TabView.OnTabChild
         startActivity(intent);
     }
 
-    @TargetApi(23)
-    public void onRequestPermissionsResult(int requestCode,
-                                           String[] permissions, int[] paramArrayOfInt) {
-        if (requestCode == PERMISSON_REQUESTCODE) {
-            if (!verifyPermissions(paramArrayOfInt)) {
-                showMissingPermissionDialog();
-                isNeedCheck = false;
-            }
-        }
-    }
+//    @TargetApi(23)
+//    public void onRequestPermissionsResult(int requestCode,
+//                                           String[] permissions, int[] paramArrayOfInt) {
+//        if (requestCode == PERMISSON_REQUESTCODE) {
+//            if (!verifyPermissions(paramArrayOfInt)) {
+//                showMissingPermissionDialog();
+//                isNeedCheck = false;
+//            }
+//        }
+//    }
 
     /**
      * 检测是否所有的权限都已经授权
@@ -265,5 +273,12 @@ public class MainActivity extends TitleBarActivity implements TabView.OnTabChild
             }
         }
         return true;
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionUtils.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }

@@ -1,4 +1,4 @@
-package com.runjing.utils;
+package com.runjing.utils.JDLogin;
 
 import android.content.Context;
 import android.telephony.TelephonyManager;
@@ -26,6 +26,8 @@ import jd.wjlogin_sdk.model.FailResult;
 public class UserUtil {
     private static WJLoginHelper helper;
     public static final short APPID = 100;
+    public static final String session_id = "";
+    public static final String udid = "";
 
     private static ClientInfo getClientInfo() {
         ClientInfo clientInfo = new ClientInfo();
@@ -119,18 +121,4 @@ public class UserUtil {
 
 
 
-
-    private static Toast toast;
-
-    /**
-     * @param text
-     */
-    public static void showToast(String text) {
-        if (toast == null) {
-            toast = Toast.makeText(MyApplication.contextApp, text, Toast.LENGTH_SHORT);
-        } else {
-            toast.setText(text);//如果不为空，则直接改变当前toast的文本
-        }
-        toast.show();
-    }
 }

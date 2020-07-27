@@ -21,11 +21,21 @@ import androidx.annotation.NonNull;
 
 public class WelcomeActivity extends TitleBarActivity {
 
+    private static String BACKGROUND_LOCATION_PERMISSION = "android.permission.ACCESS_BACKGROUND_LOCATION";
+    protected String[] needPermissions = new String[]{
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.READ_PHONE_STATE,
+            BACKGROUND_LOCATION_PERMISSION
+    };
+
     @Override
     public void setRootView() {
         MyApplication.contextApp.addActivity(this);
         setContentView(R.layout.activity_welcome);
-//        getPermissions();
+        getPermissions();
     }
 
     @Override
@@ -34,15 +44,8 @@ public class WelcomeActivity extends TitleBarActivity {
         StatusBarUtil.setTransparentForWindow(this);
     }
 
-    @Override
-    public void initWidget() {
-        super.initWidget();
-        initView();
-    }
-
     private void getPermissions() {
-        PermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.BLUETOOTH,
-                        Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.ACCESS_COARSE_LOCATION}
+        PermissionUtils.requestPermissionsResult(this, 1, needPermissions
                 , new PermissionUtils.OnPermissionListener() {
                     @Override
                     public void onPermissionGranted() {
