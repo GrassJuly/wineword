@@ -125,5 +125,11 @@
     <string name="wel_receive_hint">请输入历史收货人名称</string>
     <string name="order_login">登陆后才能查看订单</string>
     <string name="order_login_now">立即登陆</string>
+    <string name ="string_rece_man">收货人</string>
+    <string name ="string_rece_phone">联系电话</string>
+    <string name ="string_rece_address">地址</string>
+    <string name ="string_rece_info">补充说明</string>
+    <string name ="string_rece_mark">标签</string>
+    <string name ="string_have_no_goods">没有找到相关商品\n换个词试试吧</string>
 
 </resources>

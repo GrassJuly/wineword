@@ -15,20 +15,21 @@
 
 
         <ImageView
+            android:id="@+id/img_search_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
+            android:layout_marginLeft="@dimen/dp_10"
             android:src="@mipmap/fh_back" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_28"
             android:layout_marginLeft="@dimen/dp_10"
-            android:layout_weight="10"
+            android:layout_weight="7"
             android:background="@drawable/style_radius_bg_gray"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingLeft="@dimen/dp_15">
+            android:paddingLeft="@dimen/dp_5">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -36,7 +37,8 @@
                 android:src="@mipmap/icon_search" />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:id="@+id/edit_search_goods"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/dp_10"
@@ -45,16 +47,18 @@
                 android:hint="@string/search_local"
                 android:paddingLeft="@dimen/dp_2"
                 android:textColor="@color/color_999999"
-                android:textSize="@dimen/sp_12" />
+                android:textSize="@dimen/sp_12"
+                android:singleLine="true"/>
 
 
         </LinearLayout>
 
         <TextView
+            android:id="@+id/txt_search_click"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_10"
-            android:layout_marginRight="@dimen/dp_6"
+            android:layout_marginRight="@dimen/dp_12"
             android:layout_weight="0.5"
             android:gravity="center"
             android:text="@string/search"
@@ -66,8 +70,10 @@
 
 
     <ScrollView
+        android:id="@+id/scroll_search"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+       >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -84,6 +90,7 @@
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dp_40"
+                    android:layout_marginLeft="@dimen/dp_10"
                     android:gravity="left|center"
                     android:orientation="horizontal">
 
@@ -91,7 +98,6 @@
                         android:id="@+id/img_lsjl"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp_10"
                         android:src="@mipmap/history" />
 
                     <TextView
@@ -108,6 +114,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
+                        android:layout_marginRight="@dimen/dp_10"
                         android:gravity="right|center"
                         android:src="@mipmap/lajixiang" />
 
@@ -131,13 +138,13 @@
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dp_40"
                     android:gravity="left|center"
+                    android:layout_marginLeft="@dimen/dp_10"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:id="@+id/img_remen"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp_10"
                         android:src="@mipmap/icon_remen" />
 
                     <TextView
@@ -160,4 +167,34 @@
         </LinearLayout>
     </ScrollView>
 
+    <LinearLayout
+        android:id="@+id/layout_search_no_goods"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_search_null" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/string_have_no_goods"
+            android:textColor="@color/color_666666"
+            android:textSize="@dimen/sp_15"/>
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyview_search_goods"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

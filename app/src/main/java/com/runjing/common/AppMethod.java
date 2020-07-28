@@ -66,6 +66,7 @@ import java.util.regex.Pattern;
 import androidx.fragment.app.Fragment;
 
 import static android.content.Context.ACTIVITY_SERVICE;
+import static androidx.core.provider.FontsContractCompat.FontRequestCallback.RESULT_OK;
 
 //import android.app.Fragment;
 
@@ -125,6 +126,10 @@ public class AppMethod {
         intent.putExtra(Appconfig.DATA_KEY, data);
         fragment.startActivityForResult(intent, code);
     }
+
+
+
+
 
     /**
      * 跳转到maniacitivity
@@ -469,9 +474,9 @@ public class AppMethod {
      * @param msg
      * @param listener
      */
-    public static void showMsg(final Activity activity, String msg, final PopBackListener listener) {
+    public static void showMsg(final Activity activity, String title,String msg, final PopBackListener listener) {
         PopupWindowUtil.showPopWindow(activity,
-                activity.getString(R.string.app_default), msg
+                title, msg
                 , true, new MiddlePopupWindow.PopupWindowCallBack() {
                     @Override
                     public void onNegativeButtonClick() {

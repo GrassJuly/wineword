@@ -1,8 +1,10 @@
 package com.runjing.ui.address;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +40,7 @@ import com.runjing.wineworld.R;
 import org.runjing.rjframe.ui.BindView;
 import org.runjing.rjframe.ui.ViewInject;
 import org.runjing.rjframe.utils.DensityUtils;
+import org.runjing.rjframe.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,9 +84,12 @@ public class SelectAddressFragment extends TitleBarFragment implements PoiSearch
     private List<PoiItem> poiItems;// poi数据
     private List<PoiItem> mpois;// poi数据
     private String searchKeyword, searchCity;
-
+    private String mark; //页面跳转来源
     @Override
     protected View inflaterView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
+        bundle = outsideAty.getIntent().getBundleExtra(Appconfig.DATA_KEY);
+        mark = bundle.getString(Appconfig.DATA_KEY);
+        Log.d("2222",mark+"");
         return inflater.inflate(R.layout.frag_select_address, null);
     }
 
@@ -91,19 +97,25 @@ public class SelectAddressFragment extends TitleBarFragment implements PoiSearch
     protected void setActionBarRes(ActionBarRes actionBarRes) {
         super.setActionBarRes(actionBarRes);
         actionBarRes.titleLayoutVisible = 1;
-//        actionBarRes.leftVisiable = 1;
         actionBarRes.middleTitle = "选择收货地址";
+        actionBarRes.rightVisiable = 1;
+        actionBarRes.rightVal = "新增地址";
     }
 
     @Override
     protected void initData() {
         super.initData();
         nearList = new ArrayList<>();
-        lp = new LatLonPoint(Double.valueOf(LocalUtil.lat), Double.valueOf(LocalUtil.lon));
+        if(!StringUtils.isEmpty(LocalUtil.lat) && !StringUtils.isEmpty(LocalUtil.lon)) {
+            lp = new LatLonPoint(Double.valueOf(LocalUtil.lat), Double.valueOf(LocalUtil.lon));
+        }
         tv_select_address.setText(LocalUtil.city);
         tv_sq_address.setText(LocalUtil.address);
-        getData();
-//        getNearData();
+        if(!StringUtils.isEmpty(mark)&& !"add".equals(mark)){
+            getData();
+        }
+
+
         doSearchQuery();
 
     }
@@ -192,7 +204,7 @@ public class SelectAddressFragment extends TitleBarFragment implements PoiSearch
                         List<SuggestionCity> suggestionCities = poiResult
                                 .getSearchSuggestionCitys();// 当搜索不到poiitem数据时，会返回含有搜索关键字的城市信息
                         if (poiItems != null && poiItems.size() > 0) {
-
+                            nearList.clear();
                             for (int i = 0; i < poiItems.size(); i++) {
                                 String addr = poiItems.get(i).getTitle();
                                 AddressBean bean = new AddressBean();
@@ -222,15 +234,17 @@ public class SelectAddressFragment extends TitleBarFragment implements PoiSearch
      * @param mList
      */
     private void buildNearAddress(RecyclerView receLitView, List<AddressBean> mList, int type) {
-
-        mManager = new LinearLayoutManager(getActivity());
-        receiveAddressAdapter = new ReceiveAddressAdapter(getActivity(), mList, type);
-        receLitView.setHasFixedSize(false);
-        receLitView.setLayoutManager(mManager);
-        receLitView.setNestedScrollingEnabled(false);
+      if(mManager==null) {
+          mManager = new LinearLayoutManager(getActivity());
+          receLitView.setHasFixedSize(false);
+          receLitView.setLayoutManager(mManager);
+          receLitView.setNestedScrollingEnabled(false);
+          receLitView.addItemDecoration(new RecyclerViewItemDecoration(RecyclerViewItemDecoration.MODE_HORIZONTAL,
+                  getResources().getColor(R.color.color_eeeeee), DensityUtils.dip2dp(getActivity(), 1), 0, 0));
+      }
+        receiveAddressAdapter = new ReceiveAddressAdapter(getActivity(), mList, type,mark);
         receLitView.setAdapter(receiveAddressAdapter);
-        receLitView.addItemDecoration(new RecyclerViewItemDecoration(RecyclerViewItemDecoration.MODE_HORIZONTAL,
-                getResources().getColor(R.color.color_eeeeee), DensityUtils.dip2dp(getActivity(), 1), 0, 0));
+
     }
 
     @Override
@@ -272,5 +286,6 @@ public class SelectAddressFragment extends TitleBarFragment implements PoiSearch
         }
 
     }
+
 
 }

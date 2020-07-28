@@ -115,6 +115,8 @@ public abstract class TitleBarFragment extends RJFragment {
         setSearchVisiable(actionBarRes.searchVisiable);
     }
 
+
+
     public void setTitleBarVis(int vis) {
         if (outsideAty != null) {
             if (vis == 0) {
@@ -165,6 +167,7 @@ public abstract class TitleBarFragment extends RJFragment {
             outsideAty.tv_title.setText(title);
         }
     }
+
 
     public void setTitleColor(int color) {
         if (outsideAty != null) {

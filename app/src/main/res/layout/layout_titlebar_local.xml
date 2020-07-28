@@ -28,7 +28,7 @@
             android:maxWidth="@dimen/dp_160"
             android:minWidth="@dimen/dp_20"
             android:singleLine="true"
-            android:text="@string/home_no_local"
+            android:text=""
             android:textSize="@dimen/sp_16" />
 
         <ImageView

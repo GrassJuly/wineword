@@ -1,7 +1,10 @@
 package com.runjing.utils.location;
 
 import android.text.TextUtils;
+import android.app.Activity;
+import android.content.Context;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClientOption;
@@ -10,6 +13,8 @@ import com.amap.api.location.AMapLocationQualityReport;
 import com.runjing.common.Appconfig;
 import com.runjing.utils.store.MMKVUtil;
 import com.socks.library.KLog;
+import com.runjing.MyApplication;
+import com.runjing.base.TitleBarActivity;
 
 public class LocalUtil {
     public static String lon;//经度
@@ -18,9 +23,10 @@ public class LocalUtil {
     public static String address;//兴趣点
     public static String poiName;
     public static TextView mTextView;
-
-    public LocalUtil(TextView txtView) {
+    public static Context mContext;
+    public LocalUtil(TextView txtView){
         this.mTextView = txtView;
+
     }
 
     /**
@@ -71,6 +77,7 @@ public class LocalUtil {
                     }
                 } else {
                     //定位失败
+                    mTextView.setText("定位失败，无法获取地址");
                     sb.append("定位失败" + "\n");
                     sb.append("错误码:" + location.getErrorCode() + "\n");
                     sb.append("错误信息:" + location.getErrorInfo() + "\n");
@@ -125,15 +132,19 @@ public class LocalUtil {
                 break;
             case AMapLocationQualityReport.GPS_STATUS_NOGPSPROVIDER:
                 str = "手机中没有GPS Provider，无法进行GPS定位";
+                mTextView.setText("手机中没有GPS Provider，无法进行GPS定位");
                 break;
             case AMapLocationQualityReport.GPS_STATUS_OFF:
                 str = "GPS关闭，建议开启GPS，提高定位质量";
+                mTextView.setText("未授权定位服务2");
                 break;
             case AMapLocationQualityReport.GPS_STATUS_MODE_SAVING:
                 str = "选择的定位模式中不包含GPS定位，建议选择包含GPS定位的模式，提高定位质量";
+                mTextView.setText("选择的定位模式中不包含GPS定位，建议选择包含GPS定位的模式，提高定位质量");
                 break;
             case AMapLocationQualityReport.GPS_STATUS_NOGPSPERMISSION:
                 str = "没有GPS定位权限，建议开启gps定位权限";
+                mTextView.setText("没有GPS定位权限，建议开启gps定位权限");
                 break;
         }
         return str;

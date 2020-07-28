@@ -99,7 +99,7 @@ public class HomeFragment extends TitleBarFragment {
     public static AMapLocationClient locationClient = null;
     public static AMapLocationClientOption locationOption = null;
     public static String strLocation;
-    private String lat,lon,city,address;
+
     @Override
     protected View inflaterView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
         loadingDialog = new LoadingDialog(outsideAty);
@@ -109,6 +109,8 @@ public class HomeFragment extends TitleBarFragment {
     @Override
     protected void initWidget(View parentView) {
         super.initWidget(parentView);
+
+        tv_address.setText("正在获取定位信息...");
         refreshLayout.setRefreshHeader(new RJRefreshHeader(outsideAty).
                 setNormalColor(outsideAty.getResources().getColor(R.color.color_99000000)).
                 setAnimatingColor(outsideAty.getResources().getColor(R.color.color_99000000)).
@@ -152,7 +154,7 @@ public class HomeFragment extends TitleBarFragment {
                 AppMethod.postShowWith(outsideAty, SimpleBackPage.Search);
                 break;
             case R.id.lay_ll_order:
-                AppMethod.postShowWith(outsideAty, SimpleBackPage.StoreList);
+                AppMethod.postShowWith(outsideAty, SimpleBackPage.Search);
                 break;
             case R.id.lay_ll_store:
                 AppMethod.postShowWith(outsideAty, SimpleBackPage.StoreList);
@@ -161,7 +163,8 @@ public class HomeFragment extends TitleBarFragment {
                 AppMethod.postShowWith(outsideAty, SimpleBackPage.StoreList);
                 break;
             case R.id.frag_ll_select:
-                AppMethod.postShowWith(outsideAty, SimpleBackPage.SelectAddress);
+                AppMethod.postShowWith(outsideAty, SimpleBackPage.AddAddress);
+//                AppMethod.postShowWith(outsideAty, SimpleBackPage.SelectAddress);
                 break;
             case R.id.frag_iv_shop:
                 AppMethod.postShowWith(outsideAty, SimpleBackPage.ShopCat);

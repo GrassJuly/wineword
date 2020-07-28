@@ -1,6 +1,7 @@
 package com.runjing.ui.address;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,11 +34,13 @@ public class ReceiveAddressAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private GoodBean response;
     private List<AddressBean> mList;
     private int mType;
+    private String mmark;
 
-    public ReceiveAddressAdapter(Activity context, List<AddressBean> data, int type) {
+    public ReceiveAddressAdapter(Activity context, List<AddressBean> data, int type, String mark) {
         this.context = context;
         mList = data;
         mType = type;
+        mmark = mark;
     }
 
 
@@ -144,12 +147,19 @@ public class ReceiveAddressAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             if (goods != null && goods.size() > 0) {
 
                 tv_near_address.setText(AppMethod.setDefault(goods.get(position).getAddress()));
-//                lay_near_address.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//
-//                    }
-//                });
+                lay_near_address.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if ("add".equals(mmark)){
+                            Bundle bundle = new Bundle();
+                            bundle.putString(Appconfig.DATA_KEY,goods.get(position).getAddress());
+                            AppMethod.postShowForResult(context, 100,SimpleBackPage.AddAddress,bundle);
+                            context.finish();
+                        }
+                    }
+                });
+
+
             }
         }
     }
@@ -174,8 +184,11 @@ public class ReceiveAddressAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             if (goods != null && goods.size() > 0) {
                 tv_select_address.setText(AppMethod.setDefault(goods.get(position).getPoiAddress()));
                 tv_near_address.setText(AppMethod.setDefault(goods.get(position).getAddress()));
-                lay_near_address.setOnClickListener(v -> AppMethod.postShowWith(context, SimpleBackPage.Home));
+             lay_near_address.setOnClickListener(v -> AppMethod.postShowWith(context, SimpleBackPage.Home));
+
             }
+
+
         }
     }
 
