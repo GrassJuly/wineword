@@ -1,10 +1,8 @@
 package com.runjing.utils.location;
 
-import android.text.TextUtils;
-import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClientOption;
@@ -12,9 +10,6 @@ import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.AMapLocationQualityReport;
 import com.runjing.common.Appconfig;
 import com.runjing.utils.store.MMKVUtil;
-import com.socks.library.KLog;
-import com.runjing.MyApplication;
-import com.runjing.base.TitleBarActivity;
 
 public class LocalUtil {
     public static String lon;//经度
