@@ -10,9 +10,11 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.runjing.common.Appconfig;
+import com.socks.library.KLog;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.mmkv.MMKV;
 
+import org.runjing.rjframe.BuildConfig;
 import org.runjing.rjframe.utils.PreferenceHelper;
 
 import java.util.LinkedList;
@@ -43,8 +45,9 @@ public class MyApplication extends Application {
         Fresco.initialize(this);
         MMKV.initialize(this);
         //线上检测
-        CrashReport.initCrashReport(getApplicationContext(), "92a7c20823", false);
+        CrashReport.initCrashReport(getApplicationContext(), "92a7c20823", true);
         MultiDex.install(this);
+        KLog.init(BuildConfig.DEBUG, "wineworld :::::  ");
     }
 
     // 添加Activity到容器中

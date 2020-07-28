@@ -1,25 +1,18 @@
 package com.runjing.ui.good;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.webkit.WebView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.Toolbar;
 
-import com.runjing.base.BasePop;
 import com.runjing.base.BaseRequest;
-import com.runjing.base.BaseResponse;
 import com.runjing.base.TitleBarFragment;
-import com.runjing.bean.request.HomeRequest;
 import com.runjing.bean.response.good.GoodDetailBaseBean;
 import com.runjing.bean.response.good.GoodDetailBean;
 import com.runjing.bean.test.HomeData;
@@ -28,11 +21,8 @@ import com.runjing.common.Appconfig;
 import com.runjing.common.BaseUrl;
 import com.runjing.http.MyRequestCallBack;
 import com.runjing.http.OkHttpUtil;
-import com.runjing.ui.home.HomeAdapter;
-import com.runjing.utils.PopupWindowUtil;
 import com.runjing.utils.StatusBarUtil;
 import com.runjing.widget.GradationScrollView;
-import com.runjing.widget.ShoptPopupWindow;
 import com.runjing.widget.seckill.SecondDownTimerView;
 import com.runjing.wineworld.R;
 import com.youth.banner.Banner;

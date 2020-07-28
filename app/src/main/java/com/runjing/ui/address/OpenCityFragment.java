@@ -4,34 +4,22 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.runjing.base.TitleBarFragment;
-import com.runjing.bean.request.HomeRequest;
 import com.runjing.bean.response.home.HomeBean;
-import com.runjing.bean.response.home.HomeResponse;
 import com.runjing.bean.test.HomeData;
-import com.runjing.common.AppMethod;
-import com.runjing.common.Appconfig;
-import com.runjing.common.BaseUrl;
-import com.runjing.http.MyRequestCallBack;
-import com.runjing.http.OkHttpUtil;
 import com.runjing.ui.home.HomeAdapter;
-import com.runjing.utils.LocalUtil;
+import com.runjing.utils.location.LocalUtil;
 import com.runjing.utils.RecyclerViewItemDecoration;
-import com.runjing.utils.SpacesItemDecoration;
 import com.runjing.widget.LoadingDialog;
 import com.runjing.wineworld.R;
 
 import org.runjing.rjframe.ui.BindView;
 import org.runjing.rjframe.utils.DensityUtils;
-
-import static com.runjing.utils.SpacesItemDecoration.STAGGEREDGRIDLAYOUT;
 
 /**
  * 已开通城市

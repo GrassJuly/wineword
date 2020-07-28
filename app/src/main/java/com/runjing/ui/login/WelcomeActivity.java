@@ -2,17 +2,23 @@ package com.runjing.ui.login;
 
 import android.Manifest;
 import android.content.Intent;
-import android.util.Log;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.runjing.MainActivity;
 import com.runjing.MyApplication;
 import com.runjing.base.TitleBarActivity;
+import com.runjing.common.AppMethod;
 import com.runjing.common.Appconfig;
-import com.runjing.utils.MMKVUtil;
+import com.runjing.utils.store.MMKVUtil;
 import com.runjing.utils.StatusBarUtil;
 import com.runjing.wineworld.R;
 
 import com.runjing.utils.PermissionUtils;
+
+import org.runjing.rjframe.ui.BindView;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -20,6 +26,13 @@ import java.util.TimerTask;
 import androidx.annotation.NonNull;
 
 public class WelcomeActivity extends TitleBarActivity {
+
+    @BindView(id = R.id.act_ll_agree)
+    private LinearLayout ll_agree;
+    @BindView(id = R.id.act_tv_login, click = true)
+    private TextView tv_login;
+    @BindView(id = R.id.act_tv_refause, click = true)
+    private TextView tv_refause;
 
     private static String BACKGROUND_LOCATION_PERMISSION = "android.permission.ACCESS_BACKGROUND_LOCATION";
     protected String[] needPermissions = new String[]{
@@ -30,18 +43,48 @@ public class WelcomeActivity extends TitleBarActivity {
             Manifest.permission.READ_PHONE_STATE,
             BACKGROUND_LOCATION_PERMISSION
     };
+    private boolean is_Guild;
 
     @Override
     public void setRootView() {
         MyApplication.contextApp.addActivity(this);
+        is_Guild = MMKVUtil.getInstance().decodeBoolean(Appconfig.IS_GUILD);
         setContentView(R.layout.activity_welcome);
-        getPermissions();
     }
 
     @Override
     public void initToolBar() {
         super.initToolBar();
         StatusBarUtil.setTransparentForWindow(this);
+    }
+
+    @Override
+    public void initWidget() {
+        super.initWidget();
+        String is_agree = MMKVUtil.getInstance().decodeString(Appconfig.IS_AGREE);
+        if (TextUtils.isEmpty(is_agree) || !Appconfig.IS_AGREE.equals(is_agree)) {
+            ll_agree.setVisibility(View.VISIBLE);
+        } else {
+            ll_agree.setVisibility(View.GONE);
+            getPermissions();
+        }
+    }
+
+    @Override
+    public void widgetClick(View v) {
+        super.widgetClick(v);
+        if (v != null) {
+            switch (v.getId()) {
+                case R.id.act_tv_login:
+                    MMKVUtil.getInstance().encode(Appconfig.IS_AGREE, Appconfig.IS_AGREE);
+                    ll_agree.setVisibility(View.GONE);
+                    getPermissions();
+                    break;
+                case R.id.act_tv_refause:
+                    finish();
+                    break;
+            }
+        }
     }
 
     private void getPermissions() {
@@ -64,15 +107,11 @@ public class WelcomeActivity extends TitleBarActivity {
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
-                Intent intent;
-                if (MMKVUtil.getInstance().decodeBoolean(Appconfig.IS_GUILD)) {
-//                    intent = new Intent(WelcomeActivity.this, LoginActivity.class);
-                    intent = new Intent(WelcomeActivity.this, MainActivity.class);
+                if (is_Guild) {
+                    AppMethod.postActivity(WelcomeActivity.this, MainActivity.class);
                 } else {
-                    intent = new Intent(WelcomeActivity.this, GuildActivity.class);
+                    AppMethod.postActivity(WelcomeActivity.this, GuildActivity.class);
                 }
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
                 finish();
             }
         };

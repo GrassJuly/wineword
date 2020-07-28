@@ -5,14 +5,12 @@ import android.content.Context;
 import android.view.View;
 
 import com.runjing.base.BasePop;
-import com.runjing.widget.BackPopupWindow;
-import com.runjing.widget.MiddlePopupWindow;
-import com.runjing.widget.ShoptPopupWindow;
-
-import org.runjing.rjframe.ui.ViewInject;
+import com.runjing.widget.pop.BackPopupWindow;
+import com.runjing.widget.pop.LoginReceivePopupWindow;
+import com.runjing.widget.pop.MiddlePopupWindow;
+import com.runjing.widget.pop.ShoptPopupWindow;
 
 import java.util.List;
-import java.util.concurrent.TransferQueue;
 
 
 /**
@@ -118,5 +116,30 @@ public class PopupWindowUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 收货地址
+     * @param context
+     * @param cancel
+     * @param sure
+     * @param popWindowCallBack
+     */
+    public static void showPopReceive(Context context, String cancel, String sure, final LoginReceivePopupWindow.PopupWindowCallBack popWindowCallBack) {
+
+        LoginReceivePopupWindow mWindow = new LoginReceivePopupWindow(context).builder();
+        mWindow.setNeg(cancel, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popWindowCallBack.onNegativeButtonClick();
+            }
+        });
+        mWindow.setPos(sure, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popWindowCallBack.onPositiveButtonClick(mWindow.getInputMsg());
+            }
+        });
+        mWindow.show();
     }
 }

@@ -1,6 +1,5 @@
-package com.runjing.utils;
+package com.runjing.utils.store;
 
-import android.content.Intent;
 import android.os.Parcelable;
 
 import com.tencent.mmkv.MMKV;

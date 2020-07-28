@@ -9,6 +9,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.fdlm.util.DESUtil;
 import com.runjing.MyApplication;
 import com.runjing.common.AppMethod;
+import com.socks.library.KLog;
 import com.squareup.okhttp.Request;
 
 import org.runjing.rjframe.ui.ViewInject;
@@ -17,6 +18,7 @@ import org.runjing.rjframe.utils.SystemTool;
 
 import java.io.File;
 import java.io.IOException;
+
 
 /**
  * okHttp网络请求
@@ -43,10 +45,10 @@ public class OkHttpUtil {
                 if (obj != null) {
                     data = JSON.toJSONString(obj, SerializerFeature.DisableCircularReferenceDetect);
                     if (SystemTool.DEBUG) {
-                        RJLoger.debug(url);
-                        RJLoger.debug(data);
+                        KLog.i(url);
+                        KLog.i(data);
                     }
-                    data = desutil.getEncAndBase64String(data);
+//                    data = desutil.getEncAndBase64String(data);
 
                 }
             } catch (Exception e) {
@@ -61,6 +63,8 @@ public class OkHttpUtil {
 //            callback.onPostResponse(null);
         } else {
             OkHttpClientManager.postAsyn(url, new OkHttpClientManager.StringCallback() {
+
+
                 @Override
                 public void onFailure(Request request, IOException e) {
 
@@ -68,7 +72,7 @@ public class OkHttpUtil {
                         callback.onPostErrorResponse(e, e.getMessage());
                         if (SystemTool.DEBUG) RJLoger.debug(e.getMessage());
                     }catch(NullPointerException e3){
-                        RJLoger.debug("返回数据为null");
+                        KLog.i("返回数据为null");
                     } catch (IllegalArgumentException e1) {
                         ViewInject.showCenterToast(MyApplication.contextApp, "请求时间超时,请重试");
                     } catch (Exception e2) {
@@ -79,7 +83,8 @@ public class OkHttpUtil {
                 @Override
                 public void onResponse(String response) {
                     try {
-                        response = desutil.getDesAndBase64String(response);
+//                        response = desutil.getDesAndBase64String(response);
+                        KLog.i(response);
                         if (SystemTool.DEBUG) RJLoger.debug(response);
                         if (!TextUtils.isEmpty(response)) {
                             callback.onPostResponse(JSON.parseObject(response, clazz));

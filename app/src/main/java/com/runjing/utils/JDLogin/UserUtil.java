@@ -25,19 +25,21 @@ import jd.wjlogin_sdk.model.FailResult;
 
 public class UserUtil {
     private static WJLoginHelper helper;
-    public static final short APPID = 100;
+    public static final short APPID = 1229;
     public static final String session_id = "";
     public static final String udid = "";
+    private static final String sid = "1000370";
+    private static final String lId = "1000371";
 
     private static ClientInfo getClientInfo() {
         ClientInfo clientInfo = new ClientInfo();
         //下面的值由接入方填充
         clientInfo.setDwAppID(APPID); //必填，appId, 无线统一登录后台分配
-        clientInfo.setAppName("WJLoginAndroidDemo");//必填，APP名字
+        clientInfo.setAppName("京东酒世界APP");//必填，APP名字
         clientInfo.setDwGetSig(1);//必填，这里统一填1
-        clientInfo.setUnionId("50965");//选填,联盟号，有就填值，没有就不用写这一句
-        clientInfo.setSubunionId("jingdong");//选填,子联盟号，有就填值，没有就不用写这一句
-        clientInfo.setPartner("jingdong");//选填,渠道号，有就填值，没有就不用写这一句
+//        clientInfo.setUnionId("50965");//选填,联盟号，有就填值，没有就不用写这一句
+//        clientInfo.setSubunionId("jingdong");//选填,子联盟号，有就填值，没有就不用写这一句
+//        clientInfo.setPartner("jingdong");//选填,渠道号，有就填值，没有就不用写这一句
         return clientInfo;
     }
 

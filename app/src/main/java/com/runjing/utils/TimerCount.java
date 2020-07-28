@@ -1,9 +1,8 @@
 package com.runjing.utils;
 
-import android.os.CountDownTimer;
 import android.widget.TextView;
 
-import com.runjing.MyApplication;
+import com.runjing.utils.time.CountDownTimerUtil;
 import com.runjing.wineworld.R;
 
 /**
@@ -14,7 +13,7 @@ import com.runjing.wineworld.R;
  * @Version: v_1.0 on 2020.07.21 12:39.
  * @Remark:
  */
-public class TimerCount extends CountDownTimer {
+public class TimerCount extends CountDownTimerUtil {
     private TextView tv;
 
     /**
@@ -29,6 +28,7 @@ public class TimerCount extends CountDownTimer {
         super(millisInFuture, countDownInterval);
         this.tv = tv;
     }
+
 
     /**
      *  * Instantiates a new Timer count.

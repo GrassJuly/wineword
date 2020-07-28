@@ -1,11 +1,16 @@
 package com.runjing.ui.login;
 
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,19 +18,31 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.runjing.base.BaseResponse;
+import com.jd.verify.ShowCapCallback;
+import com.jd.verify.Verify;
+import com.jd.verify.model.IninVerifyInfo;
 import com.runjing.base.SimpleBackPage;
 import com.runjing.base.TitleBarFragment;
-import com.runjing.bean.request.HomeRequest;
 import com.runjing.bean.response.web.WebBean;
 import com.runjing.common.AppMethod;
 import com.runjing.common.Appconfig;
-import com.runjing.common.BaseUrl;
-import com.runjing.http.MyRequestCallBack;
-import com.runjing.http.OkHttpUtil;
+import com.runjing.utils.JDLogin.UserUtil;
+import com.runjing.utils.store.MMKVUtil;
 import com.runjing.wineworld.R;
 
+import org.json.JSONObject;
 import org.runjing.rjframe.ui.BindView;
+import org.runjing.rjframe.ui.ViewInject;
+
+import jd.wjlogin_sdk.common.WJLoginHelper;
+import jd.wjlogin_sdk.common.listener.LoginFailProcessor;
+import jd.wjlogin_sdk.common.listener.OnCommonCallback;
+import jd.wjlogin_sdk.common.listener.OnLoginCallback;
+import jd.wjlogin_sdk.model.ErrorResult;
+import jd.wjlogin_sdk.model.FailResult;
+import jd.wjlogin_sdk.util.MD5;
+
+import static com.runjing.common.Appconfig.FROMREGIST;
 
 /**
  * @Created: qianxs  on 2020.07.20 19:37.
@@ -55,6 +72,12 @@ public class APLoginFragment extends TitleBarFragment {
     private TextView tv_isagree;
     @BindView(id = R.id.frag_tv_login, click = true)
     private TextView tv_login;
+    private WJLoginHelper helper;
+    private OnLoginCallBack listener;
+    private Verify verify;
+    private String sid;
+    private String sUserName;
+    private String sUserPassword;
 
     @Override
     protected View inflaterView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
@@ -64,6 +87,8 @@ public class APLoginFragment extends TitleBarFragment {
     @Override
     protected void initWidget(View parentView) {
         super.initWidget(parentView);
+        helper = UserUtil.getWJLoginHelper();
+        verify = Verify.getInstance();
         tv_isagree.setText(AppMethod.setDiffCollors(
                 "{" + getResources().getString(R.string.login_isagree_next) + "}" +
                         getResources().getString(R.string.login_isagree_last),
@@ -157,11 +182,7 @@ public class APLoginFragment extends TitleBarFragment {
                     }
                     break;
                 case R.id.frag_tv_forget:
-                    Bundle bundle = new Bundle();
-                    WebBean webBean = new WebBean();
-                    webBean.setUrl("");
-                    bundle.putSerializable(Appconfig.DATA_KEY, webBean);
-                    AppMethod.postShowWith(getActivity(), SimpleBackPage.Web, bundle);
+                    getForgtPwd();
                     break;
                 case R.id.frag_iv_isagree:
                     if (getResources().getString(R.string.tag_no).equals(v.getTag())) {
@@ -181,67 +202,199 @@ public class APLoginFragment extends TitleBarFragment {
                     }
                     break;
                 case R.id.frag_tv_login:
-                    onSubmit();
+                    onJDLogin();
                     break;
             }
         }
     }
 
-    public void onSubmit() {
-//        if (TextUtils.isEmpty(et_account.getText())) {
-//            ViewInject.showCenterToast(getActivity(), "请填写手机号");
-//            return;
-//        }
-//        if (et_account.getText().toString().contains("@")){
-//
-//        } else {
-//
-//        }
-//        if (AppMethod.isMobileNO(et_phone.getText().toString())) {
-//            ViewInject.showCenterToast(outsideAty, "请填写正确的手机号");
-//            return;
-//        }
-//        if (TextUtils.isEmpty(et_pwd.getText().toString())) {
-//            ViewInject.showCenterToast(outsideAty, "请填写密码");
-//            return;
-//        }
+    public void onJDLogin() {
+        if (TextUtils.isEmpty(et_pwd.getText().toString())) {
+            ViewInject.showCenterToast(outsideAty, "请填写密码");
+            return;
+        }
+        sUserName = et_account.getText().toString().trim();
+        sUserPassword = MD5.encrypt32(et_pwd.getText().toString());
+        getSessionId();
+    }
 
-        HomeRequest homeRequest = new HomeRequest();
-        OkHttpUtil.postRequest(BaseUrl.AppMain, homeRequest, BaseResponse.class, new MyRequestCallBack<BaseResponse>() {
+    private void getSessionId() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("loginName", et_account.getText().toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        helper.getCaptchaSid(4, jsonObject, new OnCommonCallback() {
             @Override
-            public void onPostResponse(BaseResponse response) {
-                onLogin();
+            public void onSuccess() {
+                helper.JDLoginWithPasswordNew(sUserName, sUserPassword, "", "", onLoginCallback);
             }
 
             @Override
-            public void onPostErrorResponse(Exception e, String msg) {
-
+            public void onError(ErrorResult errorResult) {
             }
 
             @Override
-            public void onNoNetWork() {
-
+            public void onFail(FailResult failResult) {
+                sid = failResult.getStrVal();
+                if (TextUtils.isEmpty(sid)) {
+                    ViewInject.showCenterToast(outsideAty, failResult.getMessage());
+                    return;
+                }
+                //第三个参数是uuid,app中有uuid 请填上
+                verify.init(sid, outsideAty, "", sUserName, verifyCallback);
             }
         });
     }
 
-    public void onLogin() {
-        HomeRequest homeRequest = new HomeRequest();
-        OkHttpUtil.postRequest(BaseUrl.LoginIn, homeRequest, BaseResponse.class, new MyRequestCallBack<BaseResponse>() {
-            @Override
-            public void onPostResponse(BaseResponse response) {
+    ShowCapCallback verifyCallback = new ShowCapCallback() {
+        @Override
+        public void showCap() {
+            //弹出验证码时的回调，业务方若自行显示loading圈，在这个回调要将loading圈消失掉。若使用验证码sdk提供的loading则不需处理。
 
-            }
+        }
 
-            @Override
-            public void onPostErrorResponse(Exception e, String msg) {
+        @Override
+        public void loadFail() {
+            //加载失败或验证失败的回调，业务方若自行显示loading圈，在这个回调要将loading圈消失掉。若使用验证码sdk提供的loading则不需处理。
 
-            }
+        }
 
-            @Override
-            public void onNoNetWork() {
+        @Override
+        public void onSSLError() {
+            //网络请求时ssl异常的回调，业务方若自行显示loading圈，在这个回调要将loading圈消失掉。若使用验证码sdk提供的loading则不需处理。
+            Log.d("verifyCallback", "onSSLError");
+        }
 
-            }
-        });
+        @Override
+        public void showButton(int i) {
+            //接入了嵌入式的验证方式，需要显示按钮的回调。现在支持的是点图的方式，所以正常接入不会执行到这个回调
+            //业务方若自行显示loading圈，为保险起见在这个回调要将loading圈消失掉。若使用验证码sdk提供的loading则不需处理。
+            Log.d("verifyCallback", "showButton");
+        }
+
+        @Override
+        public void invalidSessiongId() {
+            //sid失效，需要重新获取
+            Log.d("verifyCallback", "invalidSessiongId");
+            getSessionId();
+        }
+
+        @Override
+        public void onSuccess(IninVerifyInfo ininVerifyInfo) {
+            //验证成功的回调
+            helper.JDLoginWithPasswordNew(sUserName, sUserPassword, sid, ininVerifyInfo.getVt(), onLoginCallback);
+        }
+
+        @Override
+        public void onFail(String s) {
+            //嵌入式的（滑动验证码）验证失败回调，业务方若自行显示loading圈，在这个回调要将loading圈消失掉。若使用验证码sdk提供的loading则不需处理。
+            Log.d("verifyCallback", "onFail");
+            //滑动验证码sdk已经提示，不需要做其他操作
+        }
+    };
+
+
+    OnLoginCallback onLoginCallback = new OnLoginCallback(new LoginFailProcessor() {
+        @Override
+        public void onCommonHandler(FailResult failResult) {
+            ViewInject.showCenterToast(outsideAty, failResult.getMessage());
+        }
+
+
+        @Override
+        public void getBackPassword(FailResult failResult) {
+            ViewInject.showCenterToast(outsideAty, failResult.getMessage());
+        }
+
+
+        @Override
+        public void accountNotExist(FailResult failResult) {
+            ViewInject.showCenterToast(outsideAty, failResult.getMessage());
+        }
+
+        @Override
+        public void handle0x6a(FailResult failResult) {
+            ViewInject.showCenterToast(outsideAty, failResult.getMessage());
+        }
+
+        @Override
+        public void handle0x64(FailResult failResult) {
+            ViewInject.showCenterToast(outsideAty, failResult.getMessage());
+        }
+
+        @Override
+        public void handle0x8(FailResult failResult) {
+            ViewInject.showCenterToast(outsideAty, failResult.getMessage());
+        }
+
+        @Override
+        public void handleBetween0x7bAnd0x7e(FailResult failResult) {
+            ViewInject.showCenterToast(outsideAty, failResult.getMessage());
+        }
+
+        @Override
+        public void onSendMsgWithoutDialog(FailResult failResult) {
+            ViewInject.showCenterToast(outsideAty, failResult.getMessage());
+        }
+
+
+        @Override
+        public void handleBetween0x77And0x7a(FailResult failResult) {
+            // 是否需要禁止用户操作，由客户端决定
+            ViewInject.showCenterToast(outsideAty, failResult.getMessage());
+        }
+
+
+        @Override
+        public void onSendMsg(FailResult failResult) {
+            ViewInject.showCenterToast(outsideAty, failResult.getMessage());
+        }
+    }) {
+
+        @Override
+        protected void beforeHandleResult() {
+        }
+
+        @Override
+        public void onSuccess() {
+            MMKVUtil.getInstance().encode(Appconfig.JDPin, helper.getPin());
+            MMKVUtil.getInstance().encode(Appconfig.IsPhone, sUserName);
+            MMKVUtil.getInstance().encode(Appconfig.IsPWD, sUserPassword);
+            if (listener != null) listener.onLoginRJ(helper.getPin());
+        }
+
+        @Override
+        public void onError(ErrorResult error) {
+            ViewInject.showCenterToast(outsideAty, error.toString());
+        }
+    };
+
+    //忘记密码
+    public void getForgtPwd() {
+        String findPwdUrl = "https://plogin.m.jd.com/cgi-bin/m/mfindpwd";
+        String userName = et_account.getText().toString().trim();
+        String versionName = null;
+        try {
+            PackageInfo packageInfo = outsideAty.getPackageManager().getPackageInfo(outsideAty.getPackageName(), 0);
+            versionName = packageInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        String formatUrl = String.format("%1$s?appid=%2$s&show_title=%3$s&client_type=%4$s&os_version=%5$s&app_client_ver=%6$s&uuid=%7$s&account=%8$s&returnurl=%9$s",
+                findPwdUrl, UserUtil.APPID, "0", "android", Build.VERSION.RELEASE, versionName,
+                "", userName, FROMREGIST);
+
+        Intent intent = new Intent(outsideAty, WebActivity.class);
+        intent.putExtra("url", formatUrl);
+        intent.putExtra("isRegist", true);
+        startActivity(intent);
+    }
+
+
+    public APLoginFragment setListener(OnLoginCallBack listener) {
+        this.listener = listener;
+        return this;
     }
 }

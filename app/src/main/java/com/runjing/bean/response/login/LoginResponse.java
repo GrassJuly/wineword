@@ -12,4 +12,20 @@ import com.runjing.base.BaseResponse;
  */
 public class LoginResponse extends BaseResponse {
 
+    private LoginBean data;
+
+    public LoginBean getData() {
+        return data;
+    }
+
+    public void setData(LoginBean data) {
+        this.data = data;
+    }
+
+    @Override
+    public String toString() {
+        return "LoginResponse{" +
+                "data=" + data +
+                '}';
+    }
 }

@@ -34,6 +34,7 @@ public class OkHttpClientManager {
     private Handler mDelivery;
 
     private static final String TAG = "OkHttpClientManager";
+    public static final MediaType FORM_CONTENT_TYPE = MediaType.parse("application/json;charset=utf-8");
 
     private OkHttpClientManager() {
         mOkHttpClient = new OkHttpClient();
@@ -352,6 +353,7 @@ public class OkHttpClientManager {
 
         for (Param param : params) {
             builder.addPart(Headers.of("Content-Disposition", "form-data; name=\"" + param.key + "\""),
+                    // TODO
                     RequestBody.create(null, param.value));
         }
         if (files != null) {
@@ -452,6 +454,7 @@ public class OkHttpClientManager {
                 builder.add(param.key, param.value);
             }
             RequestBody requestBody = builder.build();
+//            RequestBody requestBody = builder.build();
             return new Request.Builder()
                     .url(url)
                     .post(requestBody)

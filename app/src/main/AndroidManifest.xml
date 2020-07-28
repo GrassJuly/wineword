@@ -50,6 +50,14 @@
             android:theme="@style/TranslucentTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
+        <!-- web配置 -->
+        <activity android:name="com.runjing.ui.login.WebActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+        </activity>
 
         <!--对接时 是否可删在做考虑-->
         <provider

@@ -1,7 +1,6 @@
-package com.runjing.widget;
+package com.runjing.widget.pop;
 
 import android.content.Context;
-import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.view.Display;
@@ -9,10 +8,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -20,7 +17,6 @@ import com.runjing.base.BasePop;
 import com.runjing.wineworld.R;
 import com.yanzhenjie.recyclerview.SwipeRecyclerView;
 
-import org.runjing.rjframe.utils.DensityUtils;
 import org.runjing.rjframe.widget.RJAdapter;
 
 import java.util.Collection;

@@ -25,6 +25,7 @@ public class Appconfig {
     public static final int DEFAULT_VALUES = -1000;//默认 数据
     public static int DEFAULT_VALUE_LONG = 1;
     public static String TAG = "runjing";
+    public static final String FROMREGIST = "https%3a%2f%2fplogin.m.jd.com%2fuser%2flogin.action%3fappid%3d100%26returnurl%3dregist.openApp.jdMobile%3a%2f%2fcommunication";
     /*是否强制升级*/
     public static String isFource;
     /*是否下载*/
@@ -55,6 +56,15 @@ public class Appconfig {
     public static final int TAG_TENTHOUSAND_TWO = 10002;
 
     //本地缓存变量
+    public static final String IS_AGREE = "is_agree";
     public static final String IS_GUILD = "is_guild";
+    public static final String lon = "lon";
+    public static final String lat = "lat";
+    public static final String city = "city";
+    public static final String address = "address";
+    public static final String poiName = "poiName";
+    public static final String JDPin = "JDPin";
+    public static final String IsPhone = "IsPhone";
+    public static final String IsPWD = "IsPWD";
 
 }

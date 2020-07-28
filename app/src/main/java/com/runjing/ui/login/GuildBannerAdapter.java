@@ -20,9 +20,8 @@ import com.runjing.MainActivity;
 import com.runjing.bean.response.home.BannerBean;
 import com.runjing.common.Appconfig;
 import com.runjing.utils.GlideUtils;
-import com.runjing.utils.MMKVUtil;
+import com.runjing.utils.store.MMKVUtil;
 import com.runjing.wineworld.R;
-import com.tencent.mmkv.MMKV;
 import com.youth.banner.adapter.BannerAdapter;
 
 import java.util.ArrayList;

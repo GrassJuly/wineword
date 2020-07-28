@@ -1,11 +1,6 @@
 package com.runjing.ui.home;
 
-import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 
-import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
-import com.amap.api.location.AMapLocationQualityReport;
-import com.runjing.MainActivity;
 import com.runjing.MyApplication;
 import com.runjing.base.SimpleBackPage;
 import com.runjing.base.TitleBarFragment;
@@ -38,7 +29,7 @@ import com.runjing.common.Appconfig;
 import com.runjing.common.BaseUrl;
 import com.runjing.http.MyRequestCallBack;
 import com.runjing.http.OkHttpUtil;
-import com.runjing.utils.LocalUtil;
+import com.runjing.utils.location.LocalUtil;
 import com.runjing.utils.RecyclerViewItemDecoration;
 import com.runjing.utils.SpacesItemDecoration;
 import com.runjing.widget.LoadingDialog;
@@ -53,8 +44,6 @@ import com.youth.banner.Banner;
 
 import org.runjing.rjframe.ui.BindView;
 import org.runjing.rjframe.utils.DensityUtils;
-
-import java.security.MessageDigest;
 
 import static com.runjing.utils.SpacesItemDecoration.STAGGEREDGRIDLAYOUT;
 

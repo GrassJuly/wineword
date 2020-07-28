@@ -7,16 +7,32 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.runjing.MyApplication;
+import com.runjing.base.BaseResponse;
 import com.runjing.base.TitleBarActivity;
 import com.runjing.base.TitleBarFragment;
+import com.runjing.bean.request.LoginRequest;
+import com.runjing.bean.response.login.LoginResponse;
+import com.runjing.common.Appconfig;
+import com.runjing.common.BaseUrl;
+import com.runjing.http.MyRequestCallBack;
+import com.runjing.http.OkHttpUtil;
+import com.runjing.http.net.BaseSubscriber;
+import com.runjing.http.net.ExceptionHandle;
+import com.runjing.http.net.RetrofitClient;
 import com.runjing.utils.KeyBoardUtil;
+import com.runjing.utils.store.MMKVUtil;
 import com.runjing.wineworld.R;
+import com.socks.library.KLog;
 
 import org.runjing.rjframe.ui.BindView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.RequestBody;
 
 /**
  * login 登录页面
@@ -24,7 +40,7 @@ import java.util.List;
  * @author
  */
 
-public class LoginActivity extends TitleBarActivity {
+public class LoginActivity extends TitleBarActivity implements OnLoginCallBack {
 
     @BindView(id = R.id.act_iv_back, click = true)
     private ImageView iv_back;
@@ -54,8 +70,8 @@ public class LoginActivity extends TitleBarActivity {
         super.initWidget();
         KeyBoardUtil.init(this);
         lists = new ArrayList<>();
-        lists.add(new QuickLoginFragment());
-        lists.add(new APLoginFragment());
+        lists.add(new QuickLoginFragment().setListener(this));
+        lists.add(new APLoginFragment().setListener(this));
         fm = getFragmentManager();
         ft =fm.beginTransaction();
         fragment = lists.get(0);
@@ -99,4 +115,52 @@ public class LoginActivity extends TitleBarActivity {
         }
     }
 
+    @Override
+    public void onLoginRJ(String pin) {
+        LoginRequest request = new LoginRequest();
+        request.setPhone(MMKVUtil.getInstance().decodeString(Appconfig.IsPhone));
+        request.setCity(MMKVUtil.getInstance().decodeString(Appconfig.city));
+        request.setLatitude(MMKVUtil.getInstance().decodeString(Appconfig.lat));
+        request.setLongitude(MMKVUtil.getInstance().decodeString(Appconfig.lon));
+        request.setPin(pin);
+        request.setPlatform(4);//1 小程序  2 公众号 3 m站 4 Android 5 ios
+        OkHttpUtil.postRequest(BaseUrl.LoginIn, request, LoginResponse.class, new MyRequestCallBack<LoginResponse>() {
+            @Override
+            public void onPostResponse(LoginResponse response) {
+                KLog.d(response);
+            }
+
+            @Override
+            public void onPostErrorResponse(Exception e, String msg) {
+
+            }
+
+            @Override
+            public void onNoNetWork() {
+
+            }
+        });
+
+//        String parames = JSON.toJSONString(request, SerializerFeature.DisableCircularReferenceDetect);
+//
+//        RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), parames);
+//
+//        RetrofitClient.getInstance(this).createBaseApi().json("service/getIpInfo.php"
+//                , body, new BaseSubscriber<com.runjing.http.net.BaseResponse>(this) {
+//
+//
+//                    @Override
+//                    public void onError(ExceptionHandle.ResponeThrowable e) {
+//
+//
+//                        KLog.e( e.getMessage());
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(BaseResponse responseBody) {
+//
+//                    }
+//                });
+    }
 }

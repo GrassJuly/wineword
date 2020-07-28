@@ -30,7 +30,7 @@ import com.runjing.common.AppMethod;
 import com.runjing.common.Appconfig;
 import com.runjing.ui.home.HomeFragment;
 import com.runjing.utils.EmptyUtil;
-import com.runjing.utils.LocalUtil;
+import com.runjing.utils.location.LocalUtil;
 import com.runjing.utils.RecyclerViewItemDecoration;
 
 import com.runjing.wineworld.R;

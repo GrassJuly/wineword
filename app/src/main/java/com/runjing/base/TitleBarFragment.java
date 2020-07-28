@@ -66,7 +66,6 @@ public abstract class TitleBarFragment extends RJFragment {
         } else if (getActivity() instanceof MainActivity) {
             outsideAty = (MainActivity) getActivity();
         }
-        initToolBar();
         super.onCreate(savedInstanceState);
     }
 
@@ -263,6 +262,7 @@ public abstract class TitleBarFragment extends RJFragment {
     public void onResume() {
         super.onResume();
         onActionBar();
+        initToolBar();
     }
 
     public void onActionBar() {

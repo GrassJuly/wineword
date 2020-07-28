@@ -38,11 +38,11 @@ import com.runjing.ui.good.DetailBannerAdapter;
 import com.runjing.ui.home.BannerItemAdapter;
 import com.runjing.ui.login.GuildBannerAdapter;
 import com.runjing.utils.ColorPhrase;
-import com.runjing.utils.MMKVUtil;
+import com.runjing.utils.store.MMKVUtil;
 import com.runjing.utils.PermissionUtils;
 import com.runjing.utils.PopupWindowUtil;
 import com.runjing.widget.LibAutoUpdate;
-import com.runjing.widget.MiddlePopupWindow;
+import com.runjing.widget.pop.MiddlePopupWindow;
 import com.runjing.widget.pickerview.SupplierPickerView;
 import com.runjing.widget.pickerview.TimePickerView;
 import com.runjing.wineworld.R;
@@ -188,14 +188,33 @@ public class AppMethod {
         postShowForResult(fragment, code, page, null);
     }
 
-//    public static void sellShowForResult(android.support.v4.app.Fragment fragment, int code,
-//                                         SimpleBackPage page, Bundle data) {
-//        Intent intent = new Intent(fragment.getActivity(),
-//                SimpleBackActivity.class);
-//        intent.putExtra(Appconfig.CONTENT_KEY, page.getValue());
-//        intent.putExtra(Appconfig.DATA_KEY, data);
-//        fragment.startActivityForResult(intent, code);
-//    }
+    /**
+     * @param fragment
+     * @param activity
+     */
+    public static void postActivity(Fragment fragment, Class activity) {
+        Intent intent = new Intent(fragment.getActivity(), activity);
+        fragment.startActivity(intent);
+    }
+
+    public static void postActivity(Activity fragment, Class activity) {
+        Intent intent = new Intent(fragment, activity);
+        fragment.startActivity(intent);
+    }
+
+    public static void postActivityForResult(Fragment mActivity, int code,
+                                             Class activity, Bundle data) {
+        Intent intent = new Intent(mActivity.getActivity(), activity);
+        intent.putExtra(Appconfig.DATA_KEY, data);
+        mActivity.startActivityForResult(intent, code);
+    }
+
+    public static void postActivityForResult(Activity mActivity, int code,
+                                             Class activity, Bundle data) {
+        Intent intent = new Intent(mActivity, activity);
+        intent.putExtra(Appconfig.DATA_KEY, data);
+        mActivity.startActivityForResult(intent, code);
+    }
 
     /**
      * 判断图片是否存在
@@ -871,6 +890,7 @@ public class AppMethod {
 
     /**
      * 升级
+     *
      * @param context
      */
     public static void updateApp(final Activity context) {

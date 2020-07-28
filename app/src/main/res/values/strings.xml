@@ -117,5 +117,13 @@
     <string name="string_clear_shop">清空购物车</string>
     <string name="string_add_settlement">结算</string>
     <string name ="shouquan_address">未授权定位服务</string>
+    <string name="wel_toast">温馨提示</string>
+    <string name="wel_login">同意</string>
+    <string name="wel_refause">不同意并退出</string>
+    <string name="wel_msg">京东酒世界隐私政策，京东酒世界隐私政策，京 东酒世界隐私政策京东酒世界隐私政策京东，酒 世界隐私政策，京东酒世界隐私政策，京东酒世 界隐私政策京东酒世界隐私政策，京东酒世界隐 私政策，京东酒世界隐私政策京东酒世界隐私政 策京东，酒世界隐私政策，京东酒世界隐私政策 京东酒世界隐私政策京东酒世界隐私政策，京东 东酒世界隐私政策，京东酒世界隐私政策京东酒 世界隐私政策京东，酒世界隐私政策，京东酒世 界隐私政策，京东酒世界隐私政策京东酒世界隐 私政策，京东酒世界隐私政策，京京东酒世界隐 东酒世界隐私政策京东酒世界隐私政策京东，酒 世界隐私政策，京东酒世界隐私政策，京东酒世 界隐私政策京东酒世界隐私政策，京东酒世界隐 私政策，京东酒世界隐私政策京东酒世界隐私政 策京东，酒世界隐私政策，京东酒世界隐私政策 京东酒世界隐私政策。</string>
+    <string name="login_receive">我们监测到您是已有历史订单的京东用户， 为验证您的账户安全，请输入历史收货人 进行校验。（任意一个即可）</string>
+    <string name="wel_receive_hint">请输入历史收货人名称</string>
+    <string name="order_login">登陆后才能查看订单</string>
+    <string name="order_login_now">立即登陆</string>
 
 </resources>

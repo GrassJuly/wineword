@@ -18,13 +18,21 @@ import android.widget.TextView;
 import com.runjing.base.BaseResponse;
 import com.runjing.base.TitleBarFragment;
 import com.runjing.bean.request.HomeRequest;
+import com.runjing.common.Appconfig;
 import com.runjing.common.BaseUrl;
 import com.runjing.http.MyRequestCallBack;
 import com.runjing.http.OkHttpUtil;
+import com.runjing.utils.JDLogin.UserUtil;
+import com.runjing.utils.store.MMKVUtil;
 import com.runjing.wineworld.R;
 
 import org.runjing.rjframe.ui.BindView;
 import org.runjing.rjframe.ui.ViewInject;
+
+import jd.wjlogin_sdk.common.WJLoginHelper;
+import jd.wjlogin_sdk.common.listener.OnCommonCallback;
+import jd.wjlogin_sdk.model.ErrorResult;
+import jd.wjlogin_sdk.model.FailResult;
 
 /**
  * @Created: qianxs  on 2020.07.21 09:46.
@@ -44,6 +52,8 @@ public class SetPWDFragment extends TitleBarFragment implements TextWatcher {
     private ImageView iv_see;
     @BindView(id = R.id.frag_tv_login, click = true)
     private TextView tv_login;
+    private WJLoginHelper helper;
+    private String phoneNum;
 
     @Override
     protected View inflaterView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
@@ -53,6 +63,11 @@ public class SetPWDFragment extends TitleBarFragment implements TextWatcher {
     @Override
     protected void initWidget(View parentView) {
         super.initWidget(parentView);
+        Bundle mBundle = getActivity().getIntent().getBundleExtra(Appconfig.DATA_KEY);
+        if (mBundle != null) {
+            phoneNum = mBundle.getString(Appconfig.DATA_KEY);
+        }
+        helper = UserUtil.getWJLoginHelper();
         et_pwd.addTextChangedListener(this);
         tv_login.setClickable(false);
     }
@@ -111,22 +126,26 @@ public class SetPWDFragment extends TitleBarFragment implements TextWatcher {
             ViewInject.showCenterToast(outsideAty, "密码不能为空");
             return;
         }
-        HomeRequest homeRequest = new HomeRequest();
-        OkHttpUtil.postRequest(BaseUrl.LoginIn, homeRequest, BaseResponse.class, new MyRequestCallBack<BaseResponse>() {
+
+        helper.setLoginPassword(phoneNum, et_pwd.getText().toString().trim(), new OnCommonCallback() {
             @Override
-            public void onPostResponse(BaseResponse response) {
+            public void onSuccess() {
+                MMKVUtil.getInstance().encode(Appconfig.JDPin, helper.getPin());
+                MMKVUtil.getInstance().encode(Appconfig.IsPhone, phoneNum);
+                ViewInject.showCenterToast(outsideAty, "设置成功");
+                finish();
+            }
+
+            @Override
+            public void onError(ErrorResult errorResult) {
 
             }
 
             @Override
-            public void onPostErrorResponse(Exception e, String msg) {
-
-            }
-
-            @Override
-            public void onNoNetWork() {
-
+            public void onFail(FailResult failResult) {
+                ViewInject.showCenterToast(outsideAty, failResult.getMessage());
             }
         });
+
     }
 }

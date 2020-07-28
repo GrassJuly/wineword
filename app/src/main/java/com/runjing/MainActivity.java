@@ -62,29 +62,13 @@ public class MainActivity extends TitleBarActivity implements TabView.OnTabChild
     @Override
     public void setRootView() {
         MyApplication.contextApp.addActivity(this);
-//        if(Build.VERSION.SDK_INT > 28
-//                && getApplicationContext().getApplicationInfo().targetSdkVersion > 28) {
-//            needPermissions = new String[] {
-//                    Manifest.permission.ACCESS_COARSE_LOCATION,
-//                    Manifest.permission.ACCESS_FINE_LOCATION,
-//                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-//                    Manifest.permission.READ_EXTERNAL_STORAGE,
-//                    Manifest.permission.READ_PHONE_STATE,
-//                    BACKGROUND_LOCATION_PERMISSION
-//            };
-//        }
         setContentView(R.layout.activity_main);
-        PermissionUtils.requestPermissionsResult(this, 1, needPermissions
-                , new PermissionUtils.OnPermissionListener() {
-                    @Override
-                    public void onPermissionGranted() {
-                    }
+    }
 
-                    @Override
-                    public void onPermissionDenied() {
-                        PermissionUtils.showTipsDialog(MainActivity.this);
-                    }
-                });
+    @Override
+    public void initData() {
+        super.initData();
+        getPersion();
     }
 
     @Override
@@ -124,6 +108,20 @@ public class MainActivity extends TitleBarActivity implements TabView.OnTabChild
         StatusBarUtil.setColor(this, getResources().getColor(R.color.color_F80000));
     }
 
+    public void getPersion() {
+        PermissionUtils.requestPermissionsResult(this, 1, needPermissions
+                , new PermissionUtils.OnPermissionListener() {
+                    @Override
+                    public void onPermissionGranted() {
+                    }
+
+                    @Override
+                    public void onPermissionDenied() {
+                        PermissionUtils.showTipsDialog(MainActivity.this);
+                    }
+                });
+    }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
@@ -132,147 +130,6 @@ public class MainActivity extends TitleBarActivity implements TabView.OnTabChild
             return false;
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        if (Build.VERSION.SDK_INT >= 23
-//                && getApplicationInfo().targetSdkVersion >= 23) {
-//            if (isNeedCheck) {
-//                checkPermissions(needPermissions);
-//            }
-//        }
-//    }
-
-    /**
-     *
-     * @param permissions
-     * @since 2.5.0
-     *
-     */
-    private void checkPermissions(String... permissions) {
-        try {
-            if (Build.VERSION.SDK_INT >= 23
-                    && getApplicationInfo().targetSdkVersion >= 23) {
-                List<String> needRequestPermissonList = findDeniedPermissions(permissions);
-                if (null != needRequestPermissonList
-                        && needRequestPermissonList.size() > 0) {
-                    String[] array = needRequestPermissonList.toArray(new String[needRequestPermissonList.size()]);
-                    Method method = getClass().getMethod("requestPermissions", new Class[]{String[].class,
-                            int.class});
-
-                    method.invoke(this, array, PERMISSON_REQUESTCODE);
-                }
-            }
-        } catch (Throwable e) {
-        }
-    }
-    /**
-     * 获取权限集中需要申请权限的列表
-     *
-     * @param permissions
-     * @return
-     * @since 2.5.0
-     *
-     */
-    private List<String> findDeniedPermissions(String[] permissions) {
-        List<String> needRequestPermissonList = new ArrayList<String>();
-        if (Build.VERSION.SDK_INT >= 23
-                && getApplicationInfo().targetSdkVersion >= 23){
-            try {
-                for (String perm : permissions) {
-                    Method checkSelfMethod = getClass().getMethod("checkSelfPermission", String.class);
-                    Method shouldShowRequestPermissionRationaleMethod = getClass().getMethod("shouldShowRequestPermissionRationale",
-                            String.class);
-                    if ((Integer)checkSelfMethod.invoke(this, perm) != PackageManager.PERMISSION_GRANTED
-                            || (Boolean)shouldShowRequestPermissionRationaleMethod.invoke(this, perm)) {
-                        if(!needCheckBackLocation
-                                && BACKGROUND_LOCATION_PERMISSION.equals(perm)) {
-                            continue;
-                        }
-                        needRequestPermissonList.add(perm);
-                    }
-                }
-            } catch (Throwable e) {
-
-            }
-        }
-        return needRequestPermissonList;
-    }
-
-
-    /**
-     * 显示提示信息
-     *
-     * @since 2.5.0
-     *
-     */
-    private void showMissingPermissionDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("提示");
-        builder.setMessage("当前应用缺少必要权限。请点击-设置-权限-打开所需权限。");
-
-        // 拒绝, 退出应用
-        builder.setNegativeButton("取消",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                });
-
-        builder.setPositiveButton("去设置",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        startAppSettings();
-                    }
-                });
-
-        builder.setCancelable(false);
-
-        builder.show();
-    }
-
-    /**
-     *  启动应用的设置
-     *
-     * @since 2.5.0
-     *
-     */
-    private void startAppSettings() {
-        Intent intent = new Intent(
-                Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        intent.setData(Uri.parse("package:" + getPackageName()));
-        startActivity(intent);
-    }
-
-//    @TargetApi(23)
-//    public void onRequestPermissionsResult(int requestCode,
-//                                           String[] permissions, int[] paramArrayOfInt) {
-//        if (requestCode == PERMISSON_REQUESTCODE) {
-//            if (!verifyPermissions(paramArrayOfInt)) {
-//                showMissingPermissionDialog();
-//                isNeedCheck = false;
-//            }
-//        }
-//    }
-
-    /**
-     * 检测是否所有的权限都已经授权
-     * @param grantResults
-     * @return
-     * @since 2.5.0
-     *
-     */
-    private boolean verifyPermissions(int[] grantResults) {
-        for (int result : grantResults) {
-            if (result != PackageManager.PERMISSION_GRANTED) {
-                return false;
-            }
-        }
-        return true;
     }
 
 

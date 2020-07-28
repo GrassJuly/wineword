@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,24 +16,42 @@ import android.widget.TextView;
 import com.jd.verify.ShowCapCallback;
 import com.jd.verify.Verify;
 import com.jd.verify.model.IninVerifyInfo;
+import com.runjing.MainActivity;
 import com.runjing.base.BaseResponse;
+import com.runjing.base.SimpleBackPage;
 import com.runjing.base.TitleBarFragment;
 import com.runjing.bean.request.HomeRequest;
+import com.runjing.bean.request.LoginRequest;
+import com.runjing.bean.response.login.LoginResponse;
 import com.runjing.common.AppMethod;
+import com.runjing.common.Appconfig;
 import com.runjing.common.BaseUrl;
 import com.runjing.http.MyRequestCallBack;
 import com.runjing.http.OkHttpUtil;
 import com.runjing.utils.JDLogin.UserUtil;
+import com.runjing.utils.PopupWindowUtil;
 import com.runjing.utils.TimerCount;
+import com.runjing.utils.store.MMKVUtil;
+import com.runjing.utils.time.CountDownTimerUtil;
+import com.runjing.widget.pop.LoginReceivePopupWindow;
 import com.runjing.wineworld.R;
+import com.socks.library.KLog;
+import com.tencent.mmkv.MMKV;
 
+import org.json.JSONObject;
 import org.runjing.rjframe.ui.BindView;
 import org.runjing.rjframe.ui.ViewInject;
 
+import jd.wjlogin_sdk.common.DevelopType;
 import jd.wjlogin_sdk.common.WJLoginHelper;
-
-import static com.runjing.utils.JDLogin.UserUtil.session_id;
-import static com.runjing.utils.JDLogin.UserUtil.udid;
+import jd.wjlogin_sdk.common.listener.OnCommonCallback;
+import jd.wjlogin_sdk.common.listener.OnDataCallback;
+import jd.wjlogin_sdk.common.listener.OnLoginCallback;
+import jd.wjlogin_sdk.common.listener.PhoneLoginFailProcessor;
+import jd.wjlogin_sdk.model.ErrorResult;
+import jd.wjlogin_sdk.model.FailResult;
+import jd.wjlogin_sdk.model.SuccessResult;
+import jd.wjlogin_sdk.util.ReplyCode;
 
 /**
  * @Created: qianxs  on 2020.07.20 19:37.
@@ -59,11 +78,14 @@ public class QuickLoginFragment extends TitleBarFragment {
     private TextView tv_isagree;
     @BindView(id = R.id.frag_tv_login, click = true)
     private Button tv_login;
-    private TimerCount timer;
+    //    private TimerCount timer;
+    private CountDownTimerUtil timer;
     private WJLoginHelper helper;
     private Verify verify;
     private String countryCode = "86";
-
+    private String phoneNum;
+    private String sid;
+    private OnLoginCallBack listener;
 
     @Override
     protected View inflaterView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
@@ -185,21 +207,21 @@ public class QuickLoginFragment extends TitleBarFragment {
                     }
                     break;
                 case R.id.frag_tv_sendcode:
-                    getCode();
-                    timer.start();
+                    getJDCode();
                     break;
                 case R.id.frag_tv_login:
-                    if (getResources().getString(R.string.tag_yes).equals(iv_isagree.getTag())) {
-                        onSubmit();
-                    }
+//                    if (getResources().getString(R.string.tag_yes).equals(iv_isagree.getTag())) {
+//                        onLoginJD();
+//                    }
+                    listener.onLoginRJ(MMKVUtil.getInstance().decodeString(Appconfig.JDPin));
                     break;
             }
         }
     }
 
-
+    /*对接京东登陆这块*/
     public void getJDCode() {
-        String phoneNum = et_phone.getText().toString();
+        phoneNum = et_phone.getText().toString();
         if ("86".equals(countryCode) && (!phoneNum.startsWith("1") || phoneNum.length() < 11 || phoneNum.length() > 12 || !AppMethod.isNumber(phoneNum))) {
             ViewInject.showCenterToast(getActivity(), "手机号码格式错误");
             return;
@@ -208,7 +230,7 @@ public class QuickLoginFragment extends TitleBarFragment {
          * 中国手机号位数11位（号段限制保留）；
          * 香港、澳门、台湾是6-10位；852,853,886
          */
-        if (!AppMethod.isNumber(phoneNum)) {
+        if (!AppMethod.isMobileNO(phoneNum)) {
             ViewInject.showCenterToast(getActivity(), "手机号码格式错误");
             return;
         } else if ((TextUtils.equals("852", countryCode) || TextUtils.equals("853", countryCode) || TextUtils.equals("886", countryCode))) {
@@ -217,115 +239,301 @@ public class QuickLoginFragment extends TitleBarFragment {
                 return;
             }
         }
-        verify.init(session_id, outsideAty, udid, phoneNum, new ShowCapCallback() {
+        getSessionId();
+    }
+
+    private void getSessionId() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("countryCode", countryCode);
+            jsonObject.put("phone", phoneNum);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        helper.setDevelop(DevelopType.PRODUCT);
+        helper.getCaptchaSid(3, jsonObject, new OnCommonCallback() {
             @Override
-            public void showCap() {
+            public void onSuccess() {
+                getMsgCode(phoneNum, "", "");
+            }
+
+            @Override
+            public void onError(ErrorResult errorResult) {
+            }
+
+            @Override
+            public void onFail(FailResult failResult) {
+                sid = failResult.getStrVal();
+                if (TextUtils.isEmpty(sid)) {
+                    ViewInject.showCenterToast(outsideAty, failResult.getMessage());
+                    return;
+                }
+                verify.init(sid, outsideAty, "", phoneNum, verifyCallback);
+            }
+        });
+
+    }
+
+
+    ShowCapCallback verifyCallback = new ShowCapCallback() {
+        @Override
+        public void showCap() {
+            //弹出验证码时的回调，业务方若自行显示loading圈，在这个回调要将loading圈消失掉。若使用验证码sdk提供的loading则不需处理。
+
+        }
+
+        @Override
+        public void loadFail() {
+            //加载失败或验证失败的回调，业务方若自行显示loading圈，在这个回调要将loading圈消失掉。若使用验证码sdk提供的loading则不需处理。
+
+        }
+
+        @Override
+        public void onSSLError() {
+            //网络请求时ssl异常的回调，业务方若自行显示loading圈，在这个回调要将loading圈消失掉。若使用验证码sdk提供的loading则不需处理。
+            Log.d(TAG, " verifyCallback onSSLError:");
+
+        }
+
+        @Override
+        public void showButton(int i) {
+            //接入了嵌入式的验证方式，需要显示按钮的回调。现在支持的是点图的方式，所以正常接入不会执行到这个回调
+            //业务方若自行显示loading圈，为保险起见在这个回调要将loading圈消失掉。若使用验证码sdk提供的loading则不需处理。
+            Log.d(TAG, " verifyCallback showButton:" + i);
+
+        }
+
+        @Override
+        public void invalidSessiongId() {
+            Log.d(TAG, "init verifyCallback invalidSessiongId countryCode = " + countryCode);
+            getSessionId();
+        }
+
+        @Override
+        public void onSuccess(IninVerifyInfo ininVerifyInfo) {
+            Log.d(TAG, "init verifyCallback onSuccess countryCode = " + countryCode);
+            getMsgCode(phoneNum, sid, ininVerifyInfo.getVt());
+        }
+
+        @Override
+        public void onFail(String s) {
+            //嵌入式的（滑动验证码）验证失败回调，业务方若自行显示loading圈，在这个回调要将loading圈消失掉。若使用验证码sdk提供的loading则不需处理。
+            Log.d(TAG, " verifyCallback onFail:" + s);
+
+        }
+    };
+
+
+    /**
+     * 获取验证码
+     *
+     * @param phoneNum
+     * @param sid
+     * @param token
+     */
+    private void getMsgCode(final String phoneNum, final String sid, final String token) {
+        helper.sendMsgCodeForPhoneNumLogin4JD(phoneNum, countryCode, sid, token, new OnDataCallback<SuccessResult>() {
+
+            @Override
+            public void beforeHandleResult() {
 
             }
 
             @Override
-            public void loadFail() {
+            public void onSuccess(SuccessResult successResult) {
+                System.out.println("onSuccess？？？  " + successResult);
+                int msgCodeExpireTime = successResult.getIntVal();
+                //显示倒计时
+//                timer.setCountdownInterval(msgCodeExpireTime * 1000 + 20);
+//                timer.setMillisInFuture(1000);
+                timer.start();
+            }
+
+            @Override
+            public void onError(ErrorResult error) {
+                ViewInject.showCenterToast(outsideAty, "" + error);
+            }
+
+            @Override
+            public void onFail(FailResult failResult) {
+                if (failResult.getReplyCode() == ReplyCode.reply0x17) {
+                    // 提交过于频繁。是否需要禁止用户操作，由客户端决定
+                    //刷新显示到计时failResult.getDwLimitTimet
+                    int time = failResult.getIntVal();
+                    ViewInject.showCenterToast(outsideAty, failResult.getMessage());
+                } else if (failResult.getReplyCode() == ReplyCode.reply0x1f) {
+                    //短信已发送，请勿重复提交。 是否需要禁止用户操作，由客户端决定
+                    //刷新显示到计时failResult.getDwLimitTimet
+//                    timer.start();
+                    ViewInject.showCenterToast(outsideAty, failResult.getMessage());
+                } else {
+                    ViewInject.showCenterToast(outsideAty, failResult.getMessage());
+                }
+
+            }
+
+        });
+
+    }
+
+    public void onLoginJD() {
+        if (TextUtils.isEmpty(phoneNum) || !phoneNum.startsWith("1") || phoneNum.length() < 11 || phoneNum.length() > 12) {
+            ViewInject.showCenterToast(outsideAty, "手机号码格式错误");
+            return;
+        } else if (TextUtils.isEmpty(et_code.getText().toString())) {
+            ViewInject.showCenterToast(outsideAty, "短信验证码不能为空");
+            return;
+        }
+        helper.checkMsgCodeForPhoneNumLogin4JD(phoneNum, et_code.getText().toString(), countryCode, new OnLoginCallback(new PhoneLoginFailProcessor() {
+            @Override
+            public void handle0xb4(FailResult failResult) {
+                //验证频繁，弹框显示 可以跳转到密码登录
+                KLog.d(TAG, "getMsg handle0xb4 message" + failResult.getMessage() + "  code=" + failResult.getReplyCode());
+            }
+
+            @Override
+            public void handle0x73(FailResult failResult) {
+                //跳转到历史收货人页面
+                PopupWindowUtil.showPopReceive(outsideAty, "", "", new LoginReceivePopupWindow.PopupWindowCallBack() {
+                    @Override
+                    public void onNegativeButtonClick() {
+
+                    }
+
+                    @Override
+                    public void onPositiveButtonClick(String msg) {
+                        checkReceive(msg);
+                    }
+                });
+            }
+
+            @Override
+            public void onCommonHandler(FailResult failResult) {
+                //返回0x31，可以去设置密码
+                if (ReplyCode.reply0x31 == failResult.getReplyCode()) {
+                    //设置密码界面
+                    Bundle bundle = new Bundle();
+                    bundle.putString(Appconfig.DATA_KEY, phoneNum);
+                    AppMethod.postShowWith(outsideAty, SimpleBackPage.SetPwd, bundle);
+                } else {
+                    ViewInject.showCenterToast(outsideAty, failResult.getMessage());
+                }
+            }
+
+            @Override
+            public void accountNotExist(FailResult failResult) {
+                //立即去注册
+                KLog.d(TAG, "getMsg accountNotExist message" + failResult.getMessage() + "  code=" + failResult.getReplyCode());
+            }
+
+            @Override
+            public void handleBetween0x7bAnd0x7e(FailResult failResult) {
+                KLog.d(TAG, "getMessageCode handleBetween0x7bAnd0x7e Message");
+            }
+
+            @Override
+            public void handleBetween0x77And0x7a(FailResult failResult) {
+                Log.d(TAG, "getMessageCode handleBetween0x77And0x7a Message");
+
+                // 是否需要禁止用户操作，由客户端决定
+                if (TextUtils.isEmpty(failResult.getJumpResult().getUrl())) {
+                    ViewInject.showCenterToast(outsideAty, failResult.getMessage());
+                    return;
+                }
+            }
+
+            @Override
+            public void onSendMsg(FailResult failResult) {
+                KLog.d(TAG, "getMessageCode onSendMsg Message" + failResult.getMessage());
 
             }
 
             @Override
-            public void onSSLError() {
+            public void onSendMsgWithoutDialog(FailResult failResult) {
+                KLog.d(TAG, "getMessageCode onSendMsgWithoutDialog Message");
+
+            }
+        }) {
+
+            @Override
+            public void beforeHandleResult() {
+            }
+
+
+            @Override
+            public void onSuccess() {
+                //检查并登录成功，此时跳回到登录上一个页面。
+                MMKVUtil.getInstance().encode(Appconfig.JDPin, helper.getPin());
+                MMKVUtil.getInstance().encode(Appconfig.IsPhone, phoneNum);
+                KLog.d("JDPin -------  ", MMKVUtil.getInstance().decodeString(Appconfig.JDPin));
+                if (listener != null) listener.onLoginRJ(helper.getPin());
+            }
+
+            @Override
+            public void onError(ErrorResult error) {
+                ViewInject.showCenterToast(outsideAty, "" + error);
+            }
+
+            @Override
+            public void onFail(FailResult failResult) {
+                //如果返回需要验证历史收货人
+                if (null != failResult && ReplyCode.reply0x73 == failResult.getReplyCode()) {
+                    //跳转到历史收货人页面
+                    PopupWindowUtil.showPopReceive(outsideAty, "", "", new LoginReceivePopupWindow.PopupWindowCallBack() {
+                        @Override
+                        public void onNegativeButtonClick() {
+
+                        }
+
+                        @Override
+                        public void onPositiveButtonClick(String msg) {
+                            checkReceive(msg);
+                        }
+                    });
+                } else {
+                    ViewInject.showCenterToast(outsideAty, failResult.getMessage());
+                }
+            }
+
+        });
+    }
+
+    /**
+     * 验证手机收货人
+     *
+     * @param name
+     */
+    public void checkReceive(String name) {
+        helper.checkHistory4JDPhoneNumLoginNew(phoneNum, "", name, new OnCommonCallback() {
+            @Override
+            public void onSuccess() {
+                MMKVUtil.getInstance().encode(Appconfig.JDPin, helper.getPin());
+                MMKVUtil.getInstance().encode(Appconfig.IsPhone, phoneNum);
+                ViewInject.showCenterToast(outsideAty, "验证成功");
+                finish();
+            }
+
+            @Override
+            public void onError(ErrorResult errorResult) {
 
             }
 
             @Override
-            public void showButton(int i) {
-
-            }
-
-            @Override
-            public void invalidSessiongId() {
-
-            }
-
-            @Override
-            public void onSuccess(IninVerifyInfo ininVerifyInfo) {
-
-            }
-
-            @Override
-            public void onFail(String s) {
-
+            public void onFail(FailResult failResult) {
+                ViewInject.showCenterToast(outsideAty, failResult.getMessage());
             }
         });
     }
 
 
-    public void getCode() {
-        HomeRequest homeRequest = new HomeRequest();
-        OkHttpUtil.postRequest(BaseUrl.AppMain, homeRequest, BaseResponse.class, new MyRequestCallBack<BaseResponse>() {
-            @Override
-            public void onPostResponse(BaseResponse response) {
-
-            }
-
-            @Override
-            public void onPostErrorResponse(Exception e, String msg) {
-
-            }
-
-            @Override
-            public void onNoNetWork() {
-
-            }
-        });
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        verify.free();
     }
 
-    public void onSubmit() {
-        if (TextUtils.isEmpty(et_phone.getText())) {
-            ViewInject.showCenterToast(getActivity(), "请填写手机号");
-            return;
-        }
-        if (AppMethod.isMobileNO(et_phone.getText().toString())) {
-            ViewInject.showCenterToast(outsideAty, "请填写正确的手机号");
-            return;
-        }
-        if (TextUtils.isEmpty(et_code.getText().toString())) {
-            ViewInject.showCenterToast(outsideAty, "请填写验证码");
-            return;
-        }
-
-        HomeRequest homeRequest = new HomeRequest();
-        OkHttpUtil.postRequest(BaseUrl.AppMain, homeRequest, BaseResponse.class, new MyRequestCallBack<BaseResponse>() {
-            @Override
-            public void onPostResponse(BaseResponse response) {
-                onLogin();
-            }
-
-            @Override
-            public void onPostErrorResponse(Exception e, String msg) {
-
-            }
-
-            @Override
-            public void onNoNetWork() {
-
-            }
-        });
-    }
-
-    public void onLogin() {
-        HomeRequest homeRequest = new HomeRequest();
-        OkHttpUtil.postRequest(BaseUrl.LoginIn, homeRequest, BaseResponse.class, new MyRequestCallBack<BaseResponse>() {
-            @Override
-            public void onPostResponse(BaseResponse response) {
-
-            }
-
-            @Override
-            public void onPostErrorResponse(Exception e, String msg) {
-
-            }
-
-            @Override
-            public void onNoNetWork() {
-
-            }
-        });
+    public QuickLoginFragment setListener(OnLoginCallBack listener) {
+        this.listener = listener;
+        return this;
     }
 }

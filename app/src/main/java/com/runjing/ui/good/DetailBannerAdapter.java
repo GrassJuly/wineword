@@ -21,7 +21,7 @@ import com.runjing.bean.response.home.BannerBean;
 import com.runjing.common.Appconfig;
 import com.runjing.ui.login.GuildActivity;
 import com.runjing.utils.GlideUtils;
-import com.runjing.utils.MMKVUtil;
+import com.runjing.utils.store.MMKVUtil;
 import com.runjing.wineworld.R;
 import com.youth.banner.adapter.BannerAdapter;
 

@@ -111,6 +111,7 @@
     <dimen name="dp_108">108dp</dimen>
     <dimen name="dp_110">110dp</dimen>
     <dimen name="dp_111">111dp</dimen>
+    <dimen name="dp_112">112dp</dimen>
     <dimen name="dp_114">114dp</dimen>
     <dimen name="dp_120">120dp</dimen>
     <dimen name="dp_130">130dp</dimen>
@@ -146,6 +147,7 @@
     <dimen name="dp_375">375dp</dimen>
     <dimen name="dp_380">380dp</dimen>
     <dimen name="dp_400">400dp</dimen>
+    <dimen name="dp_440">440dp</dimen>
 
     <!--字体大小设置-->
     <dimen name="sp_11">11sp</dimen>

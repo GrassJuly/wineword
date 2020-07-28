@@ -11,30 +11,100 @@ import com.runjing.base.BaseRequest;
  * @Remark:
  */
 public class LoginRequest extends BaseRequest {
-    private String account;
-    private String password;
+    private String phone;
+    private String pin;
+    private String city;
+    private int platform;
+    private String latitude;
+    private String longitude;
+    private int registerChnnel;
+    private int userLevel;
+    private int userType;
 
-    public String getAccount() {
-        return account;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setAccount(String account) {
-        this.account = account;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPin() {
+        return pin;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPin(String pin) {
+        this.pin = pin;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public int getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(int platform) {
+        this.platform = platform;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public int getRegisterChnnel() {
+        return registerChnnel;
+    }
+
+    public void setRegisterChnnel(int registerChnnel) {
+        this.registerChnnel = registerChnnel;
+    }
+
+    public int getUserLevel() {
+        return userLevel;
+    }
+
+    public void setUserLevel(int userLevel) {
+        this.userLevel = userLevel;
+    }
+
+    public int getUserType() {
+        return userType;
+    }
+
+    public void setUserType(int userType) {
+        this.userType = userType;
     }
 
     @Override
     public String toString() {
         return "LoginRequest{" +
-                "account='" + account + '\'' +
-                ", password='" + password + '\'' +
+                "phone='" + phone + '\'' +
+                ", pin='" + pin + '\'' +
+                ", city='" + city + '\'' +
+                ", platform=" + platform +
+                ", latitude='" + latitude + '\'' +
+                ", longitude='" + longitude + '\'' +
+                ", registerChnnel=" + registerChnnel +
+                ", userLevel=" + userLevel +
+                ", userType=" + userType +
                 '}';
     }
 }

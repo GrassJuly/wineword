@@ -191,7 +191,7 @@ public class PermissionUtils {
      * @param permissions 权限列表
      * @return
      */
-    private static boolean checkPermissions(Context context, String... permissions){
+    public static boolean checkPermissions(Context context, String... permissions){
         if(isOverMarshmallow()){
             for (String permission : permissions) {
                 if(ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_DENIED){

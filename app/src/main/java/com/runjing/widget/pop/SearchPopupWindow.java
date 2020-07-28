@@ -1,4 +1,4 @@
-package com.runjing.widget;
+package com.runjing.widget.pop;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
