@@ -5,6 +5,8 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.socks.library.KLog;
+
 import java.io.IOException;
 
 import okhttp3.CacheControl;
@@ -42,7 +44,8 @@ public class CaheInterceptor implements Interceptor {
             ((Activity) context).runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(context, "当前无网络! 为你智能加载缓存", Toast.LENGTH_SHORT).show();
+                    //TODO 看场景处理问题
+                    KLog.i("当前无网络! 为你智能加载缓存");
                 }
             });
             Log.e("Tamic", " no network load cahe");

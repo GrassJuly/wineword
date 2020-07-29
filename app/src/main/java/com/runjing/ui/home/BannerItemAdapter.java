@@ -19,6 +19,8 @@ import com.runjing.base.SimpleBackPage;
 import com.runjing.base.TitleBarActivity;
 import com.runjing.bean.response.home.BannerBean;
 import com.runjing.common.AppMethod;
+import com.runjing.utils.GlideUtils;
+import com.runjing.wineworld.R;
 import com.youth.banner.adapter.BannerAdapter;
 
 import org.runjing.rjframe.ui.ViewInject;
@@ -57,7 +59,7 @@ public class BannerItemAdapter extends BannerAdapter<BannerBean, BannerItemAdapt
 
     @Override
     public void onBindView(BannerViewHolder holder, BannerBean data, int position, int size) {
-        Glide.with(mContext).load(bannerBeans.get(position).getImage()).into(holder.imageView);
+        GlideUtils.getInstance().displayImageCenter(holder.imageView, bannerBeans.get(position).getImage(), mContext, R.mipmap.iv_default);
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

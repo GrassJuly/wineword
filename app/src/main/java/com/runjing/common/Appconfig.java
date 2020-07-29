@@ -1,5 +1,7 @@
 package com.runjing.common;
 
+import com.squareup.okhttp.MediaType;
+
 import java.util.UUID;
 
 /**
@@ -26,6 +28,7 @@ public class Appconfig {
     public static int DEFAULT_VALUE_LONG = 1;
     public static String TAG = "runjing";
     public static final String FROMREGIST = "https%3a%2f%2fplogin.m.jd.com%2fuser%2flogin.action%3fappid%3d100%26returnurl%3dregist.openApp.jdMobile%3a%2f%2fcommunication";
+    public static final MediaType FORM_CONTENT_TYPE = MediaType.parse("application/json;charset=utf-8");
     /*是否强制升级*/
     public static String isFource;
     /*是否下载*/

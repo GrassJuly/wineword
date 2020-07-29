@@ -66,7 +66,6 @@ import java.util.regex.Pattern;
 import androidx.fragment.app.Fragment;
 
 import static android.content.Context.ACTIVITY_SERVICE;
-import static androidx.core.provider.FontsContractCompat.FontRequestCallback.RESULT_OK;
 
 //import android.app.Fragment;
 
@@ -901,7 +900,7 @@ public class AppMethod {
     public static void updateApp(final Activity context) {
         UpgradeRequest request = new UpgradeRequest();
         request.setAppCode("mnSupplier");
-        OkHttpUtil.postRequest(BaseUrl.AppUpdate, request, UpgradeRequest.class, new MyRequestCallBack<UpgradeResponse>() {
+        OkHttpUtil.postRequest(RJBaseUrl.AppUpdate, request, UpgradeRequest.class, new MyRequestCallBack<UpgradeResponse>() {
                     @Override
                     public void onPostResponse(UpgradeResponse response) {
                         try {
@@ -915,7 +914,7 @@ public class AppMethod {
                                             .getAppVersionName(context);
                                     if (!newVersion.equals(currentVersion)) {
                                         LibAutoUpdate autoUpdate = new LibAutoUpdate(context,
-                                                BaseUrl.BASE_PIC_URL + upgradeBean.getAppUrl(), Appconfig.TAG_ZERO,
+                                                RJBaseUrl.BASE_PIC_URL + upgradeBean.getAppUrl(), Appconfig.TAG_ZERO,
                                                 upgradeBean.getAppVersion(), upgradeBean.getAppDescribe(),
                                                 upgradeBean.getAppForce(), AppMethod.getPackName(context), false);
                                         Appconfig.isFource = upgradeBean.getAppForce();

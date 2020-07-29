@@ -1,9 +1,7 @@
 package com.runjing.ui.login;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
@@ -15,13 +13,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.runjing.base.BaseResponse;
 import com.runjing.base.TitleBarFragment;
-import com.runjing.bean.request.HomeRequest;
 import com.runjing.common.Appconfig;
-import com.runjing.common.BaseUrl;
-import com.runjing.http.MyRequestCallBack;
-import com.runjing.http.OkHttpUtil;
 import com.runjing.utils.JDLogin.UserUtil;
 import com.runjing.utils.store.MMKVUtil;
 import com.runjing.wineworld.R;

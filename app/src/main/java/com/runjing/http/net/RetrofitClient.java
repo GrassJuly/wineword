@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.runjing.http.ApiServices;
 
 import java.io.File;
 import java.util.Map;
@@ -18,7 +19,6 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Body;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -36,7 +36,7 @@ public class RetrofitClient {
     private static final int DEFAULT_TIMEOUT = 20;
     private BaseApiService apiService;
     private static OkHttpClient okHttpClient;
-    public static String baseUrl = BaseApiService.Base_URL;
+    public static String baseUrl = ApiServices.BaseUrl;
     private static Context mContext;
     private static RetrofitClient sNewInstance;
 
@@ -187,13 +187,6 @@ public class RetrofitClient {
             throw new RuntimeException("Api service is null!");
         }
         return retrofit.create(service);
-    }
-
-    public Subscription getData(Subscriber<BaseResponse> subscriber, String ip) {
-        return apiService.getData(ip)
-               .compose(schedulersTransformer())
-                .compose(transformer())
-                .subscribe(subscriber);
     }
 
     public Subscription get(String url, Map parameters, Subscriber<BaseResponse> subscriber) {
