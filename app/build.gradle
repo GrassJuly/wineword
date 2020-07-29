@@ -104,11 +104,14 @@ dependencies {
     implementation 'io.reactivex:rxjava:1.1.6'
     implementation 'io.reactivex:rxandroid:1.1.0'
     //网络请求
-    implementation 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
-    implementation 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
-    implementation 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta4'
-    implementation 'com.squareup.okhttp3:okhttp:3.3.1'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.3.1'
+    compile 'io.reactivex:rxjava:1.0.14'
+    compile 'io.reactivex:rxandroid:1.0.1'
+    compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta4'
+    compile 'com.squareup.okhttp3:okhttp:3.3.1'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
+
     implementation 'com.facebook.fresco:fresco:0.5.2'
 
     //glide图片加载库
@@ -134,6 +137,7 @@ dependencies {
     implementation 'com.amap.api:navi-3dmap:latest.integration'
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.github.zhaokaiqiang.klog:library:1.6.0'
+    implementation 'org.apache.commons:commons-lang3:3.7'
 }
 
 //获取时间戳

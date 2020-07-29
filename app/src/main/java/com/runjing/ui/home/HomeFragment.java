@@ -1,6 +1,7 @@
 package com.runjing.ui.home;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,22 +14,30 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import okhttp3.RequestBody;
 
 
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
+import com.google.gson.Gson;
 import com.runjing.MyApplication;
 import com.runjing.base.SimpleBackPage;
 import com.runjing.base.TitleBarFragment;
 import com.runjing.bean.request.HomeRequest;
 import com.runjing.bean.response.home.HomeBean;
 import com.runjing.bean.response.home.HomeResponse;
+import com.runjing.bean.response.login.LoginResponse;
 import com.runjing.bean.test.HomeData;
 import com.runjing.common.AppMethod;
 import com.runjing.common.Appconfig;
-import com.runjing.common.BaseUrl;
+import com.runjing.common.RJBaseUrl;
+import com.runjing.http.ApiServices;
 import com.runjing.http.MyRequestCallBack;
 import com.runjing.http.OkHttpUtil;
+import com.runjing.http.net.BaseSubscriber;
+import com.runjing.http.net.ExceptionHandle;
+import com.runjing.http.net.RetrofitClient;
+import com.runjing.ui.login.LoginActivity;
 import com.runjing.utils.location.LocalUtil;
 import com.runjing.utils.RecyclerViewItemDecoration;
 import com.runjing.utils.SpacesItemDecoration;
@@ -40,9 +49,11 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.socks.library.KLog;
 import com.youth.banner.Banner;
 
 import org.runjing.rjframe.ui.BindView;
+import org.runjing.rjframe.ui.ViewInject;
 import org.runjing.rjframe.utils.DensityUtils;
 
 import static com.runjing.utils.SpacesItemDecoration.STAGGEREDGRIDLAYOUT;
@@ -140,10 +151,8 @@ public class HomeFragment extends TitleBarFragment {
         super.initData();
         initLocation();
         startLocation();
-//        getData();
+        getData();
     }
-
-
 
 
     @Override
@@ -173,28 +182,31 @@ public class HomeFragment extends TitleBarFragment {
     }
 
     public void getData() {
-        loadingDialog.show();
-        HomeRequest homeRequest = new HomeRequest();
-        OkHttpUtil.postRequest(BaseUrl.AppMain, homeRequest, HomeResponse.class, new MyRequestCallBack<HomeResponse>() {
-            @Override
-            public void onPostResponse(HomeResponse response) {
-                loadingDialog.dismiss();
-                setData(response.getData());
-            }
 
-            @Override
-            public void onPostErrorResponse(Exception e, String msg) {
+        RetrofitClient.getInstance(outsideAty, RJBaseUrl.BaseUrl).execute(
+                RetrofitClient.getInstance(outsideAty, RJBaseUrl.BaseUrl)
+                        .create(ApiServices.class)
+                        .homeStore(ApiServices.MyRequestBody.createBody(new HomeRequest())),
+                new BaseSubscriber<HomeResponse>(outsideAty) {
 
-            }
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        KLog.e(e.getMessage());
+                    }
 
-            @Override
-            public void onNoNetWork() {
+                    @Override
+                    public void onNext(HomeResponse response) {
+                        loadingDialog.dismiss();
+                        KLog.i(response.getData());
+                    }
 
-            }
-        });
+                    @Override
+                    public void onCompleted() {
+                        super.onCompleted();
+                        ViewInject.showCenterToast(outsideAty, "没有网络");
+                    }
+                });
     }
-
-
 
 
     /**
@@ -220,7 +232,7 @@ public class HomeFragment extends TitleBarFragment {
                 rv_content.setLayoutManager(new StaggeredGridLayoutManager(Appconfig.TAG_TWO, StaggeredGridLayoutManager.VERTICAL));
                 rv_content.addItemDecoration(new SpacesItemDecoration(DensityUtils.dip2dp(getActivity(), 7), STAGGEREDGRIDLAYOUT));
                 AppMethod.bannerWeight(outsideAty, banner, homeBean.getImages());
-            }else if (homeBean.getItemTpye() == HomeBean.TYPE_ITEM_STORE) {
+            } else if (homeBean.getItemTpye() == HomeBean.TYPE_ITEM_STORE) {
                 ll_store_status.setVisibility(View.VISIBLE);
                 ll_search.setVisibility(View.GONE);
                 ll_banner.setVisibility(View.GONE);
@@ -235,11 +247,12 @@ public class HomeFragment extends TitleBarFragment {
 
     /**
      * 动态设置margin
+     *
      * @param ll
      */
     public void setMargin(LinearLayout ll, int margin) {
         if (ll != null) {
-            LinearLayout.LayoutParams params =(LinearLayout.LayoutParams) ll.getLayoutParams();
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) ll.getLayoutParams();
             params.topMargin = DensityUtils.dip2dp(ll.getContext(), margin);
             ll.setLayoutParams(params);
         }
@@ -249,7 +262,7 @@ public class HomeFragment extends TitleBarFragment {
     /**
      * 开启定位
      */
-    public static void startLocation(){
+    public static void startLocation() {
         //根据控件的选择，重新设置定位参数
         resetOption();
         // 设置定位参数
@@ -269,17 +282,17 @@ public class HomeFragment extends TitleBarFragment {
 
         locationOption.setOnceLocationLatest(true);
 
-        try{
+        try {
             // 设置发送定位请求的时间间隔,最小值为1000，如果小于1000，按照1000算
             locationOption.setInterval(1000);
-        }catch(Throwable e){
+        } catch (Throwable e) {
             e.printStackTrace();
         }
 
-        try{
+        try {
             // 设置网络请求超时时间
             locationOption.setHttpTimeOut(30000);
-        }catch(Throwable e){
+        } catch (Throwable e) {
             e.printStackTrace();
         }
 
@@ -289,7 +302,7 @@ public class HomeFragment extends TitleBarFragment {
     /*
   初始化定位
    */
-    public static void initLocation(){
+    public static void initLocation() {
         //初始化client
         locationClient = new AMapLocationClient(MyApplication.contextApp.getApplicationContext());
         locationOption = LocalUtil.getDefaultOption();

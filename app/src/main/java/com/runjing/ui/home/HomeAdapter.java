@@ -136,7 +136,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         public void setData(List<GoodBean> goods, int position) {
             if (goods != null && goods.size() > 0) {
-                GlideUtils.getInstance().displayImageCenter(iv_good, goods.get(position).getImage(), iv_good.getContext(), R.mipmap.ic_launcher);
+                GlideUtils.getInstance().displayImageCenter(iv_good, goods.get(position).getImage(), iv_good.getContext(), R.mipmap.iv_default);
                 //这个后期根据后台切图动态删除， 我找的图太大 尺寸不对
                 setImageWH(iv_good);
                 tv_name.setText(AppMethod.setDefault(goods.get(position).getName()));

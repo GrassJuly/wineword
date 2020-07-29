@@ -6,7 +6,7 @@ import com.runjing.base.TitleBarActivity;
 import com.runjing.bean.response.login.GuildBean;
 import com.runjing.bean.test.HomeData;
 import com.runjing.common.AppMethod;
-import com.runjing.common.BaseUrl;
+import com.runjing.common.RJBaseUrl;
 import com.runjing.http.MyRequestCallBack;
 import com.runjing.http.OkHttpUtil;
 import com.runjing.utils.StatusBarUtil;
@@ -47,7 +47,7 @@ public class GuildActivity extends TitleBarActivity {
 
     private void getData() {
         BaseRequest loginRequest = new BaseRequest();
-        OkHttpUtil.postRequest(BaseUrl.GetBanner, loginRequest, GuildBean.class, new MyRequestCallBack<GuildBean>() {
+        OkHttpUtil.postRequest(RJBaseUrl.GetBanner, loginRequest, GuildBean.class, new MyRequestCallBack<GuildBean>() {
             @Override
             public void onPostResponse(GuildBean response) {
                 if (response != null) {

@@ -19,7 +19,8 @@ public class LocalUtil {
     public static String poiName;
     public static TextView mTextView;
     public static Context mContext;
-    public LocalUtil(TextView txtView){
+
+    public LocalUtil(TextView txtView) {
         this.mTextView = txtView;
 
     }
@@ -60,44 +61,36 @@ public class LocalUtil {
                     poiName = location.getPoiName();
                     //定位完成的时间
                     mTextView.setText(location.getAddress());
-                    try {
-                        if (!TextUtils.equals(MMKVUtil.getInstance().decodeString(Appconfig.city), location.getCity())) {
-                            MMKVUtil.getInstance().encode(Appconfig.lon, location.getLongitude());
-                            MMKVUtil.getInstance().encode(Appconfig.lat, location.getLatitude());
-                            MMKVUtil.getInstance().encode(Appconfig.city, location.getCity());
-                            MMKVUtil.getInstance().encode(Appconfig.address, location.getAddress());
-                        }
-                    }catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    //定位失败
-                    mTextView.setText("定位失败，无法获取地址");
-                    sb.append("定位失败" + "\n");
-                    sb.append("错误码:" + location.getErrorCode() + "\n");
-                    sb.append("错误信息:" + location.getErrorInfo() + "\n");
-                    sb.append("错误描述:" + location.getLocationDetail() + "\n");
-                }
-                sb.append("***定位质量报告***").append("\n");
-                sb.append("* WIFI开关：").append(location.getLocationQualityReport().isWifiAble() ? "开启" : "关闭").append("\n");
-                sb.append("* GPS状态：").append(getGPSStatusString(location.getLocationQualityReport().getGPSStatus())).append("\n");
-                sb.append("* GPS星数：").append(location.getLocationQualityReport().getGPSSatellites()).append("\n");
-                sb.append("* 网络类型：" + location.getLocationQualityReport().getNetworkType()).append("\n");
-                sb.append("* 网络耗时：" + location.getLocationQualityReport().getNetUseTime()).append("\n");
-                sb.append("****************").append("\n");
-                //定位之后的回调时间
-
-                //解析定位结果，
-                String result = sb.toString();
-
             } else {
-
+                //定位失败
+                mTextView.setText("定位失败，无法获取地址");
+                sb.append("定位失败" + "\n");
+                sb.append("错误码:" + location.getErrorCode() + "\n");
+                sb.append("错误信息:" + location.getErrorInfo() + "\n");
+                sb.append("错误描述:" + location.getLocationDetail() + "\n");
             }
-        }
-    };
+            sb.append("***定位质量报告***").append("\n");
+            sb.append("* WIFI开关：").append(location.getLocationQualityReport().isWifiAble() ? "开启" : "关闭").append("\n");
+            sb.append("* GPS状态：").append(getGPSStatusString(location.getLocationQualityReport().getGPSStatus())).append("\n");
+            sb.append("* GPS星数：").append(location.getLocationQualityReport().getGPSSatellites()).append("\n");
+            sb.append("* 网络类型：" + location.getLocationQualityReport().getNetworkType()).append("\n");
+            sb.append("* 网络耗时：" + location.getLocationQualityReport().getNetUseTime()).append("\n");
+            sb.append("****************").append("\n");
+            //定位之后的回调时间
 
-    public static AMapLocationClientOption getDefaultOption() {
-        AMapLocationClientOption mOption = new AMapLocationClientOption();
+            //解析定位结果，
+            String result = sb.toString();
+
+        } else
+
+        {
+
+        }
+    }
+};
+
+public static AMapLocationClientOption getDefaultOption(){
+        AMapLocationClientOption mOption=new AMapLocationClientOption();
         mOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);//可选，设置定位模式，可选的模式有高精度、仅设备、仅网络。默认为高精度模式
         mOption.setGpsFirst(true);//可选，设置是否gps优先，只在高精度模式下有效。默认关闭
         mOption.setHttpTimeOut(30000);//可选，设置网络请求超时时间。默认为30秒。在仅设备模式下无效
@@ -111,39 +104,39 @@ public class LocalUtil {
         mOption.setLocationCacheEnable(true); //可选，设置是否使用缓存定位，默认为true
         mOption.setGeoLanguage(AMapLocationClientOption.GeoLanguage.DEFAULT);//可选，设置逆地理信息的语言，默认值为默认语言（根据所在地区选择语言）
         return mOption;
-    }
+        }
 
-    /**
-     * 获取GPS状态的字符串
-     *
-     * @param statusCode GPS状态码
-     * @return
-     */
-    private static String getGPSStatusString(int statusCode) {
-        String str = "";
-        switch (statusCode) {
-            case AMapLocationQualityReport.GPS_STATUS_OK:
-                str = "GPS状态正常";
-                break;
-            case AMapLocationQualityReport.GPS_STATUS_NOGPSPROVIDER:
-                str = "手机中没有GPS Provider，无法进行GPS定位";
-                mTextView.setText("手机中没有GPS Provider，无法进行GPS定位");
-                break;
-            case AMapLocationQualityReport.GPS_STATUS_OFF:
-                str = "GPS关闭，建议开启GPS，提高定位质量";
-                mTextView.setText("未授权定位服务2");
-                break;
-            case AMapLocationQualityReport.GPS_STATUS_MODE_SAVING:
-                str = "选择的定位模式中不包含GPS定位，建议选择包含GPS定位的模式，提高定位质量";
-                mTextView.setText("选择的定位模式中不包含GPS定位，建议选择包含GPS定位的模式，提高定位质量");
-                break;
-            case AMapLocationQualityReport.GPS_STATUS_NOGPSPERMISSION:
-                str = "没有GPS定位权限，建议开启gps定位权限";
-                mTextView.setText("没有GPS定位权限，建议开启gps定位权限");
-                break;
+/**
+ * 获取GPS状态的字符串
+ *
+ * @param statusCode GPS状态码
+ * @return
+ */
+private static String getGPSStatusString(int statusCode){
+        String str="";
+        switch(statusCode){
+        case AMapLocationQualityReport.GPS_STATUS_OK:
+        str="GPS状态正常";
+        break;
+        case AMapLocationQualityReport.GPS_STATUS_NOGPSPROVIDER:
+        str="手机中没有GPS Provider，无法进行GPS定位";
+        mTextView.setText("手机中没有GPS Provider，无法进行GPS定位");
+        break;
+        case AMapLocationQualityReport.GPS_STATUS_OFF:
+        str="GPS关闭，建议开启GPS，提高定位质量";
+        mTextView.setText("未授权定位服务2");
+        break;
+        case AMapLocationQualityReport.GPS_STATUS_MODE_SAVING:
+        str="选择的定位模式中不包含GPS定位，建议选择包含GPS定位的模式，提高定位质量";
+        mTextView.setText("选择的定位模式中不包含GPS定位，建议选择包含GPS定位的模式，提高定位质量");
+        break;
+        case AMapLocationQualityReport.GPS_STATUS_NOGPSPERMISSION:
+        str="没有GPS定位权限，建议开启gps定位权限";
+        mTextView.setText("没有GPS定位权限，建议开启gps定位权限");
+        break;
         }
         return str;
-    }
+        }
 
 
-}
+        }

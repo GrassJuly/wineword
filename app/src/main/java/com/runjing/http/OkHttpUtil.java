@@ -58,9 +58,7 @@ public class OkHttpUtil {
 
         boolean isNetWork = AppMethod.isNetworkConnected(MyApplication.contextApp);
         if (!isNetWork) {
-//            ToastUtils.showToast(MyApplication.contextApp, "网络环境不佳，请检查网络");
             callback.onNoNetWork();
-//            callback.onPostResponse(null);
         } else {
             OkHttpClientManager.postAsyn(url, new OkHttpClientManager.StringCallback() {
 
@@ -71,7 +69,7 @@ public class OkHttpUtil {
                     try {
                         callback.onPostErrorResponse(e, e.getMessage());
                         if (SystemTool.DEBUG) RJLoger.debug(e.getMessage());
-                    }catch(NullPointerException e3){
+                    } catch (NullPointerException e3) {
                         KLog.i("返回数据为null");
                     } catch (IllegalArgumentException e1) {
                         ViewInject.showCenterToast(MyApplication.contextApp, "请求时间超时,请重试");
@@ -84,8 +82,7 @@ public class OkHttpUtil {
                 public void onResponse(String response) {
                     try {
 //                        response = desutil.getDesAndBase64String(response);
-                        KLog.i(response);
-                        if (SystemTool.DEBUG) RJLoger.debug(response);
+                        KLog.json(response);
                         if (!TextUtils.isEmpty(response)) {
                             callback.onPostResponse(JSON.parseObject(response, clazz));
                             if (!SystemTool.checkNet(MyApplication.contextApp)) {
@@ -107,8 +104,7 @@ public class OkHttpUtil {
                         callback.onPostResponse(JSON.parseObject(response, clazz));
                     }
                 }
-            }, new OkHttpClientManager.Param[]{
-                    new OkHttpClientManager.Param("data", data)});
+            }, data);
         }
     }
 

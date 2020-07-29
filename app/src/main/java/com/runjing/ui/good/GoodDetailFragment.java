@@ -18,7 +18,7 @@ import com.runjing.bean.response.good.GoodDetailBean;
 import com.runjing.bean.test.HomeData;
 import com.runjing.common.AppMethod;
 import com.runjing.common.Appconfig;
-import com.runjing.common.BaseUrl;
+import com.runjing.common.RJBaseUrl;
 import com.runjing.http.MyRequestCallBack;
 import com.runjing.http.OkHttpUtil;
 import com.runjing.utils.StatusBarUtil;
@@ -222,7 +222,7 @@ public class GoodDetailFragment extends TitleBarFragment implements GradationScr
     }
 
     public void getData() {
-        OkHttpUtil.postRequest(BaseUrl.AppMain, new BaseRequest(), GoodDetailBaseBean.class, new MyRequestCallBack<GoodDetailBaseBean>() {
+        OkHttpUtil.postRequest(RJBaseUrl.AppMain, new BaseRequest(), GoodDetailBaseBean.class, new MyRequestCallBack<GoodDetailBaseBean>() {
             @Override
             public void onPostResponse(GoodDetailBaseBean response) {
                 if (Appconfig.RequestSuccess.equals(response.resultCode)) {

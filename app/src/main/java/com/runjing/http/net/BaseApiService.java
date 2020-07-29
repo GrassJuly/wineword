@@ -1,7 +1,8 @@
 package com.runjing.http.net;
 
 
-import com.runjing.http.IpResult;
+import com.runjing.bean.response.login.LoginBean;
+import com.runjing.common.RJBaseUrl;
 
 import java.util.Map;
 
@@ -10,8 +11,6 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -29,12 +28,7 @@ import rx.Observable;
  */
 public interface BaseApiService {
 
-    public static final String Base_URL = "http://ip.taobao.com/";
-    /**
-     *普通写法
-     */
-    @GET("service/getIpInfo.php")
-    Observable<BaseResponse<IpResult>> getData(@Query("ip") String ip);
+    public static final String Base_URL = RJBaseUrl.BaseUrl;
 
 
     @GET("{url}")
@@ -52,7 +46,9 @@ public interface BaseApiService {
 
     @POST("{url}")
     Observable<ResponseBody> json(
-            @Path("url") String url,
+//            @Path("url") String url,
+            //解决url 乱码问题
+            @Path(value = "url", encoded = true) String url,
             @Body RequestBody jsonStr);
 
     @Multipart
@@ -72,4 +68,16 @@ public interface BaseApiService {
     @GET
     Observable<ResponseBody> downloadFile(@Url String fileUrl);
 
+
+//    /**
+//     * 普通写法
+//     */
+//    @GET("service/getIpInfo.php")
+//    Observable<BaseResponse<IpResult>> getData(@Query("ip") String ip);
+
+    @POST("{url}")
+    Observable<BaseResponse<LoginBean>> onLogin(
+            //解决url 乱码问题
+            @Path(value = "url", encoded = true) String url,
+            @Body RequestBody jsonStr);
 }

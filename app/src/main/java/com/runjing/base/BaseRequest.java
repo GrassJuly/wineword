@@ -2,6 +2,7 @@ package com.runjing.base;
 
 
 import com.runjing.MyApplication;
+import com.runjing.utils.location.LocalUtil;
 
 import org.runjing.rjframe.utils.SystemTool;
 
@@ -18,30 +19,14 @@ public class BaseRequest {
     private String userId; //用户id
     private String deviceId; //设备id
     private String sessionId;//标识码判断登录过期
-    private String accountId; //账户id
     private String appVersion;//版本信息
-    private String shopsCode;//商户编码
+    private String latitude;
+    private String longitude;
 
     public BaseRequest() {
-//        this.accountId = MyApplication.accountId;
+        this.latitude = LocalUtil.lat;
+        longitude = LocalUtil.lon;
         this.appVersion = SystemTool.getAppVersionName(MyApplication.contextApp);
-//        shopsCode = MyApplication.shopCode;
-    }
-
-    public String getShopsCode() {
-        return shopsCode;
-    }
-
-    public void setShopsCode(String shopsCode) {
-        this.shopsCode = shopsCode;
-    }
-
-    public String getAppVersion() {
-        return appVersion;
-    }
-
-    public void setAppVersion(String appVersion) {
-        this.appVersion = appVersion;
     }
 
     public String getPhonemodel() {
@@ -52,20 +37,20 @@ public class BaseRequest {
         this.phonemodel = phonemodel;
     }
 
-    public String getDeviceId() {
-        return deviceId;
-    }
-
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
-    }
-
     public String getUserId() {
         return userId;
     }
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 
     public String getSessionId() {
@@ -76,12 +61,28 @@ public class BaseRequest {
         this.sessionId = sessionId;
     }
 
-    public String getAccountId() {
-        return accountId;
+    public String getAppVersion() {
+        return appVersion;
     }
 
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
+    public void setAppVersion(String appVersion) {
+        this.appVersion = appVersion;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
     @Override
@@ -91,9 +92,9 @@ public class BaseRequest {
                 ", userId='" + userId + '\'' +
                 ", deviceId='" + deviceId + '\'' +
                 ", sessionId='" + sessionId + '\'' +
-                ", accountId='" + accountId + '\'' +
                 ", appVersion='" + appVersion + '\'' +
-                ", shopsCode='" + shopsCode + '\'' +
+                ", latitude='" + latitude + '\'' +
+                ", longitude='" + longitude + '\'' +
                 '}';
     }
 }

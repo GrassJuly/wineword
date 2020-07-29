@@ -2,37 +2,41 @@ package com.runjing.ui.login;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.google.gson.Gson;
 import com.runjing.MyApplication;
-import com.runjing.base.BaseResponse;
 import com.runjing.base.TitleBarActivity;
 import com.runjing.base.TitleBarFragment;
 import com.runjing.bean.request.LoginRequest;
+import com.runjing.bean.response.login.LoginBean;
 import com.runjing.bean.response.login.LoginResponse;
 import com.runjing.common.Appconfig;
-import com.runjing.common.BaseUrl;
+import com.runjing.common.RJBaseUrl;
+import com.runjing.http.ApiServices;
 import com.runjing.http.MyRequestCallBack;
 import com.runjing.http.OkHttpUtil;
 import com.runjing.http.net.BaseSubscriber;
 import com.runjing.http.net.ExceptionHandle;
 import com.runjing.http.net.RetrofitClient;
 import com.runjing.utils.KeyBoardUtil;
+import com.runjing.utils.location.LocalUtil;
 import com.runjing.utils.store.MMKVUtil;
 import com.runjing.wineworld.R;
 import com.socks.library.KLog;
 
 import org.runjing.rjframe.ui.BindView;
+import org.runjing.rjframe.ui.ViewInject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.RequestBody;
+import retrofit2.BaseUrl;
 
 /**
  * login 登录页面
@@ -73,7 +77,7 @@ public class LoginActivity extends TitleBarActivity implements OnLoginCallBack {
         lists.add(new QuickLoginFragment().setListener(this));
         lists.add(new APLoginFragment().setListener(this));
         fm = getFragmentManager();
-        ft =fm.beginTransaction();
+        ft = fm.beginTransaction();
         fragment = lists.get(0);
         ft.add(R.id.act_fl_content, fragment).commit();
     }
@@ -100,6 +104,7 @@ public class LoginActivity extends TitleBarActivity implements OnLoginCallBack {
 
     /**
      * 页面切换
+     *
      * @param from
      * @param to
      */
@@ -119,48 +124,52 @@ public class LoginActivity extends TitleBarActivity implements OnLoginCallBack {
     public void onLoginRJ(String pin) {
         LoginRequest request = new LoginRequest();
         request.setPhone(MMKVUtil.getInstance().decodeString(Appconfig.IsPhone));
-        request.setCity(MMKVUtil.getInstance().decodeString(Appconfig.city));
-        request.setLatitude(MMKVUtil.getInstance().decodeString(Appconfig.lat));
-        request.setLongitude(MMKVUtil.getInstance().decodeString(Appconfig.lon));
+        request.setCity(LocalUtil.city);
+        request.setLatitude(LocalUtil.lat);
+        request.setLongitude(LocalUtil.lon);
+//        request.setPin("jd_7e8f4dfc127ea");
         request.setPin(pin);
         request.setPlatform(4);//1 小程序  2 公众号 3 m站 4 Android 5 ios
-        OkHttpUtil.postRequest(BaseUrl.LoginIn, request, LoginResponse.class, new MyRequestCallBack<LoginResponse>() {
-            @Override
-            public void onPostResponse(LoginResponse response) {
-                KLog.d(response);
-            }
+//        OkHttpUtil.postRequest(RJBaseUrl.LoginIn, request, LoginResponse.class, new MyRequestCallBack<LoginResponse>() {
+//            @Override
+//            public void onPostResponse(LoginResponse response) {
+//                KLog.d(response);
+//                if (200 == response.getCode()) {
+//                    ViewInject.showCenterToast(LoginActivity.this, "登陆成功");
+//                }
+//            }
+//
+//            @Override
+//            public void onPostErrorResponse(Exception e, String msg) {
+//
+//            }
+//
+//            @Override
+//            public void onNoNetWork() {
+//
+//            }
+//        });
 
-            @Override
-            public void onPostErrorResponse(Exception e, String msg) {
 
-            }
+        RetrofitClient.getInstance(this, RJBaseUrl.BaseUrl).execute(
+                RetrofitClient.getInstance(this, RJBaseUrl.BaseUrl)
+                        .create(ApiServices.class)
+                        .onLogin(ApiServices.MyRequestBody.createBody(request)),
+                new BaseSubscriber<LoginResponse>(LoginActivity.this) {
 
-            @Override
-            public void onNoNetWork() {
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        Log.e("Lyk", e.getMessage());
 
-            }
-        });
+                    }
 
-//        String parames = JSON.toJSONString(request, SerializerFeature.DisableCircularReferenceDetect);
-//
-//        RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), parames);
-//
-//        RetrofitClient.getInstance(this).createBaseApi().json("service/getIpInfo.php"
-//                , body, new BaseSubscriber<com.runjing.http.net.BaseResponse>(this) {
-//
-//
-//                    @Override
-//                    public void onError(ExceptionHandle.ResponeThrowable e) {
-//
-//
-//                        KLog.e( e.getMessage());
-//
-//                    }
-//
-//                    @Override
-//                    public void onNext(BaseResponse responseBody) {
-//
-//                    }
-//                });
+                    @Override
+                    public void onNext(LoginResponse response) {
+                        KLog.i(response.getData());
+                    }
+                });
+
     }
+
+
 }

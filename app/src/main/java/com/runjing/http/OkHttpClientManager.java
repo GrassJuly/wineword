@@ -2,18 +2,32 @@ package com.runjing.http;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
+import android.util.Log;
 import android.widget.ImageView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.runjing.base.BaseRequest;
+import com.runjing.http.net.NovateCookieManger;
+import com.socks.library.KLog;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.Headers;
+import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.MultipartBuilder;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
+
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -24,6 +38,9 @@ import java.net.URLConnection;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
+import okhttp3.FormBody;
+import okio.Buffer;
 
 /**
  * Created by zhy on 15/8/17.
@@ -130,6 +147,11 @@ public class OkHttpClientManager {
      * @param params
      */
     private void _postAsyn(String url, final StringCallback callback, Param... params) {
+        Request request = buildPostRequest(url, params);
+        deliveryResult(callback, request);
+    }
+
+    private void _postAsyn(String url, final StringCallback callback, String params) {
         Request request = buildPostRequest(url, params);
         deliveryResult(callback, request);
     }
@@ -306,6 +328,10 @@ public class OkHttpClientManager {
         getInstance()._postAsyn(url, callback, params);
     }
 
+    public static void postAsyn(String url, final StringCallback callback, String params) {
+        getInstance()._postAsyn(url, callback, params);
+    }
+
 
     public static void postAsyn(String url, final StringCallback callback, Map<String, String> params) {
         getInstance()._postAsyn(url, callback, params);
@@ -449,12 +475,25 @@ public class OkHttpClientManager {
             if (params == null) {
                 params = new Param[0];
             }
+            MediaType FORM_CONTENT_TYPE
+                    = MediaType.parse("application/json;charset=utf-8");
             FormEncodingBuilder builder = new FormEncodingBuilder();
+            JSONObject jsonObject = new JSONObject();
+            KLog.i(params);
+
+            //添加
             for (Param param : params) {
+
                 builder.add(param.key, param.value);
+
+                jsonObject.put(param.key, param.value);
             }
-            RequestBody requestBody = builder.build();
+            String json = jsonObject.toJSONString();
+            KLog.i(json);
+            KLog.i(new Gson().toJson(params));
 //            RequestBody requestBody = builder.build();
+            RequestBody requestBody = RequestBody.create(FORM_CONTENT_TYPE, jsonObject.toJSONString());
+
             return new Request.Builder()
                     .url(url)
                     .post(requestBody)
@@ -465,6 +504,26 @@ public class OkHttpClientManager {
         return null;
     }
 
+    private Request buildPostRequest(String url, String params) {
+        try {
+            if (TextUtils.isEmpty(params)) {
+                params = JSONObject.toJSONString(new BaseRequest());
+            }
+            MediaType FORM_CONTENT_TYPE
+                    = MediaType.parse("application/json;charset=utf-8");
+            KLog.i(params);
+//            RequestBody requestBody = builder.build();
+            RequestBody requestBody = RequestBody.create(FORM_CONTENT_TYPE, params);
+
+            return new Request.Builder()
+                    .url(url)
+                    .post(requestBody)
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public interface StringCallback {
         void onFailure(Request request, IOException e);

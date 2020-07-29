@@ -10,19 +10,20 @@ package com.runjing.common;
  * @Remark:
  * @see <a href="https://github.com/mrxiaoyu100001">github</a>
  */
-public class BaseUrl {
+public class RJBaseUrl {
 
-//    public final static String RjBaseUrl = "https://cxc.jd9sj.com/api/";//线上正式环境
+    //    public final static String RjBaseUrl = "https://cxc.jd9sj.com/api/";//线上正式环境
 //    public final static String RjBaseUrl = "https://pre-cxc.jd9sj.com/api/";//线上正式环境
     public final static String BaseUrl = "http://116.196.90.67:9002/api/";//测试环境
 
-
-    /*获取banner图片*/
-    public static String GetBanner = BaseUrl + "获取banner图片";
     /*登录接口*/
     public static String LoginIn = BaseUrl + "customer/appLogin";
     /*登出接口*/
     public static String LoginOut = BaseUrl + "user/logout";
+    /*首页-获取开通地区*/
+    public static String Home_District = BaseUrl + "district/getDistrict";
+    /*获取banner图片*/
+    public static String GetBanner = BaseUrl + "获取banner图片";
     /*升级接口*/
     public static String AppUpdate = BaseUrl + "appmanager/show";
     /*个人中心接口*/

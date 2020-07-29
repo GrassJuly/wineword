@@ -15,8 +15,6 @@ public class LoginRequest extends BaseRequest {
     private String pin;
     private String city;
     private int platform;
-    private String latitude;
-    private String longitude;
     private int registerChnnel;
     private int userLevel;
     private int userType;
@@ -53,22 +51,6 @@ public class LoginRequest extends BaseRequest {
         this.platform = platform;
     }
 
-    public String getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(String latitude) {
-        this.latitude = latitude;
-    }
-
-    public String getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(String longitude) {
-        this.longitude = longitude;
-    }
-
     public int getRegisterChnnel() {
         return registerChnnel;
     }
@@ -100,8 +82,6 @@ public class LoginRequest extends BaseRequest {
                 ", pin='" + pin + '\'' +
                 ", city='" + city + '\'' +
                 ", platform=" + platform +
-                ", latitude='" + latitude + '\'' +
-                ", longitude='" + longitude + '\'' +
                 ", registerChnnel=" + registerChnnel +
                 ", userLevel=" + userLevel +
                 ", userType=" + userType +
