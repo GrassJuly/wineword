@@ -126,7 +126,7 @@ public class LoginActivity extends TitleBarActivity implements OnLoginCallBack {
         RetrofitClient.getInstance(this, RJBaseUrl.BaseUrl).execute(
                 RetrofitClient.getInstance(this, RJBaseUrl.BaseUrl)
                         .create(ApiServices.class)
-                        .onLogin(ApiServices.MyRequestBody.createBody(request)),
+                        .login(ApiServices.MyRequestBody.createBody(request)),
                 new BaseSubscriber<LoginResponse>(LoginActivity.this) {
 
                     @Override

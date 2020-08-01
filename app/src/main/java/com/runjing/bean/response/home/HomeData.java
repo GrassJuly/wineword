@@ -87,10 +87,4 @@ public class HomeData {
                 '}';
     }
 
-    public boolean loadFinish() {
-        while (districtBean != null && homeStoreBean != null && homeGoodBean != null) {
-            return true;
-        }
-        return false;
-    }
 }

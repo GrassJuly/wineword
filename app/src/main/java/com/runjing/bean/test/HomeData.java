@@ -1,5 +1,8 @@
 package com.runjing.bean.test;
 
+import android.app.Activity;
+
+import com.runjing.bean.response.guild.GuildImageBean;
 import com.runjing.bean.response.home.def.BannerBean;
 import com.runjing.bean.response.home.def.CityBean;
 import com.runjing.bean.response.home.def.GoodBean;
@@ -7,6 +10,7 @@ import com.runjing.bean.response.home.def.GoodTagBean;
 import com.runjing.bean.response.home.def.HomeBean;
 import com.runjing.bean.response.home.def.ProvinceBean;
 import com.runjing.bean.response.home.def.StoreBean;
+import com.runjing.wineworld.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -177,6 +181,7 @@ public class HomeData {
 
     /**
      * 导航页面数据
+     *
      * @return
      */
     public static List<BannerBean> getBanner() {
@@ -188,7 +193,5 @@ public class HomeData {
         banners.add(bannerBean);
         return banners;
     }
-
-
 
 }

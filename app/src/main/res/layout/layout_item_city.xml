@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/lay_item_tv_"
-    android:layout_width="@dimen/dp_108"
+    android:layout_width="@dimen/dp_110"
     android:layout_height="@dimen/dp_32"
-    android:background="@drawable/style_radius_bg_red"
+    android:background="@drawable/style_r_5_bg_fff_f80000"
+    android:ellipsize="end"
     android:gravity="center"
+    android:singleLine="true"
+    android:layout_marginTop="@dimen/dp_10"
+    android:layout_marginLeft="@dimen/dp_10"
+    android:layout_marginRight="@dimen/dp_10"
     android:text="@string/app_default"
     android:textColor="@color/color_333333"
-    android:layout_margin="@dimen/dp_10"
     android:textSize="@dimen/sp_14" />

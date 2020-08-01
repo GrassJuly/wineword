@@ -17,18 +17,17 @@ import com.runjing.base.SimpleBackPage;
 import com.runjing.base.TitleBarFragment;
 import com.runjing.bean.request.BannerRequest;
 import com.runjing.bean.request.GoodRequest;
+import com.runjing.bean.request.HomeRequest;
 import com.runjing.bean.response.home.BannerBean;
 import com.runjing.bean.response.home.DistrictBean;
 import com.runjing.bean.response.home.GoodBean;
 import com.runjing.bean.response.home.HomeData;
 import com.runjing.bean.response.home.HomeStoreBean;
-import com.runjing.bean.response.home.def.HomeBean;
 import com.runjing.common.AppMethod;
 import com.runjing.common.Appconfig;
 import com.runjing.common.RJBaseUrl;
 import com.runjing.http.ApiServices;
-import com.runjing.http.net.BaseSubscriber;
-import com.runjing.http.net.ExceptionHandle;
+import com.runjing.http.net.NetworkUtil;
 import com.runjing.http.net.RetrofitClient;
 import com.runjing.utils.PermissionUtils;
 import com.runjing.utils.RecyclerViewItemDecoration;
@@ -58,7 +57,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import rx.Observable;
-import rx.Observer;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func4;
@@ -138,10 +136,12 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
     public static AMapLocationClient locationClient = null;
     public static AMapLocationClientOption locationOption = null;
     public static String strLocation;
+    private HomeRequest request;
 
     @Override
     protected View inflaterView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
         loadingDialog = new LoadingDialog(outsideAty);
+        request = new HomeRequest();
         return inflater.inflate(R.layout.frag_home, null);
     }
 
@@ -157,10 +157,6 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
         super.initData();
         initLocation();
         startLocation();
-//        getDistrict();
-//        getStore();
-//        getBanner();
-//        getGood();
         getData();
     }
 
@@ -176,13 +172,13 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                refreshlayout.finishRefresh(2000);
+                getData();
             }
         });
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                refreshLayout.finishLoadMore(2000);
+                getData();
             }
         });
         homeAdapter = new HomeAdapter(getActivity());
@@ -202,7 +198,7 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
                 startLocation();
                 break;
             case R.id.lay_tv_refresh:
-                initData();
+                getData();
                 break;
             case R.id.lay_ll_search:
                 AppMethod.postShowWith(outsideAty, SimpleBackPage.Search);
@@ -228,147 +224,8 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
         }
     }
 
-    //查看运营城市数据
-    public void getDistrict() {
-        RetrofitClient.getInstance(outsideAty, RJBaseUrl.BaseUrl).execute(
-                RetrofitClient.getInstance(outsideAty, RJBaseUrl.BaseUrl)
-                        .create(ApiServices.class)
-                        .getDistrict(ApiServices.MyRequestBody.createBody(new BaseRequest())),
-                new BaseSubscriber<DistrictBean>(outsideAty) {
-
-                    @Override
-                    public void onError(ExceptionHandle.ResponeThrowable e) {
-                        KLog.e(e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(DistrictBean response) {
-                        KLog.i(response.getData());
-                        if (response != null) {
-                            ll_content.setVisibility(View.GONE);
-                            ll_localNet.setVisibility(View.GONE);
-                            HomeData.getInstance().setDistrictBean(response);
-                            //TODO 存在异步显示问题后期优化
-                            setData();
-                        } else {
-                            ll_content.setVisibility(View.GONE);
-                            ll_localNet.setVisibility(View.VISIBLE);
-                            ll_nonet.setVisibility(View.VISIBLE);
-                            ll_nolocal.setVisibility(View.GONE);
-                        }
-                    }
-
-                    @Override
-                    public void onCompleted() {
-                        super.onCompleted();
-                        //TODO 没网的时候处理
-//                        ViewInject.showCenterToast(outsideAty, "没有网络");
-//                        ll_content.setVisibility(View.GONE);
-//                        ll_localNet.setVisibility(View.VISIBLE);
-//                        ll_nonet.setVisibility(View.VISIBLE);
-//                        ll_nolocal.setVisibility(View.GONE);
-                    }
-                });
-    }
-
-    //获取附近门店列表
-    public void getStore() {
-        RetrofitClient.getInstance(outsideAty, RJBaseUrl.BaseUrl).execute(
-                RetrofitClient.getInstance(outsideAty, RJBaseUrl.BaseUrl)
-                        .create(ApiServices.class)
-                        .getStore(ApiServices.MyRequestBody.createBody(new BaseRequest())),
-                new BaseSubscriber<HomeStoreBean>(outsideAty) {
-
-                    @Override
-                    public void onError(ExceptionHandle.ResponeThrowable e) {
-                        KLog.e(e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(HomeStoreBean response) {
-                        if (response != null) {
-                            HomeData.getInstance().setHomeStoreBean(response);
-
-                        }
-                    }
-
-                    @Override
-                    public void onCompleted() {
-                        super.onCompleted();
-                        //TODO 没网的时候处理
-//                        ViewInject.showCenterToast(outsideAty, "没有网络");
-//                        ll_content.setVisibility(View.GONE);
-//                        ll_localNet.setVisibility(View.VISIBLE);
-//                        ll_nonet.setVisibility(View.VISIBLE);
-//                        ll_nolocal.setVisibility(View.GONE);
-                    }
-                });
-    }
-
-    //获取banner
-    public void getBanner() {
-        RetrofitClient.getInstance(outsideAty, RJBaseUrl.BaseUrl).execute(
-                RetrofitClient.getInstance(outsideAty, RJBaseUrl.BaseUrl)
-                        .create(ApiServices.class)
-                        .getBanner(ApiServices.MyRequestBody.createBody(new BannerRequest())),
-                new BaseSubscriber<BannerBean>(outsideAty) {
-
-                    @Override
-                    public void onError(ExceptionHandle.ResponeThrowable e) {
-                        KLog.e(e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(BannerBean response) {
-                        if (response != null) {
-                            HomeData.getInstance().setBannerBean(response);
-                        }
-                    }
-
-                    @Override
-                    public void onCompleted() {
-                        super.onCompleted();
-
-                        //TODO 没网的时候处理
-//                        ViewInject.showCenterToast(outsideAty, "没有网络");
-//                        ll_content.setVisibility(View.GONE);
-//                        ll_localNet.setVisibility(View.VISIBLE);
-//                        ll_nonet.setVisibility(View.VISIBLE);
-//                        ll_nolocal.setVisibility(View.GONE);
-                    }
-                });
-    }
-
-    //获取商品列表
-    public void getGood() {
-        RetrofitClient.getInstance(outsideAty, RJBaseUrl.BaseUrl).execute(
-                RetrofitClient.getInstance(outsideAty, RJBaseUrl.BaseUrl)
-                        .create(ApiServices.class)
-                        .getGood(ApiServices.MyRequestBody.createBody(new GoodRequest())),
-                new BaseSubscriber<GoodBean>(outsideAty) {
-
-                    @Override
-                    public void onError(ExceptionHandle.ResponeThrowable e) {
-                        KLog.e(e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(GoodBean response) {
-                        if (response != null) {
-                            HomeData.getInstance().setHomeGoodBean(response);
-                        }
-                    }
-
-                    @Override
-                    public void onCompleted() {
-                        super.onCompleted();
-                    }
-                });
-    }
-
-
     public void getData() {
-        RetrofitClient retrofitClient = RetrofitClient.getInstance(outsideAty, RJBaseUrl.BaseUrl);
+        RetrofitClient retrofitClient = RetrofitClient.getInstance(outsideAty, RetrofitClient.baseUrl);
         Observable<DistrictBean> district = retrofitClient
                 .create(ApiServices.class)
                 .getDistrict(ApiServices.MyRequestBody.createBody(new BannerRequest()))
@@ -378,15 +235,21 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
                 .create(ApiServices.class)
                 .getStore(ApiServices.MyRequestBody.createBody(new BaseRequest()))
                 .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread());;
+                .observeOn(AndroidSchedulers.mainThread());
+        ;
         Observable<BannerBean> banner = retrofitClient
                 .create(ApiServices.class)
-                .getBanner(ApiServices.MyRequestBody.createBody(new BannerRequest()));
+                .getBanner(ApiServices.MyRequestBody.createBody(new BannerRequest()))
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        ;
+        ;
         Observable<GoodBean> good = retrofitClient
                 .create(ApiServices.class)
                 .getGood(ApiServices.MyRequestBody.createBody(new GoodRequest()))
                 .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread());;
+                .observeOn(AndroidSchedulers.mainThread());
+        ;
         Observable<HomeData> homeObservable = Observable.zip(district, store, good, banner, new Func4<DistrictBean, HomeStoreBean, GoodBean, BannerBean, HomeData>() {
             @Override
             public HomeData call(DistrictBean districtBean, HomeStoreBean homeStoreBean, GoodBean goodBean, BannerBean bannerBean) {
@@ -397,6 +260,12 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
             @Override
             public void onCompleted() {
                 KLog.e("onCompleted");
+                if (!NetworkUtil.isNetworkAvailable(outsideAty)) {
+                    ll_content.setVisibility(View.GONE);
+                    ll_localNet.setVisibility(View.VISIBLE);
+                    ll_nonet.setVisibility(View.VISIBLE);
+                    ll_nolocal.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -407,52 +276,50 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
             @Override
             public void onNext(HomeData homeData) {
                 KLog.e(homeData);
+                setData(homeData);
             }
         });
     }
 
 
-    public void setData() {
-        if (HomeData.getInstance().loadFinish()) {
-            DistrictBean district = HomeData.getInstance().getDistrictBean();
-            String city = MMKVUtil.getInstance().decodeString(Appconfig.city);
-            KLog.e(city);
-            KLog.e(isOpenCity(district.getData(), city));
-            if (isOpenCity(district.getData(), city)) {
-                int type = HomeData.getInstance().getHomeStoreBean().getData().getType();
-                KLog.e(type);
-                if (type == 1) {
-                    HomeData.getInstance().setItemTpye(HomeData.TYPE_ITEM_GOOD);
-                    ll_store_status.setVisibility(View.GONE);
-                    ll_search.setVisibility(View.VISIBLE);
-                    ll_banner.setVisibility(View.VISIBLE);
-                    setMargin(ll_home, 46);
-                    rv_content.setLayoutManager(new StaggeredGridLayoutManager(Appconfig.TAG_TWO, StaggeredGridLayoutManager.VERTICAL));
-                    rv_content.addItemDecoration(new SpacesItemDecoration(DensityUtils.dip2dp(getActivity(), 7), STAGGEREDGRIDLAYOUT));
-                    //TODO banner 图
-//                        AppMethod.bannerWeight(outsideAty, banner, HomeData.getInstance().getBannerBean().getData());
-                } else if (type == 2) {
-                    HomeData.getInstance().setItemTpye(HomeData.TYPE_ITEM_STORE);
-                    ll_store_status.setVisibility(View.VISIBLE);
-                    ll_search.setVisibility(View.GONE);
-                    ll_banner.setVisibility(View.GONE);
-                    setMargin(ll_home, 0);
-                    rv_content.setLayoutManager(new LinearLayoutManager(outsideAty));
-                    rv_content.addItemDecoration(new RecyclerViewItemDecoration(RecyclerViewItemDecoration.MODE_HORIZONTAL,
-                            getResources().getColor(R.color.color_eeeeee), DensityUtils.dip2dp(getActivity(), 1), 0, 0));
-                }
-            } else {
-                HomeData.getInstance().setItemTpye(HomeData.TYPE_ITEM_CITY);
+    /**
+     * @param response
+     */
+    public void setData(HomeData response) {
+        String city = MMKVUtil.getInstance().decodeString(Appconfig.city);
+        if (isOpenCity(response.getDistrictBean().getData(), city)) {
+            int type = HomeData.getInstance().getHomeStoreBean().getData().getType();
+            if (type == 1) {
+                response.setItemTpye(HomeData.TYPE_ITEM_GOOD);
+                ll_store_status.setVisibility(View.GONE);
+                ll_search.setVisibility(View.VISIBLE);
+                ll_banner.setVisibility(View.VISIBLE);
+                setMargin(ll_home, 46);
+                rv_content.setLayoutManager(new StaggeredGridLayoutManager(Appconfig.TAG_TWO, StaggeredGridLayoutManager.VERTICAL));
+                rv_content.addItemDecoration(new SpacesItemDecoration(DensityUtils.dip2dp(getActivity(), 7), STAGGEREDGRIDLAYOUT));
+                AppMethod.bannerWeight(outsideAty, banner, response.getBannerBean().getData());
+            } else if (type == 2) {
+                response.setItemTpye(HomeData.TYPE_ITEM_STORE);
                 ll_store_status.setVisibility(View.VISIBLE);
                 ll_search.setVisibility(View.GONE);
                 ll_banner.setVisibility(View.GONE);
+                setMargin(ll_home, 0);
                 rv_content.setLayoutManager(new LinearLayoutManager(outsideAty));
                 rv_content.addItemDecoration(new RecyclerViewItemDecoration(RecyclerViewItemDecoration.MODE_HORIZONTAL,
                         getResources().getColor(R.color.color_eeeeee), DensityUtils.dip2dp(getActivity(), 1), 0, 0));
-                setMargin(ll_home, 0);
             }
-            homeAdapter.setData(HomeData.getInstance());
+        } else {
+            response.setItemTpye(HomeData.TYPE_ITEM_CITY);
+            ll_store_status.setVisibility(View.VISIBLE);
+            ll_search.setVisibility(View.GONE);
+            ll_banner.setVisibility(View.GONE);
+            rv_content.setLayoutManager(new LinearLayoutManager(outsideAty));
+            rv_content.addItemDecoration(new RecyclerViewItemDecoration(RecyclerViewItemDecoration.MODE_HORIZONTAL,
+                    getResources().getColor(R.color.color_eeeeee), DensityUtils.dip2dp(getActivity(), 1), 0, 0));
+            setMargin(ll_home, 0);
         }
+        KLog.e();
+        homeAdapter.setData(response);
     }
 
     /**
@@ -470,42 +337,6 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
         }
         return false;
     }
-
-    /**
-     * 设置数据
-     *
-     * @param homeBean
-     */
-//    public void setData1(HomeBean homeBean) {
-//        if (homeBean != null) {
-//            if (homeBean.getItemTpye() == HomeBean.TYPE_ITEM_CITY) {
-//                ll_store_status.setVisibility(View.VISIBLE);
-//                ll_search.setVisibility(View.GONE);
-//                ll_banner.setVisibility(View.GONE);
-//                rv_content.setLayoutManager(new LinearLayoutManager(outsideAty));
-//                rv_content.addItemDecoration(new RecyclerViewItemDecoration(RecyclerViewItemDecoration.MODE_HORIZONTAL,
-//                        getResources().getColor(R.color.color_eeeeee), DensityUtils.dip2dp(getActivity(), 1), 0, 0));
-//                setMargin(ll_home, 0);
-//            } else if (homeBean.getItemTpye() == HomeBean.TYPE_ITEM_GOOD) {
-//                ll_store_status.setVisibility(View.GONE);
-//                ll_search.setVisibility(View.VISIBLE);
-//                ll_banner.setVisibility(View.VISIBLE);
-//                setMargin(ll_home, 46);
-//                rv_content.setLayoutManager(new StaggeredGridLayoutManager(Appconfig.TAG_TWO, StaggeredGridLayoutManager.VERTICAL));
-//                rv_content.addItemDecoration(new SpacesItemDecoration(DensityUtils.dip2dp(getActivity(), 7), STAGGEREDGRIDLAYOUT));
-//                AppMethod.bannerWeight(outsideAty, banner, homeBean.getImages());
-//            } else if (homeBean.getItemTpye() == HomeBean.TYPE_ITEM_STORE) {
-//                ll_store_status.setVisibility(View.VISIBLE);
-//                ll_search.setVisibility(View.GONE);
-//                ll_banner.setVisibility(View.GONE);
-//                setMargin(ll_home, 0);
-//                rv_content.setLayoutManager(new LinearLayoutManager(outsideAty));
-//                rv_content.addItemDecoration(new RecyclerViewItemDecoration(RecyclerViewItemDecoration.MODE_HORIZONTAL,
-//                        getResources().getColor(R.color.color_eeeeee), DensityUtils.dip2dp(getActivity(), 1), 0, 0));
-//            }
-//            homeAdapter.setData(homeBean);
-//        }
-//    }
 
     /**
      * 动态设置margin
@@ -587,6 +418,7 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
     @Override
     public void onResume() {
         super.onResume();
+        getData();
         if (PermissionUtils.checkPermissions(outsideAty, Appconfig.needPermissions)) {
             ll_localNet.setVisibility(View.GONE);
             ll_content.setVisibility(View.VISIBLE);

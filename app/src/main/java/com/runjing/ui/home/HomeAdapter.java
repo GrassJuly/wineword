@@ -43,11 +43,9 @@ import static com.runjing.bean.response.home.HomeData.TYPE_ITEM_STORE;
 public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Activity context;
     private HomeData response;
-    private List<GoodBean> data;
 
     public HomeAdapter(Activity context) {
         this.context = context;
-        data = new ArrayList<>();
     }
 
     public void setData(HomeData data) {
@@ -89,13 +87,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public int getItemViewType(int position) {
         //根据接口返回数据调整
         if (response != null) {
-            if (response.getItemTpye() == TYPE_ITEM_GOOD) {
-                return response.getItemTpye();
-            } else if (response.getItemTpye() == TYPE_ITEM_STORE) {
-                return response.getItemTpye();
-            } else if (response.getItemTpye() == TYPE_ITEM_CITY) {
-                return response.getItemTpye();
-            }
+            return response.getItemTpye();
         }
         return super.getItemViewType(position);
     }

@@ -55,11 +55,11 @@ public class BannerItemAdapter extends BannerAdapter<BannerBean.DataBean, Banner
 
     @Override
     public void onBindView(BannerViewHolder holder, BannerBean.DataBean data, int position, int size) {
-        GlideUtils.getInstance().displayImageCenter(holder.imageView, data.getExtGoodsVO().getGoodsVoImg(), mContext, R.mipmap.iv_default);
+        GlideUtils.getInstance().displayImageCenter(holder.imageView, data.getImgUrl(), mContext, R.mipmap.iv_default);
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ViewInject.showCenterToast(mContext, "订单详情");
+//                ViewInject.showCenterToast(mContext, "订单详情");
             }
         });
     }

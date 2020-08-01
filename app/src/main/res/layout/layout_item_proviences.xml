@@ -21,7 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/color_ffffff"
-        android:scrollbars="none" />
+        android:scrollbars="none"
+        android:paddingBottom="@dimen/dp_10"/>
 
 
 </LinearLayout>

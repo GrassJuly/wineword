@@ -29,6 +29,8 @@ import com.runjing.base.SimpleBackActivity;
 import com.runjing.base.SimpleBackPage;
 import com.runjing.base.TitleBarActivity;
 import com.runjing.bean.request.UpgradeRequest;
+import com.runjing.bean.response.guild.GuildBean;
+import com.runjing.bean.response.guild.GuildImageBean;
 import com.runjing.bean.response.home.BannerBean;
 import com.runjing.bean.response.update.UpgradeBean;
 import com.runjing.bean.response.update.UpgradeResponse;
@@ -785,14 +787,18 @@ public class AppMethod {
         ViewInject.longToast(activity.getString(R.string.app_loginout_toast));
     }
 
+    public static String getLocalPic(String uri) {
+        return "drawable://" + uri;
+    }
+
     /**
      * 导航页banner
      * @param context
      * @param banner
      * @param images
      */
-    public static void GuildBanner(TitleBarActivity context, Banner banner, List<com.runjing.bean.response.home.def.BannerBean> images) {
-        GuildBannerAdapter adapter = new GuildBannerAdapter(images);
+    public static void GuildBanner(TitleBarActivity context, Banner banner, List<GuildImageBean> images, int type) {
+        GuildBannerAdapter adapter = new GuildBannerAdapter(images, type);
         banner.setDelayTime(4500);
         banner.setBannerRound(0);
         banner.isAutoLoop(false);
