@@ -10,11 +10,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.runjing.base.SimpleBackPage;
-import com.runjing.bean.response.home.CityAdapter;
+import com.runjing.bean.response.home.DistrictBean;
 import com.runjing.bean.response.home.GoodBean;
-import com.runjing.bean.response.home.HomeBean;
-import com.runjing.bean.response.home.ProvinceBean;
-import com.runjing.bean.response.home.StoreBean;
+import com.runjing.bean.response.home.HomeData;
+import com.runjing.bean.response.home.HomeStoreBean;
 import com.runjing.common.AppMethod;
 import com.runjing.common.Appconfig;
 import com.runjing.utils.GlideUtils;
@@ -29,9 +28,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import static com.runjing.bean.response.home.HomeBean.TYPE_ITEM_CITY;
-import static com.runjing.bean.response.home.HomeBean.TYPE_ITEM_GOOD;
-import static com.runjing.bean.response.home.HomeBean.TYPE_ITEM_STORE;
+import static com.runjing.bean.response.home.HomeData.TYPE_ITEM_CITY;
+import static com.runjing.bean.response.home.HomeData.TYPE_ITEM_GOOD;
+import static com.runjing.bean.response.home.HomeData.TYPE_ITEM_STORE;
 
 /**
  * @Created: qianxs  on 2020.07.17 11:33.
@@ -43,7 +42,7 @@ import static com.runjing.bean.response.home.HomeBean.TYPE_ITEM_STORE;
  */
 public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Activity context;
-    private HomeBean response;
+    private HomeData response;
     private List<GoodBean> data;
 
     public HomeAdapter(Activity context) {
@@ -51,7 +50,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         data = new ArrayList<>();
     }
 
-    public void setData(HomeBean data) {
+    public void setData(HomeData data) {
         if (data != null) {
             this.response = data;
             notifyDataSetChanged();
@@ -77,11 +76,11 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (response != null) {
             if (response.getItemTpye() == TYPE_ITEM_GOOD) {
-                ((GoodHolder)holder).setData(response.getGoods(), position);
+                ((GoodHolder) holder).setData(response.getHomeGoodBean().getData().getList(), position);
             } else if (response.getItemTpye() == TYPE_ITEM_STORE) {
-                ((StoreHolder)holder).setData(response.getStores(), position);
+                ((StoreHolder) holder).setData(response.getHomeStoreBean().getData().getFreshStoreVOList(), position);
             } else if (response.getItemTpye() == TYPE_ITEM_CITY) {
-                ((ProvincesHolder)holder).setData(response.getProvinces(), position);
+                ((ProvincesHolder) holder).setData(response.getDistrictBean().getData(), position);
             }
         }
     }
@@ -105,11 +104,11 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public int getItemCount() {
         if (response != null) {
             if (response.getItemTpye() == TYPE_ITEM_GOOD) {
-                return response.getGoods() != null ? response.getGoods().size() : Appconfig.TAG_ZERO;
+                return response.getHomeGoodBean().getData().getList() != null ? response.getHomeGoodBean().getData().getList().size() : Appconfig.TAG_ZERO;
             } else if (response.getItemTpye() == TYPE_ITEM_STORE) {
-                return response.getStores() != null ? response.getStores().size() : Appconfig.TAG_ZERO;
+                return response.getHomeStoreBean().getData().getFreshStoreVOList() != null ? response.getHomeStoreBean().getData().getFreshStoreVOList().size() : Appconfig.TAG_ZERO;
             } else if (response.getItemTpye() == TYPE_ITEM_CITY) {
-                return response.getProvinces() != null ? response.getProvinces().size() : Appconfig.TAG_ZERO;
+                return response.getDistrictBean().getData() != null ? response.getDistrictBean().getData().size() : Appconfig.TAG_ZERO;
             }
         }
         return Appconfig.TAG_ZERO;
@@ -134,15 +133,15 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             tv_favprice = itemView.findViewById(R.id.lay_tv_favorablePrice);
         }
 
-        public void setData(List<GoodBean> goods, int position) {
+        public void setData(List<GoodBean.DataBean.ListBean> goods, int position) {
             if (goods != null && goods.size() > 0) {
-                GlideUtils.getInstance().displayImageCenter(iv_good, goods.get(position).getImage(), iv_good.getContext(), R.mipmap.iv_default);
+                GlideUtils.getInstance().displayImageCenter(iv_good, goods.get(position).getImages().get(0).getImgUrl(), iv_good.getContext(), R.mipmap.iv_default);
                 //这个后期根据后台切图动态删除， 我找的图太大 尺寸不对
                 setImageWH(iv_good);
-                tv_name.setText(AppMethod.setDefault(goods.get(position).getName()));
-                tv_desc.setText(AppMethod.setDefault(goods.get(position).getDesc()));
-                tv_price.setText(AppMethod.setDefault(goods.get(position).getPrice()));
-                tv_favprice.setText(AppMethod.setDefault(goods.get(position).getFavorablePrice()));
+                tv_name.setText(AppMethod.setDefault(goods.get(position).getGoodsName()));
+                tv_desc.setText(AppMethod.setDefault(goods.get(position).getGoodsName()));
+                tv_price.setText(AppMethod.setDefault(goods.get(position).getGoodsName()));
+                tv_favprice.setText(AppMethod.setDefault(goods.get(position).getGoodsName()));
                 ll_detail.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -185,11 +184,11 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             tv_store = itemView.findViewById(R.id.lay_item_tv_store);
         }
 
-        public void setData(List<StoreBean> stores, int position) {
+        public void setData(List<HomeStoreBean.DataBean.FreshStoreVOListBean> stores, int position) {
             if (stores != null && stores.size() > 0) {
-                GlideUtils.getInstance().displayImageCenter(iv_store, stores.get(position).getStoreImage(), iv_store.getContext(), R.mipmap.ic_launcher);
+                GlideUtils.getInstance().displayImageCenter(iv_store, stores.get(position).getImage(), iv_store.getContext(), R.mipmap.ic_launcher);
                 tv_name.setText(AppMethod.setDefault(stores.get(position).getName()));
-                tv_address.setText(AppMethod.setDefault(stores.get(position).getAddress()));
+                tv_address.setText(AppMethod.setDefault(stores.get(position).getAddressDetail()));
                 tv_distance.setText(AppMethod.setDefault(stores.get(position).getDistance()));
                 if (stores.get(position).getStatus() == 0) {
                     tv_rest.setVisibility(View.GONE);
@@ -215,20 +214,21 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public class ProvincesHolder extends RecyclerView.ViewHolder {
         private TextView tv_provinces;
         private RecyclerView rv_city;
+
         public ProvincesHolder(@NonNull View itemView) {
             super(itemView);
             tv_provinces = itemView.findViewById(R.id.lay_item_tv_proviences);
             rv_city = itemView.findViewById(R.id.lay_item_rv_city);
         }
 
-        public void setData(List<ProvinceBean> provinces, int position) {
-            tv_provinces.setText(AppMethod.setDefault(provinces.get(position).getProvince()));
+        public void setData(List<DistrictBean.DataBean> provinces, int position) {
+            tv_provinces.setText(AppMethod.setDefault(provinces.get(position).getName()));
             CityAdapter adapter = new CityAdapter(tv_provinces.getContext());
             rv_city.setHasFixedSize(false);
             rv_city.setLayoutManager(new GridLayoutManager(tv_provinces.getContext(), 3));
             rv_city.setNestedScrollingEnabled(false);//禁止滑动
             rv_city.setAdapter(adapter);
-            adapter.setData(provinces.get(position).getCitys());
+            adapter.setData(provinces.get(position).getChildrenList());
         }
     }
 

@@ -7,21 +7,21 @@
     android:background="@color/color_F80000">
 
     <ImageView
-        android:id="@+id/lay_iv_local"
+        android:id="@+id/lay_iv_Tlocal"
         style="@style/ll_iv_toast"
         android:layout_marginLeft="@dimen/dp_13"
         android:layout_centerVertical="true"
         android:src="@mipmap/icon_local" />
 
     <LinearLayout
-        android:id="@+id/frag_ll_select"
+        android:id="@+id/frag_ll_Tselect"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/lay_iv_local">
+        android:layout_toRightOf="@id/lay_iv_Tlocal">
 
         <TextView
-            android:id="@+id/frag_tv_address"
+            android:id="@+id/frag_tv_Taddress"
             style="@style/ll_tv_n"
             android:layout_width="wrap_content"
             android:ellipsize="end"
@@ -32,7 +32,7 @@
             android:textSize="@dimen/sp_16" />
 
         <ImageView
-            android:id="@+id/lay_iv_shop"
+            android:id="@+id/lay_iv_Tshop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -42,7 +42,7 @@
 
 
     <ImageView
-        android:id="@+id/frag_iv_shop"
+        android:id="@+id/frag_iv_Tshop"
         style="@style/ll_iv_toast"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"

@@ -149,6 +149,16 @@ public class PermissionUtils {
     }
 
     /**
+     * @param context
+     * @param RequestCode
+     */
+    public static void startAppSettings(android.app.Fragment context, int RequestCode) {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.setData(Uri.parse("package:" + context.getActivity().getPackageName()));
+        context.startActivityForResult(intent, mRequestCode);
+    }
+
+    /**
      * 验证权限是否都已经授权
      */
     private static boolean verifyPermissions(int[] grantResults) {

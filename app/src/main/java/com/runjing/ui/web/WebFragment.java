@@ -20,6 +20,6 @@ public class WebFragment extends TitleBarFragment {
 
     @Override
     protected View inflaterView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
-        return inflater.inflate(R.layout.fragment_forget_pwd, null);
+        return inflater.inflate(R.layout.fragment_web, null);
     }
 }

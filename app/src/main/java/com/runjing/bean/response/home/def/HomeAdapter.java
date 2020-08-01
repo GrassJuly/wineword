@@ -1,6 +1,7 @@
-package com.runjing.ui.store;
+package com.runjing.bean.response.home.def;
 
 import android.app.Activity;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,13 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.runjing.base.SimpleBackActivity;
 import com.runjing.base.SimpleBackPage;
-import com.runjing.bean.response.home.def.CityAdapter;
-import com.runjing.bean.response.home.def.GoodBean;
-import com.runjing.bean.response.home.def.HomeBean;
-import com.runjing.bean.response.home.def.ProvinceBean;
-import com.runjing.bean.response.home.def.StoreBean;
 import com.runjing.common.AppMethod;
 import com.runjing.common.Appconfig;
 import com.runjing.utils.GlideUtils;
@@ -33,7 +28,6 @@ import static com.runjing.bean.response.home.def.HomeBean.TYPE_ITEM_CITY;
 import static com.runjing.bean.response.home.def.HomeBean.TYPE_ITEM_GOOD;
 import static com.runjing.bean.response.home.def.HomeBean.TYPE_ITEM_STORE;
 
-
 /**
  * @Created: qianxs  on 2020.07.17 11:33.
  * @Describe：
@@ -42,12 +36,12 @@ import static com.runjing.bean.response.home.def.HomeBean.TYPE_ITEM_STORE;
  * @Version: v_1.0 on 2020.07.17 11:33.
  * @Remark:
  */
-public class StoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Activity context;
     private HomeBean response;
     private List<GoodBean> data;
 
-    public StoreAdapter(Activity context) {
+    public HomeAdapter(Activity context) {
         this.context = context;
         data = new ArrayList<>();
     }
@@ -63,10 +57,12 @@ public class StoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (response != null) {
-            if (viewType == TYPE_ITEM_STORE) {
+            if (viewType == TYPE_ITEM_GOOD) {
+                return new GoodHolder(LayoutInflater.from(context).inflate(R.layout.layout_item_good, null));
+            } else if (viewType == TYPE_ITEM_STORE) {
                 return new StoreHolder(LayoutInflater.from(context).inflate(R.layout.layout_store_msg, parent, false));
             } else if (viewType == TYPE_ITEM_CITY) {
-                return new ProvincesHolder(LayoutInflater.from(context).inflate(R.layout.layout_item_proviences, parent, false  ));
+                return new ProvincesHolder(LayoutInflater.from(context).inflate(R.layout.layout_item_proviences, parent, false));
             }
         }
         return null;
@@ -75,10 +71,12 @@ public class StoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (response != null) {
-            if (response.getItemTpye() == TYPE_ITEM_STORE) {
-                ((StoreHolder) holder).setData(response.getStores(), position);
+            if (response.getItemTpye() == TYPE_ITEM_GOOD) {
+                ((GoodHolder)holder).setData(response.getGoods(), position);
+            } else if (response.getItemTpye() == TYPE_ITEM_STORE) {
+                ((StoreHolder)holder).setData(response.getStores(), position);
             } else if (response.getItemTpye() == TYPE_ITEM_CITY) {
-                ((ProvincesHolder) holder).setData(response.getProvinces(), position);
+                ((ProvincesHolder)holder).setData(response.getProvinces(), position);
             }
         }
     }
@@ -110,6 +108,55 @@ public class StoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             }
         }
         return Appconfig.TAG_ZERO;
+    }
+
+
+    public class GoodHolder extends RecyclerView.ViewHolder {
+        private LinearLayout ll_detail;
+        private ImageView iv_good;
+        private TextView tv_name;
+        private TextView tv_desc;
+        private TextView tv_price;
+        private TextView tv_favprice;
+
+        public GoodHolder(@NonNull View itemView) {
+            super(itemView);
+            ll_detail = itemView.findViewById(R.id.lay_ll_order_detail);
+            iv_good = itemView.findViewById(R.id.lay_iv_good);
+            tv_name = itemView.findViewById(R.id.lay_tv_name);
+            tv_desc = itemView.findViewById(R.id.lay_tv_desc);
+            tv_price = itemView.findViewById(R.id.lay_tv_price);
+            tv_favprice = itemView.findViewById(R.id.lay_tv_favorablePrice);
+        }
+
+        public void setData(List<GoodBean> goods, int position) {
+            if (goods != null && goods.size() > 0) {
+                GlideUtils.getInstance().displayImageCenter(iv_good, goods.get(position).getImage(), iv_good.getContext(), R.mipmap.ic_launcher);
+                //这个后期根据后台切图动态删除， 我找的图太大 尺寸不对
+                setImageWH(iv_good);
+                tv_name.setText(AppMethod.setDefault(goods.get(position).getName()));
+                tv_desc.setText(AppMethod.setDefault(goods.get(position).getDesc()));
+                tv_price.setText(AppMethod.setDefault(goods.get(position).getPrice()));
+                tv_favprice.setText(AppMethod.setDefault(goods.get(position).getFavorablePrice()));
+                ll_detail.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AppMethod.postShowWith(context, SimpleBackPage.GoodDetail);
+                    }
+                });
+            }
+        }
+    }
+
+    public void setImageWH(ImageView image) {
+        Display display = context.getWindowManager().getDefaultDisplay();
+        int width = display.getWidth();
+        int height = display.getHeight();
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) image.getLayoutParams();
+        //设置图片的相对于屏幕的宽高比
+        params.width = width / 3;
+        params.height = (int) (Math.random() * 400);
+        image.setLayoutParams(params);
     }
 
     public class StoreHolder extends RecyclerView.ViewHolder {
@@ -153,7 +200,7 @@ public class StoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 tv_store.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        AppMethod.postShowWith((SimpleBackActivity)tv_store.getContext(), SimpleBackPage.StoreDetail);
+                        ViewInject.longToast("门店详情");
                     }
                 });
             }
@@ -163,7 +210,6 @@ public class StoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public class ProvincesHolder extends RecyclerView.ViewHolder {
         private TextView tv_provinces;
         private RecyclerView rv_city;
-
         public ProvincesHolder(@NonNull View itemView) {
             super(itemView);
             tv_provinces = itemView.findViewById(R.id.lay_item_tv_proviences);
@@ -172,7 +218,7 @@ public class StoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         public void setData(List<ProvinceBean> provinces, int position) {
             tv_provinces.setText(AppMethod.setDefault(provinces.get(position).getProvince()));
-            CityAdapter adapter = new CityAdapter(tv_provinces.getContext());
+           CityAdapter adapter = new CityAdapter(tv_provinces.getContext());
             rv_city.setHasFixedSize(false);
             rv_city.setLayoutManager(new GridLayoutManager(tv_provinces.getContext(), 3));
             rv_city.setNestedScrollingEnabled(false);//禁止滑动

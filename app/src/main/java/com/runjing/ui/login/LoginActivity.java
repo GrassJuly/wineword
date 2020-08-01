@@ -8,18 +8,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.google.gson.Gson;
 import com.runjing.MyApplication;
 import com.runjing.base.TitleBarActivity;
 import com.runjing.base.TitleBarFragment;
 import com.runjing.bean.request.LoginRequest;
-import com.runjing.bean.response.login.LoginBean;
 import com.runjing.bean.response.login.LoginResponse;
 import com.runjing.common.Appconfig;
 import com.runjing.common.RJBaseUrl;
 import com.runjing.http.ApiServices;
-import com.runjing.http.MyRequestCallBack;
-import com.runjing.http.OkHttpUtil;
 import com.runjing.http.net.BaseSubscriber;
 import com.runjing.http.net.ExceptionHandle;
 import com.runjing.http.net.RetrofitClient;
@@ -34,9 +30,6 @@ import org.runjing.rjframe.ui.ViewInject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import okhttp3.RequestBody;
-import retrofit2.BaseUrl;
 
 /**
  * login 登录页面
@@ -130,27 +123,6 @@ public class LoginActivity extends TitleBarActivity implements OnLoginCallBack {
 //        request.setPin("jd_7e8f4dfc127ea");
         request.setPin(pin);
         request.setPlatform(4);//1 小程序  2 公众号 3 m站 4 Android 5 ios
-//        OkHttpUtil.postRequest(RJBaseUrl.LoginIn, request, LoginResponse.class, new MyRequestCallBack<LoginResponse>() {
-//            @Override
-//            public void onPostResponse(LoginResponse response) {
-//                KLog.d(response);
-//                if (200 == response.getCode()) {
-//                    ViewInject.showCenterToast(LoginActivity.this, "登陆成功");
-//                }
-//            }
-//
-//            @Override
-//            public void onPostErrorResponse(Exception e, String msg) {
-//
-//            }
-//
-//            @Override
-//            public void onNoNetWork() {
-//
-//            }
-//        });
-
-
         RetrofitClient.getInstance(this, RJBaseUrl.BaseUrl).execute(
                 RetrofitClient.getInstance(this, RJBaseUrl.BaseUrl)
                         .create(ApiServices.class)
@@ -166,6 +138,8 @@ public class LoginActivity extends TitleBarActivity implements OnLoginCallBack {
                     @Override
                     public void onNext(LoginResponse response) {
                         KLog.i(response.getData());
+                        ViewInject.showCenterToast(LoginActivity.this, "登陆成功");
+                        finish();
                     }
                 });
 

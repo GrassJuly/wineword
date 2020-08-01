@@ -1,4 +1,4 @@
-package com.runjing.bean.response.home;
+package com.runjing.ui.home;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.runjing.bean.response.home.DistrictBean;
 import com.runjing.common.AppMethod;
 import com.runjing.wineworld.R;
 
@@ -28,14 +29,14 @@ import androidx.recyclerview.widget.RecyclerView;
 public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityHolder>  {
 
     private Context context;
-    private List<CityBean> citys;
+    private List<DistrictBean.DataBean.ChildrenListBean> citys;
 
     public CityAdapter(Context context) {
         this.context = context;
         citys = new ArrayList<>();
     }
 
-    public void setData(List<CityBean> data) {
+    public void setData(List<DistrictBean.DataBean.ChildrenListBean> data) {
         if (data != null && data.size() > 0) {
             this.citys = data;
             notifyDataSetChanged();
@@ -50,11 +51,11 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityHolder>  {
 
     @Override
     public void onBindViewHolder(@NonNull CityHolder holder, int position) {
-        holder.tv_city.setText(AppMethod.setDefault(citys.get(position).getCity()));
+        holder.tv_city.setText(AppMethod.setDefault(citys.get(position).getName()));
         holder.tv_city.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ViewInject.showCenterToast(holder.tv_city.getContext(), citys.get(position).getCity());
+                ViewInject.showCenterToast(holder.tv_city.getContext(), citys.get(position).getName());
             }
         });
     }

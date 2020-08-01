@@ -1,7 +1,7 @@
 package com.runjing.bean.response.login;
 
 import com.runjing.base.BaseResponse;
-import com.runjing.bean.response.home.BannerBean;
+import com.runjing.bean.response.home.def.BannerBean;
 
 import java.util.List;
 

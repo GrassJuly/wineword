@@ -7,8 +7,6 @@ import com.runjing.bean.response.login.GuildBean;
 import com.runjing.bean.test.HomeData;
 import com.runjing.common.AppMethod;
 import com.runjing.common.RJBaseUrl;
-import com.runjing.http.MyRequestCallBack;
-import com.runjing.http.OkHttpUtil;
 import com.runjing.utils.StatusBarUtil;
 import com.runjing.wineworld.R;
 import com.youth.banner.Banner;
@@ -30,11 +28,6 @@ public class GuildActivity extends TitleBarActivity {
     public void setRootView() {
         MyApplication.contextApp.addActivity(this);
         setContentView(R.layout.activity_guild);
-    }
-
-    @Override
-    public void initToolBar() {
-        super.initToolBar();
         StatusBarUtil.setTransparentForWindow(this);
     }
 
@@ -45,26 +38,26 @@ public class GuildActivity extends TitleBarActivity {
 //        getData();
     }
 
-    private void getData() {
-        BaseRequest loginRequest = new BaseRequest();
-        OkHttpUtil.postRequest(RJBaseUrl.GetBanner, loginRequest, GuildBean.class, new MyRequestCallBack<GuildBean>() {
-            @Override
-            public void onPostResponse(GuildBean response) {
-                if (response != null) {
-                    AppMethod.GuildBanner(GuildActivity.this, banner, response.getData());
-                }
-            }
-
-            @Override
-            public void onPostErrorResponse(Exception e, String msg) {
-
-            }
-
-            @Override
-            public void onNoNetWork() {
-
-            }
-        });
-
-    }
+//    private void getData() {
+//        BaseRequest loginRequest = new BaseRequest();
+//        OkHttpUtil.postRequest(RJBaseUrl.GetBanner, loginRequest, GuildBean.class, new MyRequestCallBack<GuildBean>() {
+//            @Override
+//            public void onPostResponse(GuildBean response) {
+//                if (response != null) {
+//                    AppMethod.GuildBanner(GuildActivity.this, banner, response.getData());
+//                }
+//            }
+//
+//            @Override
+//            public void onPostErrorResponse(Exception e, String msg) {
+//
+//            }
+//
+//            @Override
+//            public void onNoNetWork() {
+//
+//            }
+//        });
+//
+//    }
 }

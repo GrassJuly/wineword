@@ -22,16 +22,6 @@
     <com.runjing.widget.tabview.TabView
         android:id="@+id/act_tb_menu"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <include
-        android:id="@+id/frg_ll_nonet"
-        layout="@layout/layout_no_network"
-        android:visibility="gone" />
-    <!--没有定位权限-->
-    <include
-        android:id="@+id/frg_ll_nolocal"
-        layout="@layout/layout_home_local"
-        android:visibility="gone" />
+        android:layout_height="match_parent"/>
 
 </RelativeLayout>

@@ -13,16 +13,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.runjing.base.SimpleBackPage;
-import com.runjing.bean.response.home.GoodBean;
-import com.runjing.bean.response.home.HomeBean;
 import com.runjing.common.AppMethod;
 import com.runjing.common.Appconfig;
-import com.runjing.ui.home.HomeAdapter;
+import com.runjing.bean.response.home.def.GoodBean;
 import com.runjing.utils.GlideUtils;
 import com.runjing.wineworld.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SearchGoodsAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHolder> {

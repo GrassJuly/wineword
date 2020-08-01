@@ -1,8 +1,6 @@
 package com.runjing.common;
 
-import com.squareup.okhttp.MediaType;
-
-import java.util.UUID;
+import android.Manifest;
 
 /**
  * @Created by xiaoyu on 2017/1/6.
@@ -28,7 +26,7 @@ public class Appconfig {
     public static int DEFAULT_VALUE_LONG = 1;
     public static String TAG = "runjing";
     public static final String FROMREGIST = "https%3a%2f%2fplogin.m.jd.com%2fuser%2flogin.action%3fappid%3d100%26returnurl%3dregist.openApp.jdMobile%3a%2f%2fcommunication";
-    public static final MediaType FORM_CONTENT_TYPE = MediaType.parse("application/json;charset=utf-8");
+    public static final int pageSize = 10;
     /*是否强制升级*/
     public static String isFource;
     /*是否下载*/
@@ -54,9 +52,20 @@ public class Appconfig {
     public static final int TAG_FIFTEEN = 15;
     public static final int TAG_SIXTEEN = 16;
     public static final int TAG_SEVENTEEN = 17;
-    public static final int TAG_EIGHTEEN= 18;
+    public static final int TAG_EIGHTEEN = 18;
     public static final int TAG_TENTHOUSAND_ONE = 10001;
     public static final int TAG_TENTHOUSAND_TWO = 10002;
+    private static String BACKGROUND_LOCATION_PERMISSION = "android.permission.ACCESS_BACKGROUND_LOCATION";
+    public static String[] needPermissions = {
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.INTERNET,
+            BACKGROUND_LOCATION_PERMISSION
+    };
+
+    public static String[] needINTENTPermissions = {
+            Manifest.permission.INTERNET,
+    };
 
     //本地缓存变量
     public static final String IS_AGREE = "is_agree";

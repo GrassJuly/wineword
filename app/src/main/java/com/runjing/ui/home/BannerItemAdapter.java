@@ -14,11 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.runjing.base.SimpleBackPage;
-import com.runjing.base.TitleBarActivity;
 import com.runjing.bean.response.home.BannerBean;
-import com.runjing.common.AppMethod;
 import com.runjing.utils.GlideUtils;
 import com.runjing.wineworld.R;
 import com.youth.banner.adapter.BannerAdapter;
@@ -33,12 +29,12 @@ import androidx.recyclerview.widget.RecyclerView;
 /**
  * 自定义布局，下面是常见的图片样式，更多实现可以看demo，可以自己随意发挥
  */
-public class BannerItemAdapter extends BannerAdapter<BannerBean, BannerItemAdapter.BannerViewHolder> {
-    List<BannerBean> bannerBeans;
+public class BannerItemAdapter extends BannerAdapter<BannerBean.DataBean, BannerItemAdapter.BannerViewHolder> {
+    List<BannerBean.DataBean> bannerBeans;
 
     Context mContext;
 
-    public BannerItemAdapter(List<BannerBean> mDatas) {
+    public BannerItemAdapter(List<BannerBean.DataBean> mDatas) {
         //设置数据，也可以调用banner提供的方法,或者自己在adapter中实现
         super(mDatas);
         bannerBeans = mDatas;
@@ -58,8 +54,8 @@ public class BannerItemAdapter extends BannerAdapter<BannerBean, BannerItemAdapt
     }
 
     @Override
-    public void onBindView(BannerViewHolder holder, BannerBean data, int position, int size) {
-        GlideUtils.getInstance().displayImageCenter(holder.imageView, bannerBeans.get(position).getImage(), mContext, R.mipmap.iv_default);
+    public void onBindView(BannerViewHolder holder, BannerBean.DataBean data, int position, int size) {
+        GlideUtils.getInstance().displayImageCenter(holder.imageView, data.getExtGoodsVO().getGoodsVoImg(), mContext, R.mipmap.iv_default);
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

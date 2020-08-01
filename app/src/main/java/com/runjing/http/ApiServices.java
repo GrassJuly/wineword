@@ -1,8 +1,10 @@
 package com.runjing.http;
 
 import com.google.gson.Gson;
-import com.runjing.bean.response.home.HomeResponse;
-import com.runjing.bean.response.login.LoginBean;
+import com.runjing.bean.response.home.DistrictBean;
+import com.runjing.bean.response.home.GoodBean;
+import com.runjing.bean.response.home.BannerBean;
+import com.runjing.bean.response.home.HomeStoreBean;
 import com.runjing.bean.response.login.LoginResponse;
 
 import okhttp3.RequestBody;
@@ -36,9 +38,24 @@ public interface ApiServices {
     @POST("customer/appLogin")
     Observable<LoginResponse> onLogin(@Body RequestBody body);
 
-    /*首页-获取附近门店接口*/
+    /*首页-获取开通城市接口*/
     @Headers({"Content-Type: application/json", "Accept: application/json"})//需要添加头
     @POST("district/getDistrict")
-    Observable<HomeResponse> homeStore(@Body RequestBody body);
+    Observable<DistrictBean> getDistrict(@Body RequestBody body);
+
+    /*首页-获取附近门店列表*/
+    @Headers({"Content-Type: application/json", "Accept: application/json"})//需要添加头
+    @POST("freshStore/list ")
+    Observable<HomeStoreBean> getStore(@Body RequestBody body);
+
+    /*首页-获取banner*/
+    @Headers({"Content-Type: application/json", "Accept: application/json"})//需要添加头
+    @POST("banner/wxIndexGet")
+    Observable<BannerBean> getBanner(@Body RequestBody body);
+
+    /*首页-获取商品列表*/
+    @Headers({"Content-Type: application/json", "Accept: application/json"})//需要添加头
+    @POST("product/wxStoreSku")
+    Observable<GoodBean> getGood(@Body RequestBody body);
 
 }

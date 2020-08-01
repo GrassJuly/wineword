@@ -10,28 +10,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.runjing.base.SimpleBackPage;
-import com.runjing.bean.response.home.CityAdapter;
-import com.runjing.bean.response.home.GoodBean;
-import com.runjing.bean.response.home.HomeBean;
-import com.runjing.bean.response.home.ProvinceBean;
-import com.runjing.bean.response.home.StoreBean;
+import com.runjing.bean.response.home.def.GoodBean;
+import com.runjing.bean.response.home.def.HomeBean;
 import com.runjing.common.AppMethod;
-import com.runjing.common.Appconfig;
 import com.runjing.utils.GlideUtils;
 import com.runjing.wineworld.R;
-
-import org.runjing.rjframe.ui.ViewInject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import static com.runjing.bean.response.home.HomeBean.TYPE_ITEM_CITY;
-import static com.runjing.bean.response.home.HomeBean.TYPE_ITEM_GOOD;
-import static com.runjing.bean.response.home.HomeBean.TYPE_ITEM_STORE;
 
 /**
  * @Created: qianxs  on 2020.07.17 11:33.

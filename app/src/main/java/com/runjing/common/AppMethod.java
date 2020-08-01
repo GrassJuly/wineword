@@ -32,8 +32,6 @@ import com.runjing.bean.request.UpgradeRequest;
 import com.runjing.bean.response.home.BannerBean;
 import com.runjing.bean.response.update.UpgradeBean;
 import com.runjing.bean.response.update.UpgradeResponse;
-import com.runjing.http.MyRequestCallBack;
-import com.runjing.http.OkHttpUtil;
 import com.runjing.ui.good.DetailBannerAdapter;
 import com.runjing.ui.home.BannerItemAdapter;
 import com.runjing.ui.login.GuildBannerAdapter;
@@ -788,11 +786,12 @@ public class AppMethod {
     }
 
     /**
+     * 导航页banner
      * @param context
      * @param banner
      * @param images
      */
-    public static void GuildBanner(TitleBarActivity context, Banner banner, List<BannerBean> images) {
+    public static void GuildBanner(TitleBarActivity context, Banner banner, List<com.runjing.bean.response.home.def.BannerBean> images) {
         GuildBannerAdapter adapter = new GuildBannerAdapter(images);
         banner.setDelayTime(4500);
         banner.setBannerRound(0);
@@ -804,11 +803,12 @@ public class AppMethod {
     }
 
     /**
+     * 详情页banner
      * @param context
      * @param banner
      * @param images
      */
-    public static void DetailBanner(TitleBarActivity context, Banner banner, List<BannerBean> images) {
+    public static void DetailBanner(TitleBarActivity context, Banner banner, List<com.runjing.bean.response.home.def.BannerBean> images) {
         DetailBannerAdapter adapter = new DetailBannerAdapter(images);
         banner.setDelayTime(4500);
         banner.setBannerRound(0);
@@ -819,11 +819,12 @@ public class AppMethod {
     }
 
     /**
+     * 首页banner
      * @param activity
      * @param banner
      * @param images
      */
-    public static void bannerWeight(TitleBarActivity activity, Banner banner, List<BannerBean> images) {
+    public static void bannerWeight(TitleBarActivity activity, Banner banner, List<BannerBean.DataBean> images) {
         BannerItemAdapter adapter = new BannerItemAdapter(images);
         banner.setDelayTime(4500);
         banner.setBannerRound(20);
@@ -897,53 +898,53 @@ public class AppMethod {
      *
      * @param context
      */
-    public static void updateApp(final Activity context) {
-        UpgradeRequest request = new UpgradeRequest();
-        request.setAppCode("mnSupplier");
-        OkHttpUtil.postRequest(RJBaseUrl.AppUpdate, request, UpgradeRequest.class, new MyRequestCallBack<UpgradeResponse>() {
-                    @Override
-                    public void onPostResponse(UpgradeResponse response) {
-                        try {
-                            /*TODO::看着不爽你就删了他，反正我是不删，咋滴*/
-                            if (response == null) return;
-                            if (response.resultCode.equals(Appconfig.RequestSuccess)) {
-                                UpgradeBean upgradeBean = response.getData();
-                                String newVersion = upgradeBean.getAppVersion();
-                                if (newVersion != null && !newVersion.equals("")) {
-                                    String currentVersion = SystemTool
-                                            .getAppVersionName(context);
-                                    if (!newVersion.equals(currentVersion)) {
-                                        LibAutoUpdate autoUpdate = new LibAutoUpdate(context,
-                                                RJBaseUrl.BASE_PIC_URL + upgradeBean.getAppUrl(), Appconfig.TAG_ZERO,
-                                                upgradeBean.getAppVersion(), upgradeBean.getAppDescribe(),
-                                                upgradeBean.getAppForce(), AppMethod.getPackName(context), false);
-                                        Appconfig.isFource = upgradeBean.getAppForce();
-                                        if (Appconfig.isDownLoad.equals("F")) {
-                                            autoUpdate.checkUpByVersionName();
-                                        }
-                                        if (TextUtils.isEmpty(upgradeBean.getLimitUpdate())
-                                                && Appconfig.isDownLoad.equals("T")) {
-                                            MyApplication.isLimitUpdate = Appconfig.isLimtCode;
-                                        }
-                                    }
-                                }
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onPostErrorResponse(Exception e, String msg) {
-                    }
-
-                    @Override
-                    public void onNoNetWork() {
-
-                    }
-                }
-
-        );
-    }
+//    public static void updateApp(final Activity context) {
+//        UpgradeRequest request = new UpgradeRequest();
+//        request.setAppCode("mnSupplier");
+//        OkHttpUtil.postRequest(RJBaseUrl.AppUpdate, request, UpgradeRequest.class, new MyRequestCallBack<UpgradeResponse>() {
+//                    @Override
+//                    public void onPostResponse(UpgradeResponse response) {
+//                        try {
+//                            /*TODO::看着不爽你就删了他，反正我是不删，咋滴*/
+//                            if (response == null) return;
+//                            if (response.resultCode.equals(Appconfig.RequestSuccess)) {
+//                                UpgradeBean upgradeBean = response.getData();
+//                                String newVersion = upgradeBean.getAppVersion();
+//                                if (newVersion != null && !newVersion.equals("")) {
+//                                    String currentVersion = SystemTool
+//                                            .getAppVersionName(context);
+//                                    if (!newVersion.equals(currentVersion)) {
+//                                        LibAutoUpdate autoUpdate = new LibAutoUpdate(context,
+//                                                RJBaseUrl.BASE_PIC_URL + upgradeBean.getAppUrl(), Appconfig.TAG_ZERO,
+//                                                upgradeBean.getAppVersion(), upgradeBean.getAppDescribe(),
+//                                                upgradeBean.getAppForce(), AppMethod.getPackName(context), false);
+//                                        Appconfig.isFource = upgradeBean.getAppForce();
+//                                        if (Appconfig.isDownLoad.equals("F")) {
+//                                            autoUpdate.checkUpByVersionName();
+//                                        }
+//                                        if (TextUtils.isEmpty(upgradeBean.getLimitUpdate())
+//                                                && Appconfig.isDownLoad.equals("T")) {
+//                                            MyApplication.isLimitUpdate = Appconfig.isLimtCode;
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onPostErrorResponse(Exception e, String msg) {
+//                    }
+//
+//                    @Override
+//                    public void onNoNetWork() {
+//
+//                    }
+//                }
+//
+//        );
+//    }
 
 }

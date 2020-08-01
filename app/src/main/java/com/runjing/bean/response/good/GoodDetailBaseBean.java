@@ -1,7 +1,6 @@
 package com.runjing.bean.response.good;
 
 import com.runjing.base.BaseResponse;
-import com.runjing.bean.response.home.GoodBean;
 
 /**
  * @Created: qianxs  on 2020.07.23 13:21.

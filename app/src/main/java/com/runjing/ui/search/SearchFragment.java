@@ -17,20 +17,14 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.runjing.base.SimpleBackPage;
 import com.runjing.base.TitleBarFragment;
-import com.runjing.bean.response.home.GoodBean;
-import com.runjing.bean.response.home.GoodTagBean;
-import com.runjing.bean.response.home.HomeBean;
-import com.runjing.bean.test.HomeData;
 import com.runjing.common.AppMethod;
 import com.runjing.common.Appconfig;
-import com.runjing.ui.address.ReceiveAddressAdapter;
-import com.runjing.ui.home.HomeAdapter;
+import com.runjing.bean.response.home.def.GoodBean;
+import com.runjing.bean.response.home.def.GoodTagBean;
 import com.runjing.utils.RecyclerViewItemDecoration;
-import com.runjing.utils.SpacesItemDecoration;
 import com.runjing.widget.wrap.WrapView;
 import com.runjing.wineworld.R;
 
@@ -41,8 +35,6 @@ import org.runjing.rjframe.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.runjing.utils.SpacesItemDecoration.STAGGEREDGRIDLAYOUT;
 
 public class SearchFragment extends TitleBarFragment implements AppMethod.PopBackListener {
     @BindView(id = R.id.wrap_view)

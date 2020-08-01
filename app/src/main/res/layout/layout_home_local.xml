@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_ffffff"
     android:orientation="vertical">
+
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -51,19 +53,19 @@
                 android:id="@+id/lay_tv_manual"
                 android:layout_width="@dimen/dp_111"
                 android:layout_height="@dimen/dp_35"
+                android:layout_alignParentLeft="true"
                 android:background="@drawable/style_radius_bg_red"
                 android:gravity="center"
                 android:text="@string/home_manual"
                 android:textColor="@color/color_FF4E18"
-                android:layout_alignParentLeft="true"
                 android:textSize="@dimen/sp_14" />
 
             <TextView
                 android:id="@+id/lay_tv_localstart"
                 android:layout_width="@dimen/dp_111"
                 android:layout_height="@dimen/dp_35"
-                android:background="@drawable/style_radius_click_bg"
                 android:layout_alignParentRight="true"
+                android:background="@drawable/style_radius_click_bg"
                 android:gravity="center"
                 android:text="@string/home_local_start"
                 android:textColor="@color/color_ffffff"

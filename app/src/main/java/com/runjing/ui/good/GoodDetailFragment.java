@@ -19,8 +19,6 @@ import com.runjing.bean.test.HomeData;
 import com.runjing.common.AppMethod;
 import com.runjing.common.Appconfig;
 import com.runjing.common.RJBaseUrl;
-import com.runjing.http.MyRequestCallBack;
-import com.runjing.http.OkHttpUtil;
 import com.runjing.utils.StatusBarUtil;
 import com.runjing.widget.GradationScrollView;
 import com.runjing.widget.seckill.SecondDownTimerView;
@@ -222,24 +220,24 @@ public class GoodDetailFragment extends TitleBarFragment implements GradationScr
     }
 
     public void getData() {
-        OkHttpUtil.postRequest(RJBaseUrl.AppMain, new BaseRequest(), GoodDetailBaseBean.class, new MyRequestCallBack<GoodDetailBaseBean>() {
-            @Override
-            public void onPostResponse(GoodDetailBaseBean response) {
-                if (Appconfig.RequestSuccess.equals(response.resultCode)) {
-                    setData(response.getData());
-                }
-            }
-
-            @Override
-            public void onPostErrorResponse(Exception e, String msg) {
-
-            }
-
-            @Override
-            public void onNoNetWork() {
-
-            }
-        });
+//        OkHttpUtil.postRequest(RJBaseUrl.AppMain, new BaseRequest(), GoodDetailBaseBean.class, new MyRequestCallBack<GoodDetailBaseBean>() {
+//            @Override
+//            public void onPostResponse(GoodDetailBaseBean response) {
+//                if (Appconfig.RequestSuccess.equals(response.resultCode)) {
+//                    setData(response.getData());
+//                }
+//            }
+//
+//            @Override
+//            public void onPostErrorResponse(Exception e, String msg) {
+//
+//            }
+//
+//            @Override
+//            public void onNoNetWork() {
+//
+//            }
+//        });
     }
 
     public void setData(GoodDetailBean response) {

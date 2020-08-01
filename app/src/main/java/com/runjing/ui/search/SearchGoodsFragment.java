@@ -12,11 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.runjing.base.TitleBarFragment;
-import com.runjing.bean.response.home.GoodBean;
-import com.runjing.bean.response.home.GoodTagBean;
-import com.runjing.bean.response.home.HomeBean;
-import com.runjing.bean.test.HomeData;
 import com.runjing.common.Appconfig;
+import com.runjing.bean.response.home.def.GoodBean;
+import com.runjing.bean.response.home.def.GoodTagBean;
 import com.runjing.utils.SpacesItemDecoration;
 import com.runjing.wineworld.R;
 

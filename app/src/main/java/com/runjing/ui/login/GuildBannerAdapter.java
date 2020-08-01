@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.runjing.MainActivity;
-import com.runjing.bean.response.home.BannerBean;
+import com.runjing.bean.response.home.def.BannerBean;
 import com.runjing.common.Appconfig;
 import com.runjing.utils.GlideUtils;
 import com.runjing.utils.store.MMKVUtil;

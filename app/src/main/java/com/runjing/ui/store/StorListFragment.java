@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.runjing.base.TitleBarFragment;
-import com.runjing.bean.response.home.HomeBean;
+import com.runjing.bean.response.home.def.HomeBean;
 import com.runjing.bean.test.HomeData;
 import com.runjing.utils.RecyclerViewItemDecoration;
 import com.runjing.utils.StatusBarUtil;

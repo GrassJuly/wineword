@@ -2,8 +2,12 @@ package com.runjing.ui.login;
 
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.SpannableStringBuilder;
+import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jd.verify.ShowCapCallback;
@@ -54,7 +59,6 @@ import jd.wjlogin_sdk.util.ReplyCode;
  */
 public class QuickLoginFragment extends TitleBarFragment {
     private static final String TAG = QuickLoginFragment.class.getName();
-
     @BindView(id = R.id.frag_et_phone)
     private EditText et_phone;
     @BindView(id = R.id.frag_iv_del, click = true)
@@ -63,6 +67,8 @@ public class QuickLoginFragment extends TitleBarFragment {
     private EditText et_code;
     @BindView(id = R.id.frag_tv_sendcode, click = true)
     private TextView tv_sendcode;
+    @BindView(id = R.id.frag_ll_isagree, click = true)
+    private LinearLayout ll_isagree;
     @BindView(id = R.id.frag_iv_isagree, click = true)
     private ImageView iv_isagree;
     @BindView(id = R.id.frag_tv_isagree)
@@ -94,11 +100,7 @@ public class QuickLoginFragment extends TitleBarFragment {
     @Override
     protected void initWidget(View parentView) {
         super.initWidget(parentView);
-        tv_isagree.setText(AppMethod.setDiffCollors(
-                "{" + getResources().getString(R.string.login_isagree_next) + "}" +
-                        getResources().getString(R.string.login_isagree_last),
-                getResources().getColor(R.color.color_666666),
-                getResources().getColor(R.color.color_5899E4)));
+        setAgreeClick(tv_isagree);
         //系统提供的定时类有误差 + 20
         timer = new TimerCount(59000 + 20, 1000, tv_sendcode);
         tv_sendcode.setClickable(false);
@@ -180,6 +182,7 @@ public class QuickLoginFragment extends TitleBarFragment {
                 case R.id.frag_iv_del:
                     et_phone.setText("");
                     break;
+                case R.id.frag_ll_isagree:
                 case R.id.frag_iv_isagree:
                     if (getResources().getString(R.string.tag_no).equals(v.getTag())) {
                         iv_isagree.setTag(getResources().getString(R.string.tag_yes));
@@ -201,10 +204,10 @@ public class QuickLoginFragment extends TitleBarFragment {
                     getJDCode();
                     break;
                 case R.id.frag_tv_login:
-//                    if (getResources().getString(R.string.tag_yes).equals(iv_isagree.getTag())) {
-//                        onLoginJD();
-//                    }
-                    listener.onLoginRJ(MMKVUtil.getInstance().decodeString(Appconfig.JDPin));
+                    if (getResources().getString(R.string.tag_yes).equals(iv_isagree.getTag())) {
+                        onLoginJD();
+                    }
+//                    listener.onLoginRJ(MMKVUtil.getInstance().decodeString(Appconfig.JDPin));
                     break;
             }
         }
@@ -514,6 +517,42 @@ public class QuickLoginFragment extends TitleBarFragment {
                 ViewInject.showCenterToast(outsideAty, failResult.getMessage());
             }
         });
+    }
+
+    /**
+     * 设置不同颜色
+     * @param content
+     */
+    public void setAgreeClick(TextView content) {
+        String str = getResources().getString(R.string.login_isagree);
+        SpannableStringBuilder ssb = new SpannableStringBuilder();
+        ssb.append(str);
+        //第一个出现的位置
+        final int start = str.indexOf("《");
+        ssb.setSpan(new ClickableSpan() {
+
+            @Override
+            public void onClick(View widget) {
+                //用户服务协议点击事件
+                Bundle bundle = new Bundle();
+                bundle.putString("title", "用户协议");
+                bundle.putInt("showType", 0);
+                AppMethod.postShowWith(outsideAty, SimpleBackPage.Web, bundle);
+            }
+
+            @Override
+            public void updateDrawState(TextPaint ds) {
+                super.updateDrawState(ds);
+                //设置文件颜色
+                ds.setColor(getResources().getColor(R.color.color_5899E4));
+                // 去掉下划线
+                ds.setUnderlineText(false);
+            }
+
+        }, start, str.length(), 0);
+        content.setHighlightColor(getResources().getColor(R.color.color_ffffff));
+        content.setMovementMethod(LinkMovementMethod.getInstance());
+        content.setText(ssb, TextView.BufferType.SPANNABLE);
     }
 
 

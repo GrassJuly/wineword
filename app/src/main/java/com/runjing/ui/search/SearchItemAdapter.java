@@ -12,10 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.runjing.base.SimpleBackPage;
-import com.runjing.bean.response.home.GoodBean;
 import com.runjing.common.AppMethod;
 import com.runjing.common.Appconfig;
 
+import com.runjing.bean.response.home.def.GoodBean;
 import com.runjing.wineworld.R;
 import org.runjing.rjframe.utils.StringUtils;
 

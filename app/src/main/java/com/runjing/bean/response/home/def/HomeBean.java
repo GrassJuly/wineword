@@ -1,6 +1,5 @@
-package com.runjing.bean.response.home;
+package com.runjing.bean.response.home.def;
 
-import com.runjing.base.BaseResponse;
 
 import java.util.List;
 
