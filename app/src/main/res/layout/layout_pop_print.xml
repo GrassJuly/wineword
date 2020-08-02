@@ -32,7 +32,7 @@
             android:layout_marginTop="@dimen/dp_20"
             android:gravity="left"
             android:text="@string/app_default"
-            android:textColor="@color/color_333333"
+            android:textColor="@color/color_ff333333"
             android:textSize="@dimen/sp_15" />
 
         <RelativeLayout
@@ -55,7 +55,7 @@
                 android:layout_marginRight="13dp"
                 android:gravity="left"
                 android:text="@string/app_default"
-                android:textColor="@color/color_333333"
+                android:textColor="@color/color_ff333333"
                 android:textSize="@dimen/sp_14" />
 
             <TextView
@@ -70,7 +70,7 @@
                 android:layout_toRightOf="@+id/img_icon_print"
                 android:gravity="left"
                 android:text="@string/app_default"
-                android:textColor="@color/color_333333"
+                android:textColor="@color/color_ff333333"
                 android:textSize="@dimen/sp_14" />
 
 
@@ -123,7 +123,7 @@
                 android:background="@drawable/selector_pop_middle"
                 android:gravity="center"
                 android:text="@string/dialog_left_botton"
-                android:textColor="@color/color_333333"
+                android:textColor="@color/color_ff333333"
                 android:textSize="16sp" />
 
             <ImageView

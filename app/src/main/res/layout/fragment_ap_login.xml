@@ -21,7 +21,7 @@
             android:digits="@string/phone_number"
             android:hint="@string/account_name"
             android:maxLength="11"
-            android:textColor="@color/color_333333"
+            android:textColor="@color/color_ff333333"
             android:textColorHint="@color/color_999999"
             android:textSize="@dimen/sp_15" />
 
@@ -60,7 +60,7 @@
             android:digits="@string/phone_number_pwd"
             android:hint="@string/account_pwd"
             android:inputType="textPassword"
-            android:textColor="@color/color_333333"
+            android:textColor="@color/color_ff333333"
             android:textColorHint="@color/color_999999"
             android:textSize="@dimen/sp_15" />
 

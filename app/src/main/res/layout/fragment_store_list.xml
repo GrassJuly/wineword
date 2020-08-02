@@ -50,7 +50,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/home_service_open"
-                android:textColor="@color/color_333333"
+                android:textColor="@color/color_ff333333"
                 android:textSize="@dimen/sp_16"
                 android:textStyle="bold" />
 

@@ -288,7 +288,7 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
     public void setData(HomeData response) {
         String city = MMKVUtil.getInstance().decodeString(Appconfig.city);
         if (isOpenCity(response.getDistrictBean().getData(), city)) {
-            int type = HomeData.getInstance().getHomeStoreBean().getData().getType();
+            int type = response.getHomeStoreBean().getData().getType();
             if (type == 1) {
                 response.setItemTpye(HomeData.TYPE_ITEM_GOOD);
                 ll_store_status.setVisibility(View.GONE);

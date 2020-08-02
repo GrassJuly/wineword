@@ -62,7 +62,7 @@
             android:layout_weight="0.5"
             android:gravity="center"
             android:text="@string/search"
-            android:textColor="@color/color_333333"
+            android:textColor="@color/color_ff333333"
             android:textSize="@dimen/sp_14" />
 
 

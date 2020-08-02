@@ -22,7 +22,7 @@
     <!--标题颜色样式-->
     <style name="mn_home_bar_title">
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textColor">@color/color_ff333333</item>
     </style>
     <!--loadingDialog样式-->
     <style name="loadingDialog" parent="@android:style/Theme.Dialog">
@@ -46,7 +46,7 @@
     <style name="income_tv_type">
         <item name="android:text">@string/app_default</item>
         <item name="android:textSize">@dimen/sp_15</item>
-        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textColor">@color/color_ff333333</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:gravity">center|right</item>
     </style>
@@ -54,7 +54,7 @@
     <style name="income_tv_type1">
         <item name="android:text">@string/app_default</item>
         <item name="android:textSize">@dimen/sp_15</item>
-        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textColor">@color/color_ff333333</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:gravity">center|left</item>
     </style>
@@ -65,7 +65,7 @@
         <item name="android:gravity">center</item>
         <item name="android:text">@string/app_default</item>
         <item name="android:textSize">@dimen/sp_13</item>
-        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textColor">@color/color_ff333333</item>
         <item name="android:paddingLeft">@dimen/dp_12</item>
         <item name="android:background">@mipmap/edittext_right_line</item>
     </style>
@@ -90,7 +90,7 @@
     <!--收入界面et样式-->
     <style name="income_et_type">
         <item name="android:textSize">@dimen/sp_15</item>
-        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textColor">@color/color_ff333333</item>
         <item name="android:textColorHint">@color/color_999999</item>
         <item name="android:gravity">center_vertical|right</item>
         <item name="android:layout_gravity">center_vertical</item>
@@ -102,7 +102,7 @@
     <!--收入界面et样式-->
     <style name="income_et_type1">
         <item name="android:textSize">@dimen/sp_15</item>
-        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textColor">@color/color_ff333333</item>
         <item name="android:textColorHint">@color/color_999999</item>
         <item name="android:gravity">center_vertical|right</item>
         <item name="android:layout_gravity">center_vertical</item>
@@ -117,7 +117,7 @@
     <!--收入界面et样式-->
     <style name="income_et_type2">
         <item name="android:textSize">@dimen/sp_15</item>
-        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textColor">@color/color_ff333333</item>
         <item name="android:textColorHint">@color/color_999999</item>
         <item name="android:gravity">center_vertical|right</item>
         <item name="android:layout_gravity">center_vertical</item>
@@ -131,7 +131,7 @@
     <!--收入界面et样式-->
     <style name="et_type">
         <item name="android:textSize">@dimen/sp_13</item>
-        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textColor">@color/color_ff333333</item>
         <item name="android:textColorHint">@color/color_999999</item>
         <item name="android:gravity">center_vertical|right</item>
         <item name="android:layout_gravity">center_vertical</item>
@@ -145,7 +145,7 @@
     <!--界面et样式左-->
     <style name="et_type1">
         <item name="android:textSize">@dimen/sp_14</item>
-        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textColor">@color/color_ff333333</item>
         <item name="android:textColorHint">@color/color_999999</item>
         <item name="android:gravity">center_vertical|left</item>
         <item name="android:layout_gravity">center_vertical</item>
@@ -199,7 +199,7 @@
 
     <!--入库et样式-->
     <style name="stock_et_style">
-        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textColor">@color/color_ff333333</item>
         <item name="android:textColorHint">@color/color_999999</item>
         <item name="android:singleLine">true</item>
         <item name="android:paddingLeft">@dimen/dp_100</item>
@@ -215,7 +215,7 @@
     </style>
 
     <style name="stock_look_style">
-        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textColor">@color/color_ff333333</item>
         <item name="android:singleLine">true</item>
         <item name="android:layout_marginLeft">@dimen/dp_100</item>
         <item name="android:gravity">right|center_vertical</item>
@@ -232,7 +232,7 @@
         <item name="android:singleLine">true</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:textSize">@dimen/sp_15</item>
-        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textColor">@color/color_ff333333</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
@@ -261,7 +261,7 @@
 
     <!-- 入库出库界面et-->
     <style name="et_stock_style">
-        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textColor">@color/color_ff333333</item>
         <item name="android:textColorHint">@color/color_999999</item>
         <item name="android:singleLine">true</item>
         <item name="android:gravity">right|center_vertical</item>
@@ -359,7 +359,7 @@
     <!--搜索框样式-->
     <style name="et_search">
         <item name="android:textSize">@dimen/sp_13</item>
-        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textColor">@color/color_ff333333</item>
         <item name="android:textColorHint">@color/color_999999</item>
         <item name="android:gravity">center_vertical|left</item>
         <item name="android:layout_gravity">center_vertical</item>
@@ -373,7 +373,7 @@
     <style name="tv_search_right">
         <item name="android:text">@string/app_default</item>
         <item name="android:textSize">@dimen/sp_14</item>
-        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textColor">@color/color_ff333333</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:gravity">center|right</item>
     </style>
@@ -381,7 +381,7 @@
     <style name="tv_search_left">
         <item name="android:text">@string/app_default</item>
         <item name="android:textSize">@dimen/sp_14</item>
-        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textColor">@color/color_ff333333</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:gravity">center|left</item>
     </style>
@@ -389,7 +389,7 @@
     <style name="tv_good_edit">
         <item name="android:text">@string/app_default</item>
         <item name="android:textSize">@dimen/sp_13</item>
-        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textColor">@color/color_ff333333</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:textColorHint">@color/color_999999</item>
         <item name="android:gravity">center</item>
@@ -428,7 +428,7 @@
 
     <style name="app_currency_text">
         <item name="android:textSize">@dimen/sp_16</item>
-        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textColor">@color/color_ff333333</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:background">@color/color_white</item>
@@ -494,7 +494,7 @@
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:layout_weight">1</item>
         <item name="android:textSize">@dimen/sp_14</item>
-        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textColor">@color/color_ff333333</item>
         <item name="android:textColorHint">@color/color_999999</item>
         <item name="background">@null</item>
         <item name="android:focusable">true</item>
@@ -542,11 +542,11 @@
     </style>
     <style name="style_local">
         <item name="android:textSize">@dimen/sp_12</item>
-        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textColor">@color/color_ff333333</item>
     </style>
     <style name="style_select_address">
         <item name="android:textSize">@dimen/sp_14</item>
-        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textColor">@color/color_ff333333</item>
     </style>
 
     <declare-styleable name="WarpLinearLayout">

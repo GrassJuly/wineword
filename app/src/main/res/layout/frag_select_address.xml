@@ -196,7 +196,7 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/dp_10"
                 android:text="展开全部地址"
-                android:textColor="@color/color_333333"
+                android:textColor="@color/color_ff333333"
                 android:textSize="@dimen/sp_14" />
 
             <ImageView

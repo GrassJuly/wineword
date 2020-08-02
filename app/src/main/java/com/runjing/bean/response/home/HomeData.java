@@ -19,6 +19,11 @@ public class HomeData {
     private GoodBean homeGoodBean;
     private int itemTpye;
 
+    public HomeData(DistrictBean districtBean, HomeStoreBean homeStoreBean) {
+        this.districtBean = districtBean;
+        this.homeStoreBean = homeStoreBean;
+    }
+
     public HomeData(DistrictBean districtBean, HomeStoreBean homeStoreBean, BannerBean bannerBean, GoodBean homeGoodBean) {
         this.districtBean = districtBean;
         this.homeStoreBean = homeStoreBean;
