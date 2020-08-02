@@ -121,7 +121,7 @@ public class MainActivity extends TitleBarActivity implements TabView.OnTabChild
 
                     @Override
                     public void onPermissionDenied() {
-                        PermissionUtils.showTipsDialog(MainActivity.this);
+//                        PermissionUtils.showTipsDialog(MainActivity.this);
                     }
                 });
     }

@@ -49,7 +49,7 @@ public class AddAddressFragment  extends TitleBarFragment {
     protected View inflaterView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
         bundle = outsideAty.getIntent().getBundleExtra(Appconfig.DATA_KEY);
         if(bundle!=null) {
-            contactAddress = bundle.getString(Appconfig.DATA_KEY);
+            contactAddress = bundle.getString("address");
         }
         return inflater.inflate(R.layout.frag_rece_address, null);
     }

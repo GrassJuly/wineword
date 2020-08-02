@@ -2,6 +2,7 @@ package com.runjing.ui.address;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.runjing.bean.response.home.def.GoodBean;
 import com.runjing.common.AppMethod;
 import com.runjing.common.Appconfig;
 
+import com.runjing.utils.location.LocalUtil;
 import com.runjing.wineworld.R;
 
 import java.util.List;
@@ -150,9 +152,11 @@ public class ReceiveAddressAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     public void onClick(View v) {
                         if ("add".equals(mmark)){
                             Bundle bundle = new Bundle();
-                            bundle.putString(Appconfig.DATA_KEY,goods.get(position).getAddress());
+                            bundle.putString("address",goods.get(position).getAddress());
                             AppMethod.postShowForResult(context, 100,SimpleBackPage.AddAddress,bundle);
                             context.finish();
+                        }else{
+                            skip(goods.get(position));
                         }
                     }
                 });
@@ -182,12 +186,28 @@ public class ReceiveAddressAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             if (goods != null && goods.size() > 0) {
                 tv_select_address.setText(AppMethod.setDefault(goods.get(position).getPoiAddress()));
                 tv_near_address.setText(AppMethod.setDefault(goods.get(position).getAddress()));
-             lay_near_address.setOnClickListener(v -> AppMethod.postShowWith(context, SimpleBackPage.Home));
 
+                lay_near_address.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        skip(goods.get(position));
+                    }
+                });
             }
-
 
         }
     }
 
+
+    private void skip(AddressBean addressBean){
+        Bundle bundle = new Bundle();
+        bundle.putString("mark", "select");
+        LocalUtil.address = addressBean.getAddress();
+        LocalUtil.lat = addressBean.getLat();
+        LocalUtil.lon = addressBean.getLon();
+        LocalUtil.poiName = addressBean.getAddress();
+        Log.d("aaa",addressBean.getLat()+" "+ LocalUtil.lon);
+        AppMethod.postShowWith(context, SimpleBackPage.Home, bundle);
+        context.finish();
+    }
 }

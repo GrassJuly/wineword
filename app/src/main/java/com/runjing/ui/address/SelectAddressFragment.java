@@ -1,7 +1,15 @@
 package com.runjing.ui.address;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -9,12 +17,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.services.core.AMapException;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.core.PoiItem;
@@ -35,6 +49,7 @@ import com.runjing.utils.EmptyUtil;
 import com.runjing.utils.location.LocalUtil;
 import com.runjing.utils.RecyclerViewItemDecoration;
 
+import com.runjing.utils.store.MMKVUtil;
 import com.runjing.wineworld.R;
 
 import org.runjing.rjframe.ui.BindView;
@@ -45,6 +60,8 @@ import org.runjing.rjframe.utils.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.runjing.utils.location.LocalUtil.isReplace;
+
 /**
  * @Created: qianxs  on 2020.07.16 23:21.
  * @Describe：
@@ -53,13 +70,15 @@ import java.util.List;
  * @Version: v_1.0 on 2020.07.16 23:21.
  * @Remark:
  */
-public class SelectAddressFragment extends TitleBarFragment implements PoiSearch.OnPoiSearchListener, TextWatcher, Inputtips.InputtipsListener {
+public class SelectAddressFragment extends TitleBarFragment implements PoiSearch.OnPoiSearchListener, TextWatcher, Inputtips.InputtipsListener,LocalUtil.onReplace {
     @BindView(id = R.id.recy_rece_content)
     RecyclerView recyAddress;
     @BindView(id = R.id.lv_near_address)
     RecyclerView recyNearAddress;
-    @BindView(id = R.id.tv_select_address,click = true)
+    @BindView(id = R.id.tv_select_address)
     TextView tv_select_address;
+    @BindView(id = R.id.ll_select_address,click = true)
+    LinearLayout ll_select_address;
     @BindView(id = R.id.tv_sq_address)
     TextView tv_sq_address;
     @BindView(id = R.id.layout_my_rece_add)
@@ -68,10 +87,15 @@ public class SelectAddressFragment extends TitleBarFragment implements PoiSearch
     LinearLayout ll_zhankai_address;
     @BindView(id = R.id.tv_re_local, click = true)
     private TextView tv_re_local;
+    @BindView(id = R.id.txt_add_address_click, click = true)
+    private TextView txt_add_address_click;
     @BindView(id = R.id.ll_near_address, click = true)
     private LinearLayout ll_near_address;
     @BindView(id = R.id.edit_poi)
     private EditText edit_poi;
+    @BindView(id = R.id.img_select_search_back,click = true)
+    private ImageView img_select_search_back;
+
     private RecyclerView.LayoutManager mLayoutManager, mManager;
     List<AddressBean> addressList;
     List<AddressBean> nearList;
@@ -88,33 +112,29 @@ public class SelectAddressFragment extends TitleBarFragment implements PoiSearch
     @Override
     protected View inflaterView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
         bundle = outsideAty.getIntent().getBundleExtra(Appconfig.DATA_KEY);
-        mark = bundle.getString(Appconfig.DATA_KEY);
+       if(bundle!=null) {
+           mark = bundle.getString(Appconfig.DATA_KEY);
+       }
         Log.d("2222",mark+"");
         return inflater.inflate(R.layout.frag_select_address, null);
     }
 
-    @Override
-    protected void setActionBarRes(ActionBarRes actionBarRes) {
-        super.setActionBarRes(actionBarRes);
-        actionBarRes.titleLayoutVisible = 1;
-        actionBarRes.middleTitle = "选择收货地址";
-        actionBarRes.rightVisiable = 1;
-        actionBarRes.rightVal = "新增地址";
-    }
+
 
     @Override
     protected void initData() {
         super.initData();
+
         nearList = new ArrayList<>();
         if(!StringUtils.isEmpty(LocalUtil.lat) && !StringUtils.isEmpty(LocalUtil.lon)) {
             lp = new LatLonPoint(Double.valueOf(LocalUtil.lat), Double.valueOf(LocalUtil.lon));
         }
         tv_select_address.setText(LocalUtil.city);
-        tv_sq_address.setText(LocalUtil.address);
+        String address = MMKVUtil.getInstance().decodeString(Appconfig.address);
+        tv_sq_address.setText(address);
         if(!StringUtils.isEmpty(mark)&& !"add".equals(mark)){
             getData();
         }
-
 
         doSearchQuery();
 
@@ -153,12 +173,25 @@ public class SelectAddressFragment extends TitleBarFragment implements PoiSearch
         super.widgetClick(v);
         switch (v.getId()) {
             case R.id.tv_re_local:
-                HomeFragment.startLocation();
-                doSearchQuery();
+                if(!checkGPSIsOpen()){//未开启定位权限
+                   openGPSSettings();
+                }else{
+                    LocalUtil.setListener(this);
+                    HomeFragment.initLocation();
+                    HomeFragment.startLocation();
+                }
+
                 break;
-            case R.id.tv_select_address:
+            case R.id.ll_select_address:
                 AppMethod.postShowWith(outsideAty, SimpleBackPage.OpenCity);
                 break;
+            case R.id.img_select_search_back:
+                finish();
+                break;
+            case R.id.txt_add_address_click:
+                AppMethod.postShowWith(outsideAty, SimpleBackPage.AddAddress);
+                break;
+
         }
     }
 
@@ -175,7 +208,7 @@ public class SelectAddressFragment extends TitleBarFragment implements PoiSearch
     /**
      * 开始进行poi搜索
      */
-    protected void doSearchQuery() {
+    public void doSearchQuery() {
         currentPage = 0;
         query = new PoiSearch.Query(LocalUtil.poiName, "", LocalUtil.city);// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
         query.setPageSize(20);// 设置每页最多返回多少条poiitem
@@ -196,7 +229,7 @@ public class SelectAddressFragment extends TitleBarFragment implements PoiSearch
         if (rcode == AMapException.CODE_AMAP_SUCCESS) {
             if (result != null && result.getQuery() != null) {// 搜索poi的结果
 
-                if (result.getQuery().equals(query)) {// 是否是同一条
+
                     if (result.getQuery().equals(query)) {// 是否是同一条
                         poiResult = result;
 
@@ -207,16 +240,21 @@ public class SelectAddressFragment extends TitleBarFragment implements PoiSearch
                             nearList.clear();
                             for (int i = 0; i < poiItems.size(); i++) {
                                 String addr = poiItems.get(i).getTitle();
+                               String lat = poiItems.get(i).getLatLonPoint().getLatitude() +"";
+                               String lon =  poiItems.get(i).getLatLonPoint().getLongitude()+"";
                                 AddressBean bean = new AddressBean();
                                 bean.setAddress(addr);
+                                bean.setLat(lat);
+                                bean.setLon(lon);
                                 nearList.add(bean);
+                                Log.d("1111",lat +" "+ lon);
                             }
+
+
                             buildNearAddress(recyNearAddress,nearList,Appconfig.TAG_TWO);
                         }
                     }
-                } else {
-                    ViewInject.showCenterToast(outsideAty, "对不起，没有搜索到相关数据！");
-                }
+
             }
         }
 
@@ -234,6 +272,9 @@ public class SelectAddressFragment extends TitleBarFragment implements PoiSearch
      * @param mList
      */
     private void buildNearAddress(RecyclerView receLitView, List<AddressBean> mList, int type) {
+       if(type == Appconfig.TAG_TWO) {
+           ll_near_address.setVisibility(View.VISIBLE);
+       }
       if(mManager==null) {
           mManager = new LinearLayoutManager(getActivity());
           receLitView.setHasFixedSize(false);
@@ -277,15 +318,101 @@ public class SelectAddressFragment extends TitleBarFragment implements PoiSearch
         if (rCode == AMapException.CODE_AMAP_SUCCESS) {// 正确返回
             List<AddressBean> searchList = new ArrayList<AddressBean>();
             for (int i = 0; i < tipList.size(); i++) {
-                AddressBean addressBean = new AddressBean();
-                addressBean.setAddress(tipList.get(i).getName());
-                addressBean.setPoiAddress(tipList.get(i).getAddress());
-                searchList.add(addressBean);
+                Tip tip = tipList.get(i);
+               if(tip!=null) {
+                   Log.d("aaa",tip.getDistrict());
+                   AddressBean addressBean = new AddressBean();
+                   addressBean.setAddress(tip.getName());
+                   addressBean.setPoiAddress(tip.getAddress());
+                   LatLonPoint ll = tip.getPoint();
+                   if(ll!=null) {
+                       Double lat = ll.getLatitude();
+                       Double lon = ll.getLongitude();
+                       addressBean.setLon(lon + "");
+                       addressBean.setLat(lat + "");
+                   }
+                   searchList.add(addressBean);
+               }
             }
             buildNearAddress(recyNearAddress, searchList, Appconfig.TAG_THREE);
         }
 
     }
 
+    @Override
+    public void replace(boolean b) {
+        if(b){
+            LocalUtil.setListener(null);
+            Log.d("aaaa",b+"");
+            if(!StringUtils.isEmpty(LocalUtil.lat) && !StringUtils.isEmpty(LocalUtil.lon)) {
+                lp = new LatLonPoint(Double.valueOf(LocalUtil.lat), Double.valueOf(LocalUtil.lon));
+            }
+            doSearchQuery();
+            isReplace = false;
+        }
+    }
+
+    @Override
+    public void onActionBar() {
+        super.onActionBar();
+        tv_select_address.setText(LocalUtil.city);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    /**
+     * 判断是否有定位权限
+     * @return
+     */
+    private boolean checkGPSIsOpen() {
+     boolean isOpen;
+     LocationManager locationManager = (LocationManager) outsideAty.getSystemService(Context.LOCATION_SERVICE);
+     isOpen = locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER);
+      return isOpen;
+    }
+    private int GPS_REQUEST_CODE = 10;
+    private void openGPSSettings() {
+
+            //没有打开则弹出对话框
+            new AlertDialog.Builder(outsideAty)
+                    .setTitle("")
+                    .setMessage("请到设置-隐私-定位服务中开启京东\n" +
+                            "酒世界定位服务，以获取附近门店信\n" +
+                            "息")
+                    // 拒绝, 退出应用
+                    .setNegativeButton("取消",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            })
+
+                    .setPositiveButton("去设置",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //跳转GPS设置界面
+                                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                    startActivityForResult(intent, GPS_REQUEST_CODE);
+                                }
+                            })
+
+                    .setCancelable(false)
+                    .show();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GPS_REQUEST_CODE){
+            tv_select_address.setText(LocalUtil.city);
+            tv_sq_address.setText(LocalUtil.address);
+            doSearchQuery();
+        }
+    }
 
 }

@@ -29,13 +29,13 @@ public class BaseRequest {
 
     public BaseRequest() {
         this.latitude = LocalUtil.lat;
-        if (TextUtils.isEmpty(LocalUtil.lat)) {
-            this.latitude = MMKVUtil.getInstance().decodeDouble(Appconfig.lat) + "";
-        }
+//        if (TextUtils.isEmpty(LocalUtil.lat)) {
+//            this.latitude = MMKVUtil.getInstance().decodeDouble(Appconfig.lat) + "";
+//        }
         longitude = LocalUtil.lon;
-        if (TextUtils.isEmpty(LocalUtil.lon)) {
-            this.longitude = MMKVUtil.getInstance().decodeDouble(Appconfig.lon) + "";
-        }
+//        if (TextUtils.isEmpty(LocalUtil.lon)) {
+//            this.longitude = MMKVUtil.getInstance().decodeDouble(Appconfig.lon) + "";
+//        }
         this.appVersion = SystemTool.getAppVersionName(MyApplication.contextApp);
     }
 

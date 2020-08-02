@@ -2,6 +2,7 @@ package com.runjing.ui.home;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -129,7 +130,10 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
     private RecyclerView rv_content;
     @BindView(id = R.id.lay_ll_nomore)
     private LinearLayout ll_nomore;
+    @BindView(id = R.id.frag_iv_shop,click = true)
+    private ImageView img_shopping_cart; //购物车
     private RecyclerView.LayoutManager mLayoutManager;
+
     private LoadingDialog loadingDialog;
     private HomeAdapter homeAdapter;
     private int mSuspensionHeight;
@@ -137,11 +141,16 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
     public static AMapLocationClientOption locationOption = null;
     public static String strLocation;
     private HomeRequest request;
-
+    private String mark;
     @Override
     protected View inflaterView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
         loadingDialog = new LoadingDialog(outsideAty);
         request = new HomeRequest();
+        bundle = outsideAty.getIntent().getBundleExtra(Appconfig.DATA_KEY);
+        if(bundle!=null) {
+            mark = bundle.getString("mark");
+            Log.d("aaaaaa",mark);
+        }
         return inflater.inflate(R.layout.frag_home, null);
     }
 
@@ -155,15 +164,22 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
     @Override
     protected void initData() {
         super.initData();
-        initLocation();
-        startLocation();
+       if(mark==null||!"select".equals(mark)) {
+           initLocation();
+           startLocation();
+           Log.d("aaa","bbbbbbbbbbbb");
+       }
         getData();
     }
 
     @Override
     protected void initWidget(View parentView) {
         super.initWidget(parentView);
-        tv_address.setText("正在获取定位信息...");
+       if(mark!=null&&"select".equals(mark)){
+           tv_address.setText(LocalUtil.address);
+       } else {
+           tv_address.setText("正在获取定位信息...");
+       }
         refreshLayout.setRefreshHeader(new RJRefreshHeader(outsideAty).
                 setNormalColor(outsideAty.getResources().getColor(R.color.color_99000000)).
                 setAnimatingColor(outsideAty.getResources().getColor(R.color.color_99000000)).
@@ -214,8 +230,7 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
                 break;
             case R.id.frag_ll_Tselect:
             case R.id.frag_ll_select:
-                AppMethod.postShowWith(outsideAty, SimpleBackPage.AddAddress);
-//                AppMethod.postShowWith(outsideAty, SimpleBackPage.SelectAddress);
+                AppMethod.postShowWith(outsideAty, SimpleBackPage.SelectAddress);
                 break;
             case R.id.frag_iv_Tshop:
             case R.id.frag_iv_shop:
@@ -225,6 +240,7 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
     }
 
     public void getData() {
+        Log.d("aaa", "bbbbbbbbbbbbbbbbbbbb");
         RetrofitClient retrofitClient = RetrofitClient.getInstance(outsideAty, RetrofitClient.baseUrl);
         Observable<DistrictBean> district = retrofitClient
                 .create(ApiServices.class)
@@ -254,6 +270,7 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
             @Override
             public HomeData call(DistrictBean districtBean, HomeStoreBean homeStoreBean, GoodBean goodBean, BannerBean bannerBean) {
                 return new HomeData(districtBean, homeStoreBean, bannerBean, goodBean);
+
             }
         });
         homeObservable.subscribe(new Subscriber<HomeData>() {
@@ -420,7 +437,7 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
         if (PermissionUtils.checkPermissions(outsideAty, Appconfig.needPermissions)) {
             ll_localNet.setVisibility(View.GONE);
             ll_content.setVisibility(View.VISIBLE);
-            startLocation();
+
         } else {
             ll_content.setVisibility(View.GONE);
             ll_localNet.setVisibility(View.VISIBLE);

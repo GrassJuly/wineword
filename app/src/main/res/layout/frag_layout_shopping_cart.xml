@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/frag_srl_content"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/color_fafafa">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recy_shop_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_10"
+            android:visibility="gone"
+            />
+        <ImageView
+            android:id="@+id/imageView9"
+            android:layout_width="@dimen/dp_105"
+            android:layout_height="@dimen/dp_100"
+            android:src="@mipmap/icon_shop_gray"
+            android:visibility="gone"
+            />
+
+    </LinearLayout>
+
+</com.scwang.smartrefresh.layout.SmartRefreshLayout>
