@@ -138,6 +138,7 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.github.zhaokaiqiang.klog:library:1.6.0'
     implementation 'org.apache.commons:commons-lang3:3.7'
+    implementation 'top.zibin:Luban:1.1.8'
 }
 
 //获取时间戳

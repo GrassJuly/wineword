@@ -2,6 +2,8 @@ package com.runjing.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.text.TextUtils;
@@ -12,8 +14,16 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.runjing.common.AppMethod;
+import com.runjing.http.ApiServices;
+import com.runjing.wineworld.R;
+import com.socks.library.KLog;
 
 import org.runjing.rjframe.utils.RJLoger;
+
+import java.io.File;
+
+import top.zibin.luban.OnCompressListener;
 
 /**
  * @Created: qianxs  on 2020.07.14 13:00.
@@ -45,7 +55,6 @@ public class GlideUtils {
     }
 
     /**
-     *
      * @param imageview
      * @param url
      * @param context
@@ -59,7 +68,7 @@ public class GlideUtils {
             Glide.with(context).load(url).apply(options).into(new SimpleTarget<Drawable>() {
                 @Override
                 public void onResourceReady(Drawable drawable, Transition<? super Drawable> transition) {
-                    if(drawable!=null){
+                    if (drawable != null) {
                         imageview.setImageDrawable(drawable);
                     }
                 }
@@ -118,5 +127,42 @@ public class GlideUtils {
             RJLoger.debug(TAG, "Picture loading failed,context is null");
         }
     }
+
+    /**
+     *
+     * @param context
+     * @param path
+     * @param imageView
+     */
+    public void glideLoadCom(Context context, String path, ImageView imageView) {
+        try {
+            File file = Glide.with(context)
+                    .asFile()
+                    .load(path)
+                    .submit(200, 200)
+                    .get();
+            AppMethod.getPic(context, file,
+                    StorageUtil.getCacheDirectory1(context, ""), new OnCompressListener() {
+                        @Override
+                        public void onStart() {
+
+                        }
+
+                        @Override
+                        public void onSuccess(File file) {
+                            KLog.e(file);
+                            imageView.setImageBitmap(BitmapFactory.decodeFile(file.getPath()));
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

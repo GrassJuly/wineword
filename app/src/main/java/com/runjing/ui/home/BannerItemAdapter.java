@@ -10,14 +10,23 @@ package com.runjing.ui.home;
  */
 
 import android.content.Context;
+import android.os.Build;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.bumptech.glide.request.RequestOptions;
 import com.runjing.bean.response.home.BannerBean;
+import com.runjing.ui.login.GuildBannerAdapter;
 import com.runjing.utils.GlideUtils;
 import com.runjing.wineworld.R;
+import com.socks.library.KLog;
 import com.youth.banner.adapter.BannerAdapter;
+import com.youth.banner.util.BannerUtils;
 
 import org.runjing.rjframe.ui.ViewInject;
 
@@ -40,22 +49,20 @@ public class BannerItemAdapter extends BannerAdapter<BannerBean.DataBean, Banner
         bannerBeans = mDatas;
     }
 
-    //创建ViewHolder，可以用viewType这个字段来区分不同的ViewHolder
-    @Override
     public BannerViewHolder onCreateHolder(ViewGroup parent, int viewType) {
-        mContext = parent.getContext();
-        ImageView imageView = new ImageView(mContext);
-        //注意，必须设置为match_parent，这个是viewpager2强制要求的
-        imageView.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT));
-        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        ImageView imageView = (ImageView) BannerUtils.getView(parent, R.layout.layout_item_banner);
+        //通过裁剪实现圆角
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            BannerUtils.setBannerRound(imageView,20);
+        }
         return new BannerViewHolder(imageView);
     }
 
+
     @Override
     public void onBindView(BannerViewHolder holder, BannerBean.DataBean data, int position, int size) {
-        GlideUtils.getInstance().displayImageCenter(holder.imageView, data.getImgUrl(), mContext, R.mipmap.iv_default);
+        GlideUtils.getInstance().glideLoad(holder.imageView.getContext(), data.getImgUrl(), holder.imageView);
+//        GlideUtils.getInstance().displayImageCenter(holder.imageView, data.getImgUrl(), mContext, R.mipmap.iv_default);
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,13 +71,13 @@ public class BannerItemAdapter extends BannerAdapter<BannerBean.DataBean, Banner
         });
     }
 
+    public class BannerViewHolder extends RecyclerView.ViewHolder {
+        public ImageView imageView;
 
-    class BannerViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageView;
-
-        public BannerViewHolder(@NonNull ImageView view) {
+        public BannerViewHolder(@NonNull View view) {
             super(view);
-            this.imageView = view;
+            this.imageView = (ImageView) view;
         }
     }
+
 }

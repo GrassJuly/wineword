@@ -12,7 +12,7 @@ import com.runjing.base.BaseRequest;
  */
 public class GoodRequest extends BaseRequest {
 
-    private String f7StoreId, goodsName, pageNo;
+    private String f7StoreId, goodsName;
 
     public String getF7StoreId() {
         return f7StoreId;
@@ -30,20 +30,11 @@ public class GoodRequest extends BaseRequest {
         this.goodsName = goodsName;
     }
 
-    public String getPageNo() {
-        return pageNo;
-    }
-
-    public void setPageNo(String pageNo) {
-        this.pageNo = pageNo;
-    }
-
     @Override
     public String toString() {
         return "GoodRequest{" +
                 "f7StoreId='" + f7StoreId + '\'' +
                 ", goodsName='" + goodsName + '\'' +
-                ", pageNo='" + pageNo + '\'' +
                 '}';
     }
 }

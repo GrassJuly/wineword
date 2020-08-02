@@ -127,8 +127,8 @@ public class RetrofitClient {
                 .addNetworkInterceptor(new CaheInterceptor(context))
                 .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 .writeTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
-                .connectionPool(new ConnectionPool(8, 15, TimeUnit.SECONDS))
-                // 这里你可以根据自己的机型设置同时连接的个数和时间，我这里8个，和每个保持时间为10s
+                .connectionPool(new ConnectionPool(32, 15, TimeUnit.SECONDS))
+                // 这里你可以根据自己的机型设置同时连接的个数和时间，我这里32个，和每个保持时间为10s
                 .build();
         retrofit = new Retrofit.Builder()
                 .client(okHttpClient)

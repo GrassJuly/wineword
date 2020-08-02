@@ -26,6 +26,7 @@ public class BaseRequest {
     private String latitude;
     private String longitude;
     private int pageSize;
+    private int pageNo;
 
     public BaseRequest() {
         this.latitude = LocalUtil.lat;
@@ -95,6 +96,14 @@ public class BaseRequest {
         this.longitude = longitude;
     }
 
+    public int getPageNo() {
+        return pageNo;
+    }
+
+    public void setPageNo(int pageNo) {
+        this.pageNo = pageNo;
+    }
+
     @Override
     public String toString() {
         return "BaseRequest{" +
@@ -104,6 +113,8 @@ public class BaseRequest {
                 ", appVersion='" + appVersion + '\'' +
                 ", latitude='" + latitude + '\'' +
                 ", longitude='" + longitude + '\'' +
+                ", pageSize=" + pageSize +
+                ", pageNo=" + pageNo +
                 '}';
     }
 }

@@ -28,30 +28,24 @@ import com.runjing.MyApplication;
 import com.runjing.base.SimpleBackActivity;
 import com.runjing.base.SimpleBackPage;
 import com.runjing.base.TitleBarActivity;
-import com.runjing.bean.request.UpgradeRequest;
-import com.runjing.bean.response.guild.GuildBean;
 import com.runjing.bean.response.guild.GuildImageBean;
 import com.runjing.bean.response.home.BannerBean;
-import com.runjing.bean.response.update.UpgradeBean;
-import com.runjing.bean.response.update.UpgradeResponse;
 import com.runjing.ui.good.DetailBannerAdapter;
 import com.runjing.ui.home.BannerItemAdapter;
 import com.runjing.ui.login.GuildBannerAdapter;
 import com.runjing.utils.ColorPhrase;
-import com.runjing.utils.store.MMKVUtil;
 import com.runjing.utils.PermissionUtils;
 import com.runjing.utils.PopupWindowUtil;
-import com.runjing.widget.LibAutoUpdate;
-import com.runjing.widget.pop.MiddlePopupWindow;
+import com.runjing.utils.store.MMKVUtil;
 import com.runjing.widget.pickerview.SupplierPickerView;
 import com.runjing.widget.pickerview.TimePickerView;
+import com.runjing.widget.pop.MiddlePopupWindow;
 import com.runjing.wineworld.R;
 import com.youth.banner.Banner;
 import com.youth.banner.indicator.CircleIndicator;
 
 import org.runjing.rjframe.ui.ViewInject;
 import org.runjing.rjframe.utils.StringUtils;
-import org.runjing.rjframe.utils.SystemTool;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -64,6 +58,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import androidx.fragment.app.Fragment;
+import top.zibin.luban.CompressionPredicate;
+import top.zibin.luban.Luban;
+import top.zibin.luban.OnCompressListener;
 
 import static android.content.Context.ACTIVITY_SERVICE;
 
@@ -125,9 +122,6 @@ public class AppMethod {
         intent.putExtra(Appconfig.DATA_KEY, data);
         fragment.startActivityForResult(intent, code);
     }
-
-
-
 
 
     /**
@@ -473,7 +467,7 @@ public class AppMethod {
      * @param msg
      * @param listener
      */
-    public static void showMsg(final Activity activity, String title,String msg, final PopBackListener listener) {
+    public static void showMsg(final Activity activity, String title, String msg, final PopBackListener listener) {
         PopupWindowUtil.showPopWindow(activity,
                 title, msg
                 , true, new MiddlePopupWindow.PopupWindowCallBack() {
@@ -793,6 +787,7 @@ public class AppMethod {
 
     /**
      * 导航页banner
+     *
      * @param context
      * @param banner
      * @param images
@@ -810,6 +805,7 @@ public class AppMethod {
 
     /**
      * 详情页banner
+     *
      * @param context
      * @param banner
      * @param images
@@ -826,6 +822,7 @@ public class AppMethod {
 
     /**
      * 首页banner
+     *
      * @param activity
      * @param banner
      * @param images
@@ -836,7 +833,7 @@ public class AppMethod {
         banner.setBannerRound(20);
         banner.addBannerLifecycleObserver(activity)
                 .setAdapter(adapter)
-                .setIndicator(new CircleIndicator(activity))
+                .setIndicator(new CircleIndicator(activity), true)
                 .start();
     }
 
@@ -952,5 +949,26 @@ public class AppMethod {
 //
 //        );
 //    }
+
+    /**
+     *
+     * @param context
+     * @param photos
+     * @param file
+     * @param listener
+     */
+    public static void getPic(Context context, File photos, String file, OnCompressListener listener) {
+        Luban.with(context)
+                .load(photos)
+                .ignoreBy(10)
+                .setTargetDir(file)
+                .filter(new CompressionPredicate() {
+                    @Override
+                    public boolean apply(String path) {
+                        return false;
+                    }
+                })
+                .setCompressListener(listener).launch();
+    }
 
 }

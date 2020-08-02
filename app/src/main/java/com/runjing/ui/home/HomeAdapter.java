@@ -1,6 +1,8 @@
 package com.runjing.ui.home;
 
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,17 +18,24 @@ import com.runjing.bean.response.home.HomeData;
 import com.runjing.bean.response.home.HomeStoreBean;
 import com.runjing.common.AppMethod;
 import com.runjing.common.Appconfig;
+import com.runjing.http.ApiServices;
 import com.runjing.utils.GlideUtils;
+import com.runjing.utils.StorageUtil;
 import com.runjing.wineworld.R;
+import com.socks.library.KLog;
 
 import org.runjing.rjframe.ui.ViewInject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import top.zibin.luban.CompressionPredicate;
+import top.zibin.luban.Luban;
+import top.zibin.luban.OnCompressListener;
 
 import static com.runjing.bean.response.home.HomeData.TYPE_ITEM_CITY;
 import static com.runjing.bean.response.home.HomeData.TYPE_ITEM_GOOD;
@@ -127,12 +136,13 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         public void setData(List<GoodBean.DataBean.ListBean> goods, int position) {
             if (goods != null && goods.size() > 0) {
-                GlideUtils.getInstance().displayImageCenter(iv_good, goods.get(position).getImages().get(0).getImgUrl(), iv_good.getContext(), R.mipmap.iv_default);
-                //这个后期根据后台切图动态删除， 我找的图太大 尺寸不对
+                GlideUtils.getInstance().glideLoad(context, ApiServices.BasePic + goods.get(position).getImages().get(0).getImgUrl(), iv_good);
                 tv_name.setText(AppMethod.setDefault(goods.get(position).getGoodsName()));
-                tv_desc.setText(AppMethod.setDefault(goods.get(position).getGoodsName()));
-                tv_price.setText(AppMethod.setDefault(goods.get(position).getGoodsName()));
-                tv_favprice.setText(AppMethod.setDefault(goods.get(position).getGoodsName()));
+                List<GoodBean.DataBean.ListBean.SkuPromotionResultBean.PromoDescListBean> promoDescList = goods.get(position).getSkuPromotionResult().getPromoDescList();
+                //TODO 是不是只取直降的价格
+                String price = (promoDescList != null && promoDescList.size() > 0) ? promoDescList.get(0).getPrivilegePrice() + "" : "";
+                tv_price.setText("¥" + AppMethod.setDefault(price));
+                tv_favprice.setText("¥" + AppMethod.setDefault(AppMethod.setDefault(goods.get(position).getMarketPrice() + "")));
                 ll_detail.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -141,17 +151,6 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 });
             }
         }
-    }
-
-    public void setImageWH(ImageView image) {
-        Display display = context.getWindowManager().getDefaultDisplay();
-        int width = display.getWidth();
-        int height = display.getHeight();
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) image.getLayoutParams();
-        //设置图片的相对于屏幕的宽高比
-        params.width = width / 3;
-        params.height = (int) (Math.random() * 400);
-        image.setLayoutParams(params);
     }
 
     public class StoreHolder extends RecyclerView.ViewHolder {
