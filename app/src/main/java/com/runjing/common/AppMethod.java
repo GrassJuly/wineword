@@ -57,14 +57,14 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import androidx.fragment.app.Fragment;
+//import androidx.fragment.app.Fragment;
 import top.zibin.luban.CompressionPredicate;
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
 
 import static android.content.Context.ACTIVITY_SERVICE;
 
-//import android.app.Fragment;
+import android.app.Fragment;
 
 /**
  * @Created by xiaoyu on 2017/1/6.
@@ -529,15 +529,19 @@ public class AppMethod {
                 }, 3000);
             } else {
                 if (Integer.parseInt(android.os.Build.VERSION.SDK) >= android.os.Build.VERSION_CODES.ECLAIR_MR1) {
+                    MMKVUtil.getInstance().encode(Appconfig.address, "");
                     Intent mainActivity = new Intent(Intent.ACTION_MAIN);
                     mainActivity.addCategory(Intent.CATEGORY_HOME);
                     mainActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     activity.startActivity(mainActivity);
                     System.exit(0);//退出程序
                 } else {
+                    MMKVUtil.getInstance().encode(Appconfig.address, "");
                     ActivityManager activityMgr = (ActivityManager) activity.getSystemService(ACTIVITY_SERVICE);
                     activityMgr.restartPackage(activity.getPackageName());
                 }
+
+
             }
         } catch (Exception e) {
             e.printStackTrace();

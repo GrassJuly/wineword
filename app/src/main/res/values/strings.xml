@@ -132,5 +132,8 @@
     <string name ="string_rece_info">补充说明</string>
     <string name ="string_rece_mark">标签</string>
     <string name ="string_have_no_goods">没有找到相关商品\n换个词试试吧</string>
-
+    <string name ="string_all_choose">全选</string>
+    <string name ="string_account">去结算</string>
+    <string name ="string_choose_address">选择收货地址</string>
+    <string name ="string_add_new_address">新增地址</string>
 </resources>

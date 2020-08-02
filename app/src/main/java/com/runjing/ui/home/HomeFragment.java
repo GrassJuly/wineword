@@ -1,7 +1,9 @@
 package com.runjing.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -107,7 +109,7 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
     @BindView(id = R.id.lay_tv_refresh, click = true)
     private TextView tv_refresh;
 
-    @BindView(id = R.id.frag_ll_search, click = true)
+    @BindView(id = R.id.lay_ll_search, click = true)
     private LinearLayout ll_search;
     @BindView(id = R.id.frg_ll_home)
     private LinearLayout ll_home;
@@ -131,7 +133,10 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
     private RecyclerView rv_content;
     @BindView(id = R.id.lay_ll_nomore)
     private LinearLayout ll_nomore;
+    @BindView(id = R.id.frag_iv_shop, click = true)
+    private ImageView img_shopping_cart; //购物车
     private RecyclerView.LayoutManager mLayoutManager;
+
     private LoadingDialog loadingDialog;
     private HomeAdapter homeAdapter;
     private int mSuspensionHeight;
@@ -140,6 +145,7 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
     public static String strLocation;
     private HomeRequest request;
     private List<GoodBean.DataBean.ListBean> list;
+    private String mark;
 
     @Override
     protected View inflaterView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
@@ -148,6 +154,11 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
         request.setPageNo(Appconfig.pageNo);
         request.setPageSize(Appconfig.pageSize);
         list = new ArrayList<>();
+        bundle = outsideAty.getIntent().getBundleExtra(Appconfig.DATA_KEY);
+        if (bundle != null) {
+            mark = bundle.getString("mark");
+            Log.d("aaaaaa", mark);
+        }
         return inflater.inflate(R.layout.frag_home, null);
     }
 
@@ -163,12 +174,22 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
         super.initData();
         initLocation();
         startLocation();
+        if (mark == null || !"select".equals(mark)) {
+            initLocation();
+            startLocation();
+            Log.d("aaa", "bbbbbbbbbbbb");
+        }
+        getData();
     }
 
     @Override
     protected void initWidget(View parentView) {
         super.initWidget(parentView);
-        tv_address.setText("正在获取定位信息...");
+        if (mark != null && "select".equals(mark)) {
+            tv_address.setText(LocalUtil.address);
+        } else {
+            tv_address.setText("正在获取定位信息...");
+        }
         refreshLayout.setRefreshHeader(new RJRefreshHeader(outsideAty).
                 setNormalColor(outsideAty.getResources().getColor(R.color.color_99000000)).
                 setAnimatingColor(outsideAty.getResources().getColor(R.color.color_99000000)).
@@ -221,8 +242,7 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
                 break;
             case R.id.frag_ll_Tselect:
             case R.id.frag_ll_select:
-                AppMethod.postShowWith(outsideAty, SimpleBackPage.AddAddress);
-//                AppMethod.postShowWith(outsideAty, SimpleBackPage.SelectAddress);
+                AppMethod.postShowForResult(HomeFragment.this, Appconfig.TAG_TENTHOUSAND_ONE, SimpleBackPage.SelectAddress);
                 break;
             case R.id.frag_iv_Tshop:
             case R.id.frag_iv_shop:
@@ -257,6 +277,7 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
             @Override
             public HomeData call(DistrictBean districtBean, HomeStoreBean homeStoreBean, GoodBean goodBean, BannerBean bannerBean) {
                 return new HomeData(districtBean, homeStoreBean, bannerBean, goodBean);
+
             }
         });
         homeObservable.subscribe(new Subscriber<HomeData>() {
@@ -288,7 +309,9 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
      * @param response
      */
     public void setData(HomeData response) {
-        if (isOpenCity(response.getDistrictBean().getData(), LocalUtil.city)) {
+        String city = TextUtils.isEmpty(MMKVUtil.getInstance().decodeString(Appconfig.city))
+                ? LocalUtil.city : MMKVUtil.getInstance().decodeString(Appconfig.city);
+        if (isOpenCity(response.getDistrictBean().getData(), city)) {
             int type = response.getHomeStoreBean().getData().getType();
             if (type == 1) {
                 response.setItemTpye(HomeData.TYPE_ITEM_GOOD);
@@ -456,6 +479,14 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
             ll_localNet.setVisibility(View.VISIBLE);
             ll_nonet.setVisibility(View.GONE);
             ll_nolocal.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Appconfig.TAG_TENTHOUSAND_ONE) {
+            KLog.e(data);
         }
     }
 }

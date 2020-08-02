@@ -1,39 +1,47 @@
 package com.runjing.utils.location;
 
-import android.text.TextUtils;
-import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.AMapLocationQualityReport;
 import com.runjing.common.Appconfig;
+import com.runjing.ui.address.SelectAddressFragment;
+import com.runjing.ui.home.HomeFragment;
 import com.runjing.utils.store.MMKVUtil;
-import com.socks.library.KLog;
-import com.runjing.MyApplication;
-import com.runjing.base.TitleBarActivity;
 
-public class LocalUtil {
+public class LocalUtil  {
     public static String lon;//经度
     public static String lat;//纬度
     public static String city;//城市
-    public static String address;//兴趣点
+    public static String address;//地址
     public static String poiName;
     public static TextView mTextView;
     public static Context mContext;
+    public static  boolean isReplace = false;
+    /**
+     *定义一个变量储存数据
+     */
+    public static onReplace mListener;
 
     public LocalUtil(TextView txtView) {
         this.mTextView = txtView;
 
+
     }
+
 
     /**
      * 定位监听
      */
     public static AMapLocationListener locationListener = new AMapLocationListener() {
+
+
+
+
         @Override
         public void onLocationChanged(AMapLocation location) {
             if (null != location) {
@@ -66,15 +74,25 @@ public class LocalUtil {
                     poiName = location.getPoiName();
                     //定位完成的时间
                     mTextView.setText(location.getAddress());
+
                     if (MMKVUtil.getInstance().decodeDouble(Appconfig.lat) != location.getLatitude()) {
                         MMKVUtil.getInstance().encode(Appconfig.lat, location.getLatitude());
                     }
                     if (MMKVUtil.getInstance().decodeDouble(Appconfig.lon) != location.getLongitude()) {
                         MMKVUtil.getInstance().encode(Appconfig.lon, location.getLongitude());
                     }
-                    if (TextUtils.equals(MMKVUtil.getInstance().decodeString(Appconfig.city), location.getCity())) {
+
+                    if (!TextUtils.equals(MMKVUtil.getInstance().decodeString(Appconfig.address), location.getCity())) {
+                        MMKVUtil.getInstance().encode(Appconfig.address, location.getAddress());
+                    }
+                    if (!TextUtils.equals(MMKVUtil.getInstance().decodeString(Appconfig.city), location.getCity())) {
                         MMKVUtil.getInstance().encode(Appconfig.city, location.getCity());
                     }
+                    if(mListener!=null) {
+                        isReplace = true;
+                        mListener.replace(true);
+                    }
+
                 } else {
                     //定位失败
                     mTextView.setText("定位失败，无法获取地址");
@@ -90,11 +108,10 @@ public class LocalUtil {
                 sb.append("* 网络类型：" + location.getLocationQualityReport().getNetworkType()).append("\n");
                 sb.append("* 网络耗时：" + location.getLocationQualityReport().getNetUseTime()).append("\n");
                 sb.append("****************").append("\n");
-                //定位之后的回调时间
 
                 //解析定位结果，
                 String result = sb.toString();
-
+                HomeFragment.locationClient.onDestroy();
             } else {
 
             }
@@ -136,7 +153,7 @@ public class LocalUtil {
                 break;
             case AMapLocationQualityReport.GPS_STATUS_OFF:
                 str = "GPS关闭，建议开启GPS，提高定位质量";
-                mTextView.setText("未授权定位服务2");
+                mTextView.setText("未授权定位服务");
                 break;
             case AMapLocationQualityReport.GPS_STATUS_MODE_SAVING:
                 str = "选择的定位模式中不包含GPS定位，建议选择包含GPS定位的模式，提高定位质量";
@@ -150,5 +167,12 @@ public class LocalUtil {
         return str;
     }
 
+    public interface onReplace{
+        void replace(boolean b);
+    }
 
+
+    public static void setListener( onReplace listener){
+        mListener = listener;
+    }
 }

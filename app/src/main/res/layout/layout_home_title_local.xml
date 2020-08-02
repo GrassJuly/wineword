@@ -24,6 +24,7 @@
             android:id="@+id/frag_tv_Taddress"
             style="@style/ll_tv_n"
             android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:ellipsize="end"
             android:maxWidth="@dimen/dp_160"
             android:minWidth="@dimen/dp_20"
