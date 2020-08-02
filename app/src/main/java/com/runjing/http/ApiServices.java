@@ -24,9 +24,9 @@ import rx.Observable;
  */
 public interface ApiServices {
 
-//        public final static String BaseUrl = "https://cxc.jd9sj.com/api/";//线上正式环境
+        public final static String BaseUrl = "https://cxc.jd9sj.com/api/";//线上正式环境
 //    public final static String BaseUrl = "https://pre-cxc.jd9sj.com/api/";//线上正式环境
-    public final static String BaseUrl = "http://116.196.90.67:9002/api/";//测试环境
+//    public final static String BaseUrl = "http://116.196.90.67:9002/api/";//测试环境
 
     class MyRequestBody {
         public static RequestBody createBody(Object request) {

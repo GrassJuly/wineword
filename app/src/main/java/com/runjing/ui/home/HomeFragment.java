@@ -275,7 +275,6 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
 
             @Override
             public void onNext(HomeData homeData) {
-                KLog.e(homeData);
                 setData(homeData);
             }
         });
@@ -286,15 +285,14 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
      * @param response
      */
     public void setData(HomeData response) {
-        String city = MMKVUtil.getInstance().decodeString(Appconfig.city);
-        if (isOpenCity(response.getDistrictBean().getData(), city)) {
+        if (isOpenCity(response.getDistrictBean().getData(), LocalUtil.city)) {
             int type = response.getHomeStoreBean().getData().getType();
             if (type == 1) {
                 response.setItemTpye(HomeData.TYPE_ITEM_GOOD);
                 ll_store_status.setVisibility(View.GONE);
                 ll_search.setVisibility(View.VISIBLE);
                 ll_banner.setVisibility(View.VISIBLE);
-                setMargin(ll_home, 46);
+                setMargin(ll_home, 0);
                 rv_content.setLayoutManager(new StaggeredGridLayoutManager(Appconfig.TAG_TWO, StaggeredGridLayoutManager.VERTICAL));
                 rv_content.addItemDecoration(new SpacesItemDecoration(DensityUtils.dip2dp(getActivity(), 7), STAGGEREDGRIDLAYOUT));
                 AppMethod.bannerWeight(outsideAty, banner, response.getBannerBean().getData());
@@ -303,7 +301,7 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
                 ll_store_status.setVisibility(View.VISIBLE);
                 ll_search.setVisibility(View.GONE);
                 ll_banner.setVisibility(View.GONE);
-                setMargin(ll_home, 0);
+                setMargin(ll_home, 46);
                 rv_content.setLayoutManager(new LinearLayoutManager(outsideAty));
                 rv_content.addItemDecoration(new RecyclerViewItemDecoration(RecyclerViewItemDecoration.MODE_HORIZONTAL,
                         getResources().getColor(R.color.color_eeeeee), DensityUtils.dip2dp(getActivity(), 1), 0, 0));
