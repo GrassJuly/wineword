@@ -1,17 +1,26 @@
 package com.runjing.ui.store;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.runjing.base.BaseRequest;
 import com.runjing.base.TitleBarFragment;
-import com.runjing.bean.response.home.HomeBean;
-import com.runjing.bean.test.HomeData;
+import com.runjing.bean.request.BannerRequest;
+import com.runjing.bean.response.home.DistrictBean;
+import com.runjing.bean.response.home.HomeData;
+import com.runjing.bean.response.home.HomeStoreBean;
+import com.runjing.common.Appconfig;
+import com.runjing.http.ApiServices;
+import com.runjing.http.net.RetrofitClient;
+import com.runjing.ui.home.HomeAdapter;
 import com.runjing.utils.RecyclerViewItemDecoration;
 import com.runjing.utils.StatusBarUtil;
+import com.runjing.utils.store.MMKVUtil;
 import com.runjing.widget.RJRefreshFooter;
 import com.runjing.widget.RJRefreshHeader;
 import com.runjing.wineworld.R;
@@ -19,13 +28,21 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.socks.library.KLog;
 
 import org.runjing.rjframe.ui.BindView;
 import org.runjing.rjframe.utils.DensityUtils;
 
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func2;
+import rx.schedulers.Schedulers;
 
 /**
  * @Created: qianxs  on 2020.07.16 23:21.
@@ -47,7 +64,7 @@ public class StorListFragment extends TitleBarFragment {
     private TextView tv_storeStaus;
     @BindView(id = R.id.frag_rv_content)
     private RecyclerView rv_content;
-    private StoreAdapter adapter;
+    private HomeAdapter adapter;
 
     @Override
     protected View inflaterView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
@@ -60,7 +77,7 @@ public class StorListFragment extends TitleBarFragment {
         actionBarRes.titleLayoutVisible = 1;
         actionBarRes.titleBarColor = R.color.color_F80000;
         actionBarRes.leftVisiable = 1;
-        actionBarRes.middleTitle ="门店列表";
+        actionBarRes.middleTitle = "门店列表";
     }
 
     @Override
@@ -68,6 +85,12 @@ public class StorListFragment extends TitleBarFragment {
         super.initToolBar();
         StatusBarUtil.setColor(outsideAty, getResources().getColor(R.color.color_ffffff));
         StatusBarUtil.setDarkMode(outsideAty);
+    }
+
+    @Override
+    protected void initData() {
+        super.initData();
+        getData();
     }
 
     @Override
@@ -90,39 +113,92 @@ public class StorListFragment extends TitleBarFragment {
                 refreshLayout.finishLoadMore(2000);
             }
         });
-        adapter = new StoreAdapter(getActivity());
+        adapter = new HomeAdapter(getActivity());
         rv_content.setHasFixedSize(false);
         rv_content.setNestedScrollingEnabled(false);
         rv_content.setAdapter(adapter);
-        setData(HomeData.getHomeData());
     }
 
-
-    /**
-     * 设置数据
-     *
-     * @param homeBean
-     */
-    public void setData(HomeBean homeBean) {
-        if (homeBean != null) {
-            if (homeBean.getItemTpye() == HomeBean.TYPE_ITEM_CITY) {
-                ll_store_status.setVisibility(View.VISIBLE);
-                rv_content.setLayoutManager(new LinearLayoutManager(outsideAty));
-                rv_content.addItemDecoration(new RecyclerViewItemDecoration(RecyclerViewItemDecoration.MODE_HORIZONTAL,
-                        getResources().getColor(R.color.color_eeeeee), DensityUtils.dip2dp(getActivity(), 1), 0, 0));
-            }else if (homeBean.getItemTpye() == HomeBean.TYPE_ITEM_STORE) {
-                ll_store_status.setVisibility(View.VISIBLE);
-                rv_content.setLayoutManager(new LinearLayoutManager(outsideAty));
-                rv_content.addItemDecoration(new RecyclerViewItemDecoration(RecyclerViewItemDecoration.MODE_HORIZONTAL,
-                        getResources().getColor(R.color.color_eeeeee), DensityUtils.dip2dp(getActivity(), 1), 0, 0));
-            }
-        }
-        adapter.setData(homeBean);
-    }
 
     @Override
     public void onBackClick() {
         super.onBackClick();
         finish();
+    }
+
+    public void getData() {
+        RetrofitClient retrofitClient = RetrofitClient.getInstance(outsideAty, RetrofitClient.baseUrl);
+        Observable<DistrictBean> district = retrofitClient
+                .create(ApiServices.class)
+                .getDistrict(ApiServices.MyRequestBody.createBody(new BannerRequest()))
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        Observable<HomeStoreBean> store = retrofitClient
+                .create(ApiServices.class)
+                .getStore(ApiServices.MyRequestBody.createBody(new BaseRequest()))
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        Observable<com.runjing.bean.response.home.HomeData> homeObservable = Observable.zip(district, store, new Func2<DistrictBean, HomeStoreBean, com.runjing.bean.response.home.HomeData>() {
+            @Override
+            public com.runjing.bean.response.home.HomeData call(DistrictBean districtBean, HomeStoreBean homeStoreBean) {
+                return new com.runjing.bean.response.home.HomeData(districtBean, homeStoreBean);
+            }
+        });
+        homeObservable.subscribe(new Subscriber<com.runjing.bean.response.home.HomeData>() {
+            @Override
+            public void onCompleted() {
+                KLog.e("onCompleted");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                KLog.e("onError", e);
+            }
+
+            @Override
+            public void onNext(HomeData homeData) {
+                KLog.e(homeData);
+                setData(homeData);
+            }
+        });
+    }
+
+    public void setData(HomeData response) {
+        String city = MMKVUtil.getInstance().decodeString(Appconfig.city);
+        if (isOpenCity(response.getDistrictBean().getData(), city)) {
+            int type = response.getHomeStoreBean().getData().getType();
+            if (type == 1) {
+                ll_store_status.setVisibility(View.GONE);
+            } else if (type == 2) {
+                ll_store_status.setVisibility(View.VISIBLE);
+            }
+            response.setItemTpye(HomeData.TYPE_ITEM_STORE);
+            rv_content.setLayoutManager(new LinearLayoutManager(outsideAty));
+            rv_content.addItemDecoration(new RecyclerViewItemDecoration(RecyclerViewItemDecoration.MODE_HORIZONTAL,
+                    getResources().getColor(R.color.color_eeeeee), DensityUtils.dip2dp(getActivity(), 10), 0, 0));
+        } else {
+            ll_store_status.setVisibility(View.VISIBLE);
+            response.setItemTpye(HomeData.TYPE_ITEM_CITY);
+            ll_store_status.setVisibility(View.VISIBLE);
+            rv_content.setLayoutManager(new LinearLayoutManager(outsideAty));
+            rv_content.addItemDecoration(new RecyclerViewItemDecoration(RecyclerViewItemDecoration.MODE_HORIZONTAL,
+                    getResources().getColor(R.color.color_eeeeee), DensityUtils.dip2dp(getActivity(), 1), 0, 0));
+        }
+        adapter.setData(response);
+    }
+
+    /**
+     * @param data
+     * @param city
+     */
+    public boolean isOpenCity(List<DistrictBean.DataBean> data, String city) {
+        if (null != data && data.size() > 0 && !TextUtils.isEmpty(city)) {
+            for (DistrictBean.DataBean dataBean : data) {
+                if (TextUtils.equals(city, dataBean.getName())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.runjing.base.TitleBarFragment;
-import com.runjing.bean.response.home.HomeBean;
+import com.runjing.bean.response.home.def.HomeAdapter;
+import com.runjing.bean.response.home.def.HomeBean;
 import com.runjing.bean.test.HomeData;
-import com.runjing.ui.home.HomeAdapter;
 import com.runjing.utils.location.LocalUtil;
 import com.runjing.utils.RecyclerViewItemDecoration;
 import com.runjing.widget.LoadingDialog;

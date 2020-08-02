@@ -21,7 +21,7 @@
             android:digits="@string/phone_number"
             android:hint="@string/account_name"
             android:maxLength="11"
-            android:textColor="@color/color_333333"
+            android:textColor="@color/color_ff333333"
             android:textColorHint="@color/color_999999"
             android:textSize="@dimen/sp_15" />
 
@@ -60,7 +60,7 @@
             android:digits="@string/phone_number_pwd"
             android:hint="@string/account_pwd"
             android:inputType="textPassword"
-            android:textColor="@color/color_333333"
+            android:textColor="@color/color_ff333333"
             android:textColorHint="@color/color_999999"
             android:textSize="@dimen/sp_15" />
 
@@ -113,18 +113,25 @@
         android:layout_height="@dimen/dp_60"
         android:layout_gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingLeft="@dimen/dp_22"
         android:paddingTop="@dimen/dp_21"
         android:paddingRight="@dimen/dp_22">
 
-        <ImageView
-            android:id="@+id/frag_iv_isagree"
-            android:layout_width="@dimen/dp_12"
-            android:layout_height="@dimen/dp_12"
-            android:layout_marginTop="@dimen/dp_2"
-            android:scaleType="centerCrop"
-            android:src="@mipmap/icon_no_select"
-            android:tag="@string/tag_no" />
+        <LinearLayout
+            android:id="@+id/frag_ll_isagree"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/dp_22">
+
+            <ImageView
+                android:id="@+id/frag_iv_isagree"
+                android:layout_width="@dimen/dp_12"
+                android:layout_height="@dimen/dp_12"
+                android:layout_marginTop="@dimen/dp_2"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/icon_no_select"
+                android:tag="@string/tag_no" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -39,4 +39,12 @@ public class BaseResponse<T> {
         return code == 0;
     }
 
+    @Override
+    public String toString() {
+        return "BaseResponse{" +
+                "code=" + code +
+                ", msg='" + msg + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }

@@ -1,16 +1,16 @@
 package com.runjing.bean.test;
 
-import com.alibaba.fastjson.JSON;
-import com.runjing.bean.response.good.GoodDetailBean;
-import com.runjing.bean.response.home.BannerBean;
-import com.runjing.bean.response.home.CityBean;
-import com.runjing.bean.response.home.GoodBean;
-import com.runjing.bean.response.home.GoodTagBean;
-import com.runjing.bean.response.home.HomeBean;
-import com.runjing.bean.response.home.ProvinceBean;
-import com.runjing.bean.response.home.StoreBean;
-import com.runjing.ui.home.HomeFragment;
-import com.youth.banner.Banner;
+import android.app.Activity;
+
+import com.runjing.bean.response.guild.GuildImageBean;
+import com.runjing.bean.response.home.def.BannerBean;
+import com.runjing.bean.response.home.def.CityBean;
+import com.runjing.bean.response.home.def.GoodBean;
+import com.runjing.bean.response.home.def.GoodTagBean;
+import com.runjing.bean.response.home.def.HomeBean;
+import com.runjing.bean.response.home.def.ProvinceBean;
+import com.runjing.bean.response.home.def.StoreBean;
+import com.runjing.wineworld.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -181,6 +181,7 @@ public class HomeData {
 
     /**
      * 导航页面数据
+     *
      * @return
      */
     public static List<BannerBean> getBanner() {
@@ -192,7 +193,5 @@ public class HomeData {
         banners.add(bannerBean);
         return banners;
     }
-
-
 
 }

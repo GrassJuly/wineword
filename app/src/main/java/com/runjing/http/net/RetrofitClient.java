@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.runjing.http.ApiServices;
+import com.socks.library.KLog;
 
 import java.io.File;
 import java.util.Map;
@@ -106,7 +107,7 @@ public class RetrofitClient {
         }
 
         if ( httpCacheDirectory == null) {
-            httpCacheDirectory = new File(mContext.getCacheDir(), "tamic_cache");
+            httpCacheDirectory = new File(mContext.getCacheDir(), "wine_cache");
         }
 
         try {
@@ -114,7 +115,7 @@ public class RetrofitClient {
                 cache = new Cache(httpCacheDirectory, 10 * 1024 * 1024);
             }
         } catch (Exception e) {
-            Log.e("OKHttp", "Could not create http cache", e);
+            KLog.e("OKHttp", "Could not create http cache", e);
         }
         okHttpClient = new OkHttpClient.Builder()
                 .addNetworkInterceptor(

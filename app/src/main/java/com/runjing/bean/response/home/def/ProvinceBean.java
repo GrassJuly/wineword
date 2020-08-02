@@ -1,4 +1,4 @@
-package com.runjing.bean.response.home;
+package com.runjing.bean.response.home.def;
 
 import java.util.List;
 

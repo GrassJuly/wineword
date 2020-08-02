@@ -1,7 +1,6 @@
 package com.runjing.ui.store;
 
 import android.app.Activity;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +10,11 @@ import android.widget.TextView;
 
 import com.runjing.base.SimpleBackActivity;
 import com.runjing.base.SimpleBackPage;
-import com.runjing.bean.response.home.CityAdapter;
-import com.runjing.bean.response.home.GoodBean;
-import com.runjing.bean.response.home.HomeBean;
-import com.runjing.bean.response.home.ProvinceBean;
-import com.runjing.bean.response.home.StoreBean;
+import com.runjing.bean.response.home.def.CityAdapter;
+import com.runjing.bean.response.home.def.GoodBean;
+import com.runjing.bean.response.home.def.HomeBean;
+import com.runjing.bean.response.home.def.ProvinceBean;
+import com.runjing.bean.response.home.def.StoreBean;
 import com.runjing.common.AppMethod;
 import com.runjing.common.Appconfig;
 import com.runjing.utils.GlideUtils;
@@ -30,9 +29,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import static com.runjing.bean.response.home.HomeBean.TYPE_ITEM_CITY;
-import static com.runjing.bean.response.home.HomeBean.TYPE_ITEM_GOOD;
-import static com.runjing.bean.response.home.HomeBean.TYPE_ITEM_STORE;
+import static com.runjing.bean.response.home.def.HomeBean.TYPE_ITEM_CITY;
+import static com.runjing.bean.response.home.def.HomeBean.TYPE_ITEM_GOOD;
+import static com.runjing.bean.response.home.def.HomeBean.TYPE_ITEM_STORE;
+
 
 /**
  * @Created: qianxs  on 2020.07.17 11:33.

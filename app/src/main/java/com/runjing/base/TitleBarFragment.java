@@ -1,19 +1,14 @@
 package com.runjing.base;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 
 import com.runjing.MainActivity;
 import com.runjing.common.Appconfig;
-import com.runjing.utils.StatusBarUtil;
 import com.runjing.wineworld.R;
 
 import org.runjing.rjframe.RJFragment;
-import org.runjing.rjframe.ui.ViewInject;
-import org.runjing.rjframe.utils.StringUtils;
 
-import androidx.annotation.IntRange;
 import androidx.annotation.Nullable;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -36,7 +31,7 @@ public abstract class TitleBarFragment extends RJFragment {
         /*标题文字*/
         public CharSequence middleTitle;//中间标题头
         /*标题颜色*/
-        public int middleTitleColor = R.color.color_ffffff;//标题背景颜色
+        public int middleTitleColor = R.color.color_333333;//标题背景颜色
         /*标题是否显示*/
         public int titleLayoutVisible = 0;//头部显示与隐藏
         /*标题左面图片*/
@@ -107,7 +102,6 @@ public abstract class TitleBarFragment extends RJFragment {
         setTitleColor(actionBarRes.middleTitleColor);
         setLeftVisiable(actionBarRes.leftVisiable);
         setLeftImage(actionBarRes.leftImageId);
-        setTitleColor(actionBarRes.middleTitleColor);
         setTitleVisiable(actionBarRes.middleVisiable);
         setRightImg(actionBarRes.rightImageId);
         setRightVal(actionBarRes.rightVal);

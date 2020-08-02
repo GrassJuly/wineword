@@ -1,4 +1,4 @@
-package com.runjing.bean.response.home;
+package com.runjing.bean.response.home.def;
 
 /**
  * @Created: qianxs  on 2020.07.14 10:33.

@@ -35,7 +35,7 @@
                 android:layout_toRightOf="@id/lay_pop_iv_choose"
                 android:gravity="center"
                 android:text="友情提示"
-                android:textColor="@color/color_333333"
+                android:textColor="@color/color_ff333333"
                 android:textSize="@dimen/sp_12" />
 
             <LinearLayout

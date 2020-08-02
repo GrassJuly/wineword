@@ -80,7 +80,7 @@
                 android:background="@drawable/selector_pop_middle"
                 android:gravity="center"
                 android:text="@string/dialog_left_botton"
-                android:textColor="@color/color_333333"
+                android:textColor="@color/color_ff333333"
                 android:textSize="16sp" />
 
             <ImageView

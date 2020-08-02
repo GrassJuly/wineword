@@ -1,5 +1,4 @@
-package com.runjing.bean.response.home;
-
+package com.runjing.bean.response.home.def;
 
 import com.runjing.http.net.BaseResponse;
 
@@ -11,4 +10,6 @@ import com.runjing.http.net.BaseResponse;
  * @Version: v_1.0 on 2020.07.17 11:18.
  * @Remark:
  */
-public class HomeResponse extends BaseResponse<HomeBean> {}
+public class HomeResponse extends BaseResponse<HomeBean> {
+
+}

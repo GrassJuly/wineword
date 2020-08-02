@@ -46,7 +46,6 @@ public abstract class BaseSubscriber<T> extends Subscriber<T> {
 
     @Override
     public void onCompleted() {
-//        Toast.makeText(context, "http is Complete", Toast.LENGTH_SHORT).show();
         // todo some common as  dismiss loadding
     }
 

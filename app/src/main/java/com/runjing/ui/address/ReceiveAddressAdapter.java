@@ -2,12 +2,10 @@ package com.runjing.ui.address;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -16,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.runjing.base.SimpleBackPage;
 import com.runjing.bean.response.address.AddressBean;
-import com.runjing.bean.response.home.GoodBean;
 
+import com.runjing.bean.response.home.def.GoodBean;
 import com.runjing.common.AppMethod;
 import com.runjing.common.Appconfig;
 

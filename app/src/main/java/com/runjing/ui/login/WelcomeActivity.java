@@ -41,6 +41,7 @@ public class WelcomeActivity extends TitleBarActivity {
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.INTERNET,
             BACKGROUND_LOCATION_PERMISSION
     };
     private boolean is_Guild;
@@ -50,11 +51,6 @@ public class WelcomeActivity extends TitleBarActivity {
         MyApplication.contextApp.addActivity(this);
         is_Guild = MMKVUtil.getInstance().decodeBoolean(Appconfig.IS_GUILD);
         setContentView(R.layout.activity_welcome);
-    }
-
-    @Override
-    public void initToolBar() {
-        super.initToolBar();
         StatusBarUtil.setTransparentForWindow(this);
     }
 

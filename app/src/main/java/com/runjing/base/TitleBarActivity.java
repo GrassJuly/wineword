@@ -45,7 +45,6 @@ public abstract class TitleBarActivity extends RJActivity implements TextWatcher
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        initToolBar();
         if (getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
             //TODO 后期记得记载进来
 //            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -124,11 +123,6 @@ public abstract class TitleBarActivity extends RJActivity implements TextWatcher
     }
 
     public void onSearch() {
-    }
-
-    public void initToolBar() {
-        StatusBarUtil.setColor(this, getResources().getColor(R.color.color_ffffff));
-        StatusBarUtil.setDarkMode(this);
     }
 
     @Override

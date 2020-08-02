@@ -17,8 +17,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.runjing.base.TitleBarActivity;
+import com.runjing.base.TitleBarFragment;
 import com.runjing.common.AppMethod;
 import com.runjing.ui.home.HomeFragment;
+import com.runjing.ui.home.Subject;
+import com.runjing.ui.home.SubjectImp;
 import com.runjing.ui.login.WelcomeActivity;
 import com.runjing.ui.mine.MineFragment;
 import com.runjing.ui.ordre.OrderFragment;
@@ -28,6 +31,7 @@ import com.runjing.utils.StatusBarUtil;
 import com.runjing.widget.tabview.TabView;
 import com.runjing.widget.tabview.TabViewChild;
 import com.runjing.wineworld.R;
+import com.socks.library.KLog;
 
 import org.runjing.rjframe.ui.BindView;
 
@@ -44,20 +48,11 @@ public class MainActivity extends TitleBarActivity implements TabView.OnTabChild
     protected String[] needPermissions = {
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.INTERNET,
             BACKGROUND_LOCATION_PERMISSION
     };
     private static String BACKGROUND_LOCATION_PERMISSION = "android.permission.ACCESS_BACKGROUND_LOCATION";
-
-    /**
-     * 判断是否需要检测，防止不停的弹框
-     */
-    private boolean isNeedCheck = true;
-    private static final int PERMISSON_REQUESTCODE = 0;
-    //是否需要检测后台定位权限，设置为true时，如果用户没有给予后台定位权限会弹窗提示
-    private boolean needCheckBackLocation = false;
+    private SubjectImp subjectImp;
 
     @Override
     public void setRootView() {
@@ -68,7 +63,10 @@ public class MainActivity extends TitleBarActivity implements TabView.OnTabChild
     @Override
     public void initData() {
         super.initData();
-        getPersion();
+        subjectImp = SubjectImp.getIntence();
+        if (!PermissionUtils.checkPermissions(this, needPermissions)) {
+            subjectImp.notifyLocal();
+        }
     }
 
     @Override
@@ -76,7 +74,7 @@ public class MainActivity extends TitleBarActivity implements TabView.OnTabChild
         super.initWidget();
         tabViewChildList = new ArrayList<>();
         TabViewChild tabViewChild01 = new TabViewChild(R.mipmap.tab_home_main, R.mipmap.tab_home_main1,
-                getString(R.string.main_home), new HomeFragment());
+                getString(R.string.main_home), subjectImp.registerObserver(new HomeFragment()));
         TabViewChild tabViewChild02 = new TabViewChild(R.mipmap.tab_home_menu, R.mipmap.tab_home_menu1,
                 getString(R.string.main_category), new SortFragment());
         TabViewChild tabViewChild03 = new TabViewChild(R.mipmap.tab_home_order, R.mipmap.tab_home_order1,
@@ -94,18 +92,23 @@ public class MainActivity extends TitleBarActivity implements TabView.OnTabChild
 
     @Override
     public void onTabChildClick(Fragment fragment, int position) {
-
     }
 
     @Override
     public void onTabChildClick(Fragment fragment, int position, ImageView imageView, TextView textView) {
-
-    }
-
-    @Override
-    public void initToolBar() {
-        super.initToolBar();
-        StatusBarUtil.setColor(this, getResources().getColor(R.color.color_F80000));
+        switch (position) {
+            case 0:
+                StatusBarUtil.setColor(this, getResources().getColor(R.color.color_F80000));
+                break;
+            case 1:
+                break;
+            case 2:
+                StatusBarUtil.setColor(this, getResources().getColor(R.color.color_ffffff));
+                StatusBarUtil.setDarkMode(this);
+                break;
+            case 3:
+                break;
+        }
     }
 
     public void getPersion() {
@@ -113,6 +116,7 @@ public class MainActivity extends TitleBarActivity implements TabView.OnTabChild
                 , new PermissionUtils.OnPermissionListener() {
                     @Override
                     public void onPermissionGranted() {
+
                     }
 
                     @Override
@@ -138,4 +142,5 @@ public class MainActivity extends TitleBarActivity implements TabView.OnTabChild
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         PermissionUtils.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
 }

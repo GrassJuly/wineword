@@ -23,7 +23,7 @@
             android:digits="@string/phone_number_pwd"
             android:hint="@string/pwd_formit"
             android:maxLength="20"
-            android:textColor="@color/color_333333"
+            android:textColor="@color/color_ff333333"
             android:textColorHint="@color/color_999999"
             android:inputType="textPassword"
             android:tag="@string/tag_no"

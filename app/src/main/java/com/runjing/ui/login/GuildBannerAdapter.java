@@ -16,12 +16,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.request.RequestOptions;
 import com.runjing.MainActivity;
-import com.runjing.bean.response.home.BannerBean;
+import com.runjing.bean.response.guild.GuildImageBean;
+import com.runjing.common.AppMethod;
 import com.runjing.common.Appconfig;
 import com.runjing.utils.GlideUtils;
 import com.runjing.utils.store.MMKVUtil;
 import com.runjing.wineworld.R;
+import com.socks.library.KLog;
 import com.youth.banner.adapter.BannerAdapter;
 
 import java.util.ArrayList;
@@ -33,14 +36,18 @@ import androidx.recyclerview.widget.RecyclerView;
 /**
  * 自定义布局，下面是常见的图片样式，更多实现可以看demo，可以自己随意发挥
  */
-public class GuildBannerAdapter extends BannerAdapter<BannerBean, GuildBannerAdapter.BannerViewHolder> {
-    List<BannerBean> bannerBeans;
+public class GuildBannerAdapter extends BannerAdapter<GuildImageBean, GuildBannerAdapter.BannerViewHolder> {
+    List<GuildImageBean> bannerBeans;
 
-    public GuildBannerAdapter(List<BannerBean> mDatas) {
+    private int type;
+
+    public GuildBannerAdapter(List<GuildImageBean> mDatas, int type) {
         //设置数据，也可以调用banner提供的方法,或者自己在adapter中实现
         super(mDatas);
+
         if (mDatas != null) {
             bannerBeans = mDatas;
+            this.type = type;
         } else {
             bannerBeans = new ArrayList<>();
         }
@@ -57,8 +64,12 @@ public class GuildBannerAdapter extends BannerAdapter<BannerBean, GuildBannerAda
     }
 
     @Override
-    public void onBindView(BannerViewHolder holder, BannerBean data, int position, int size) {
-        GlideUtils.getInstance().displayImageCenter(holder.imageView, bannerBeans.get(position).getImage(), holder.imageView.getContext(), R.mipmap.ic_launcher);
+    public void onBindView(BannerViewHolder holder, GuildImageBean data, int position, int size) {
+        if (type == 0) {
+            GlideUtils.getInstance().glideLoad(holder.imageView.getContext(), bannerBeans.get(position).getImg(), holder.imageView, RequestOptions.centerInsideTransform());
+        } else {
+            GlideUtils.getInstance().displayImageCenter(holder.imageView, bannerBeans.get(position).getImage(), holder.imageView.getContext(), R.mipmap.ic_launcher);
+        }
         if (position == bannerBeans.size() - 1) {
             holder.tv_go.setVisibility(View.VISIBLE);
         } else {

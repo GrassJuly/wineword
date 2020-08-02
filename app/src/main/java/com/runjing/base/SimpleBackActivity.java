@@ -89,14 +89,6 @@ public class SimpleBackActivity extends TitleBarActivity {
         }
     }
 
-    @Override
-    public void initToolBar() {
-        super.initToolBar();
-        if (currentFragment != null) {
-            currentFragment.initToolBar();
-        }
-    }
-
     /**
      * 跳转fragment
      */

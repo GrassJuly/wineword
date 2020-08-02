@@ -6,16 +6,21 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.SpannableStringBuilder;
+import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.LinkMovementMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jd.verify.ShowCapCallback;
@@ -66,6 +71,8 @@ public class APLoginFragment extends TitleBarFragment {
     private ImageView iv_pwdsee;
     @BindView(id = R.id.frag_tv_forget, click = true)
     private TextView tv_forget;
+    @BindView(id = R.id.frag_ll_isagree, click = true)
+    private LinearLayout ll_isagree;
     @BindView(id = R.id.frag_iv_isagree, click = true)
     private ImageView iv_isagree;
     @BindView(id = R.id.frag_tv_isagree)
@@ -89,11 +96,7 @@ public class APLoginFragment extends TitleBarFragment {
         super.initWidget(parentView);
         helper = UserUtil.getWJLoginHelper();
         verify = Verify.getInstance();
-        tv_isagree.setText(AppMethod.setDiffCollors(
-                "{" + getResources().getString(R.string.login_isagree_next) + "}" +
-                        getResources().getString(R.string.login_isagree_last),
-                getResources().getColor(R.color.color_666666),
-                getResources().getColor(R.color.color_5899E4)));
+        setAgreeClick(tv_isagree);
         tv_login.setClickable(false);
         et_account.addTextChangedListener(new TextWatcher() {
             @Override
@@ -184,6 +187,7 @@ public class APLoginFragment extends TitleBarFragment {
                 case R.id.frag_tv_forget:
                     getForgtPwd();
                     break;
+                case R.id.frag_ll_isagree:
                 case R.id.frag_iv_isagree:
                     if (getResources().getString(R.string.tag_no).equals(v.getTag())) {
                         iv_isagree.setTag(getResources().getString(R.string.tag_yes));
@@ -390,6 +394,42 @@ public class APLoginFragment extends TitleBarFragment {
         intent.putExtra("url", formatUrl);
         intent.putExtra("isRegist", true);
         startActivity(intent);
+    }
+
+    /**
+     * 设置不同颜色 点击效果
+     * @param content
+     */
+    public void setAgreeClick(TextView content) {
+        String str = getResources().getString(R.string.login_isagree);
+        SpannableStringBuilder ssb = new SpannableStringBuilder();
+        ssb.append(str);
+        //第一个出现的位置
+        final int start = str.indexOf("《");
+        ssb.setSpan(new ClickableSpan() {
+
+            @Override
+            public void onClick(View widget) {
+                //用户服务协议点击事件
+                Bundle bundle = new Bundle();
+                bundle.putString("title", "用户协议");
+                bundle.putInt("showType", 0);
+                AppMethod.postShowWith(outsideAty, SimpleBackPage.Web, bundle);
+            }
+
+            @Override
+            public void updateDrawState(TextPaint ds) {
+                super.updateDrawState(ds);
+                //设置文件颜色
+                ds.setColor(getResources().getColor(R.color.color_5899E4));
+                // 去掉下划线
+                ds.setUnderlineText(false);
+            }
+
+        }, start, str.length(), 0);
+        content.setHighlightColor(getResources().getColor(R.color.color_ffffff));
+        content.setMovementMethod(LinkMovementMethod.getInstance());
+        content.setText(ssb, TextView.BufferType.SPANNABLE);
     }
 
 

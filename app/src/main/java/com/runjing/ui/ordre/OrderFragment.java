@@ -50,12 +50,12 @@ public class OrderFragment extends TitleBarFragment {
         return inflater.inflate(R.layout.frag_order, null);
     }
 
-    @Override
-    public void initToolBar() {
-        super.initToolBar();
-        StatusBarUtil.setColor(outsideAty, getResources().getColor(R.color.color_ffffff));
-        StatusBarUtil.setDarkMode(outsideAty);
-    }
+//    @Override
+//    public void initToolBar() {
+//        super.initToolBar();
+//        StatusBarUtil.setColor(outsideAty, getResources().getColor(R.color.color_ffffff));
+//        StatusBarUtil.setDarkMode(outsideAty);
+//    }
 
     @Override
     protected void initWidget(View parentView) {
