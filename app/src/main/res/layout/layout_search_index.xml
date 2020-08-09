@@ -46,9 +46,9 @@
                 android:background="@null"
                 android:hint="@string/search_local"
                 android:paddingLeft="@dimen/dp_2"
+                android:singleLine="true"
                 android:textColor="@color/color_999999"
-                android:textSize="@dimen/sp_12"
-                android:singleLine="true"/>
+                android:textSize="@dimen/sp_12" />
 
 
         </LinearLayout>
@@ -72,8 +72,7 @@
     <ScrollView
         android:id="@+id/scroll_search"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-       >
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -113,8 +112,8 @@
                         android:id="@+id/img_ljx"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
                         android:layout_marginRight="@dimen/dp_10"
+                        android:layout_weight="0.5"
                         android:gravity="right|center"
                         android:src="@mipmap/lajixiang" />
 
@@ -131,14 +130,15 @@
                 android:id="@+id/ll_bg_remen"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
 
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/dp_40"
-                    android:gravity="left|center"
                     android:layout_marginLeft="@dimen/dp_10"
+                    android:gravity="left|center"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -171,8 +171,8 @@
         android:id="@+id/layout_search_no_goods"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical"
         android:gravity="center"
+        android:orientation="vertical"
         android:visibility="gone">
 
 
@@ -184,12 +184,12 @@
 
         <TextView
             android:id="@+id/textView2"
-            android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/string_have_no_goods"
             android:textColor="@color/color_666666"
-            android:textSize="@dimen/sp_15"/>
+            android:textSize="@dimen/sp_15" />
 
     </LinearLayout>
 

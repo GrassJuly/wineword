@@ -12,19 +12,43 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.runjing.base.BaseRequest;
+import com.runjing.base.SimpleBackPage;
 import com.runjing.base.TitleBarFragment;
+import com.runjing.bean.request.StoreDetailRequest;
+import com.runjing.bean.response.home.GoodBean;
+import com.runjing.bean.response.store.DetailGoodBean;
+import com.runjing.bean.response.store.DetailStroeBean;
+import com.runjing.bean.response.store.StoreDetailData;
 import com.runjing.common.AppMethod;
-import com.runjing.ui.good.DiscountAdapter;
+import com.runjing.common.Appconfig;
+import com.runjing.http.ApiServices;
+import com.runjing.http.net.RetrofitClient;
+import com.runjing.utils.GlideUtils;
 import com.runjing.utils.KeyBoardUtil;
 import com.runjing.utils.StatusBarUtil;
+import com.runjing.widget.RJRefreshFooter;
+import com.runjing.widget.RJRefreshHeader;
 import com.runjing.wineworld.R;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.socks.library.KLog;
 
 import org.runjing.rjframe.ui.BindView;
-import org.runjing.rjframe.ui.ViewInject;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func2;
+import rx.schedulers.Schedulers;
 
 /**
  * @Created: qianxs  on 2020.07.26 19:56.
@@ -34,12 +58,16 @@ import androidx.recyclerview.widget.RecyclerView;
  * @Version: v_1.0 on 2020.07.26 19:56.
  * @Remark:
  */
-public class StoreDeatailFragment extends TitleBarFragment implements TextWatcher {
+public class StoreDeatailFragment extends TitleBarFragment {
 
+    @BindView(id = R.id.frag_srl_content)
+    private RefreshLayout refreshLayout;
     @BindView(id = R.id.frag_iv_back, click = true)
     private ImageView iv_back;
+    @BindView(id = R.id.lay_search_goods, click = true)
+    private LinearLayout ll_search;
     @BindView(id = R.id.frag_et_search)
-    private EditText et_search;
+    private TextView et_search;
     @BindView(id = R.id.frag_iv_store)
     private ImageView iv_store;
     @BindView(id = R.id.frag_tv_name)
@@ -70,18 +98,46 @@ public class StoreDeatailFragment extends TitleBarFragment implements TextWatche
     private TextView tv_add;
     @BindView(id = R.id.frag_tv_settlement, click = true)
     private TextView tv_settlement;
-
+    @BindView(id = R.id.lay_ll_nomore)
+    private LinearLayout ll_nomore;
     private StoreGoodAdapter adapter;
+    private int storeId;
+    private int pageNo = 1;
+    private StoreDetailRequest request;
+    private List<GoodBean.DataBean.ListBean> list;
+
 
     @Override
     protected View inflaterView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
         KeyBoardUtil.init(outsideAty);
+        StatusBarUtil.setColor(outsideAty, getResources().getColor(R.color.color_ffffff));
+        StatusBarUtil.setDarkMode(outsideAty);
         return inflater.inflate(R.layout.fragment_store_detail, null);
     }
 
     @Override
     protected void initWidget(View parentView) {
         super.initWidget(parentView);
+        list = new ArrayList<>();
+        refreshLayout.setRefreshHeader(new RJRefreshHeader(outsideAty).
+                setNormalColor(outsideAty.getResources().getColor(R.color.color_99000000)).
+                setAnimatingColor(outsideAty.getResources().getColor(R.color.color_99000000)).
+                setSpinnerStyle(SpinnerStyle.Scale));
+        refreshLayout.setRefreshFooter(new RJRefreshFooter(LayoutInflater.from(outsideAty).inflate(R.layout.layout_recycler_footer, null)));
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                pageNo = 1;
+                initData();
+            }
+        });
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                pageNo++;
+                initData();
+            }
+        });
         adapter = new StoreGoodAdapter(getActivity());
         rv_content.setHasFixedSize(false);
         rv_content.setNestedScrollingEnabled(false);
@@ -97,12 +153,8 @@ public class StoreDeatailFragment extends TitleBarFragment implements TextWatche
                 case R.id.frag_iv_back:
                     finish();
                     break;
-                case R.id.lay_rl_good:
-                case R.id.lay_tv_good:
-
-                    break;
-                case R.id.lay_rl_detail:
-                case R.id.lay_tv_detail:
+                case R.id.lay_search_goods:
+                    AppMethod.postShowWith(outsideAty, SimpleBackPage.Search);
                     break;
                 case R.id.frag_iv_shop:
                     if (getResources().getString(R.string.tag_no).equals(v.getTag())) {
@@ -116,7 +168,7 @@ public class StoreDeatailFragment extends TitleBarFragment implements TextWatche
                     }
                     break;
                 case R.id.frag_tv_add:
-                    AppMethod.showMsg(getActivity(), "测试");
+//                    AppMethod.showMsg(getActivity(), "测试");
                     break;
                 case R.id.frag_tv_settlement:
                     break;
@@ -124,18 +176,90 @@ public class StoreDeatailFragment extends TitleBarFragment implements TextWatche
         }
     }
 
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+    @Override
+    protected void initData() {
+        super.initData();
+        Bundle bundle = outsideAty.getIntent().getBundleExtra(Appconfig.DATA_KEY);
+        if (bundle != null) storeId = bundle.getInt(Appconfig.TAG);
+        request = new StoreDetailRequest();
+        request.setPageNo(pageNo);
+        request.setPageSize(Appconfig.pageSize);
+        request.setStoreId(storeId + "");
+        RetrofitClient retrofitClient = RetrofitClient.getInstance(outsideAty, RetrofitClient.baseUrl);
+        Observable<DetailStroeBean> store = retrofitClient
+                .create(ApiServices.class)
+                .getStoreDetail(ApiServices.MyRequestBody.createBody(request))
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        Observable<GoodBean> good = retrofitClient
+                .create(ApiServices.class)
+                .getStoreGood(ApiServices.MyRequestBody.createBody(request))
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+
+        Observable<StoreDetailData> homeObservable = Observable.zip(store, good, new Func2<DetailStroeBean, GoodBean, StoreDetailData>() {
+            @Override
+            public StoreDetailData call(DetailStroeBean detailStroeBean, GoodBean detailGoodBean) {
+                return new StoreDetailData(detailStroeBean, detailGoodBean);
+            }
+        });
+        homeObservable.subscribe(new Subscriber<StoreDetailData>() {
+            @Override
+            public void onCompleted() {
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                KLog.e("onError", e);
+            }
+
+            @Override
+            public void onNext(StoreDetailData response) {
+                refreshLayout.finishRefresh();
+                refreshLayout.finishLoadMore();
+                setData(response);
+            }
+        });
     }
 
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-
+    /**
+     * 数据部署
+     * @param response
+     */
+    public void setData(StoreDetailData response) {
+        if (response != null) {
+            DetailStroeBean.DataBean detailStroe = response.getDetailStroe().getData();
+            if (detailStroe != null) {
+                GlideUtils.getInstance().displayImageCenter(iv_store, detailStroe.getImage(), iv_store.getContext(), R.mipmap.ic_launcher);
+                tv_name.setText(AppMethod.setDefault(detailStroe.getName()));
+                tv_address.setText(AppMethod.setDefault(detailStroe.getAddressDetail()));
+                tv_distance.setText(AppMethod.setDefault(detailStroe.getDistance()) + "km");
+                if (detailStroe.getStatus() == 1) {
+                    tv_rest.setVisibility(View.GONE);
+                } else if (detailStroe.getStatus() == 2){
+                    tv_rest.setVisibility(View.VISIBLE);
+                }
+            }
+            GoodBean detailGood = response.getDetailGood();
+            if (detailGood != null) {
+                if (pageNo == 1) {
+                    list.clear();
+                    list.addAll(detailGood.getData().getList());
+                    refreshLayout.setEnableLoadMore(true);
+                    ll_nomore.setVisibility(View.GONE);
+                }else {
+                    list.addAll(detailGood.getData().getList());
+                    if (detailGood.getData().getList().size() < Appconfig.pageSize) {
+                        refreshLayout.setEnableLoadMore(false);
+                        ll_nomore.setVisibility(View.VISIBLE);
+                    } else {
+                        refreshLayout.setEnableLoadMore(true);
+                        ll_nomore.setVisibility(View.GONE);
+                    }
+                }
+                adapter.setData(list);
+            }
+        }
     }
 }

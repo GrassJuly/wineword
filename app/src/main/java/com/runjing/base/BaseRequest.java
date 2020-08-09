@@ -25,6 +25,8 @@ public class BaseRequest {
     private String appVersion;//版本信息
     private String latitude;
     private String longitude;
+    private String currentLat;
+    private String currentLon;
     private int pageSize;
     private int pageNo;
 
@@ -37,6 +39,8 @@ public class BaseRequest {
         if (TextUtils.isEmpty(LocalUtil.lon)) {
             this.longitude = MMKVUtil.getInstance().decodeDouble(Appconfig.lon) + "";
         }
+        this.currentLat = LocalUtil.currentLat;
+        this.currentLon = LocalUtil.currentLon;
         this.appVersion = SystemTool.getAppVersionName(MyApplication.contextApp);
     }
 
@@ -104,6 +108,22 @@ public class BaseRequest {
         this.pageNo = pageNo;
     }
 
+    public String getCurrentLat() {
+        return currentLat;
+    }
+
+    public void setCurrentLat(String currentLat) {
+        this.currentLat = currentLat;
+    }
+
+    public String getCurrentLon() {
+        return currentLon;
+    }
+
+    public void setCurrentLon(String currentLon) {
+        this.currentLon = currentLon;
+    }
+
     @Override
     public String toString() {
         return "BaseRequest{" +
@@ -113,6 +133,8 @@ public class BaseRequest {
                 ", appVersion='" + appVersion + '\'' +
                 ", latitude='" + latitude + '\'' +
                 ", longitude='" + longitude + '\'' +
+                ", currentLat='" + currentLat + '\'' +
+                ", currentLon='" + currentLon + '\'' +
                 ", pageSize=" + pageSize +
                 ", pageNo=" + pageNo +
                 '}';

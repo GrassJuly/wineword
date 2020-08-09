@@ -36,12 +36,14 @@
                 android:src="@mipmap/line_left" />
 
             <ImageView
+                android:id="@+id/frag_iv_l"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/dp_7"
                 android:layout_marginRight="@dimen/dp_7"
-                android:src="@mipmap/line_icon" />
+                android:src="@mipmap/line_icon"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/frag_tv_store_status"
@@ -55,11 +57,13 @@
                 android:textStyle="bold" />
 
             <ImageView
+                android:id="@+id/frag_iv_l1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/dp_7"
-                android:src="@mipmap/line_right" />
+                android:src="@mipmap/line_right"
+                android:visibility="gone"/>
         </LinearLayout>
 
     </LinearLayout>

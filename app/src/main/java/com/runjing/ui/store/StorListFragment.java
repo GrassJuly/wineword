@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ import com.runjing.http.net.RetrofitClient;
 import com.runjing.ui.home.HomeAdapter;
 import com.runjing.utils.RecyclerViewItemDecoration;
 import com.runjing.utils.StatusBarUtil;
+import com.runjing.utils.location.LocalUtil;
 import com.runjing.utils.store.MMKVUtil;
 import com.runjing.widget.RJRefreshFooter;
 import com.runjing.widget.RJRefreshHeader;
@@ -33,6 +35,7 @@ import com.socks.library.KLog;
 import org.runjing.rjframe.ui.BindView;
 import org.runjing.rjframe.utils.DensityUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -65,6 +68,11 @@ public class StorListFragment extends TitleBarFragment {
     @BindView(id = R.id.frag_rv_content)
     private RecyclerView rv_content;
     private HomeAdapter adapter;
+    @BindView(id = R.id.frag_iv_l)
+    private ImageView iv_l;
+    @BindView(id = R.id.frag_iv_l1)
+    private ImageView iv_l1;
+
 
     @Override
     protected View inflaterView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
@@ -75,7 +83,6 @@ public class StorListFragment extends TitleBarFragment {
     protected void setActionBarRes(ActionBarRes actionBarRes) {
         super.setActionBarRes(actionBarRes);
         actionBarRes.titleLayoutVisible = 1;
-        actionBarRes.titleBarColor = R.color.color_F80000;
         actionBarRes.leftVisiable = 1;
         actionBarRes.middleTitle = "门店列表";
     }
@@ -96,23 +103,8 @@ public class StorListFragment extends TitleBarFragment {
     @Override
     protected void initWidget(View parentView) {
         super.initWidget(parentView);
-        refreshLayout.setRefreshHeader(new RJRefreshHeader(outsideAty).
-                setNormalColor(outsideAty.getResources().getColor(R.color.color_99000000)).
-                setAnimatingColor(outsideAty.getResources().getColor(R.color.color_99000000)).
-                setSpinnerStyle(SpinnerStyle.Scale));
-        refreshLayout.setRefreshFooter(new RJRefreshFooter(LayoutInflater.from(outsideAty).inflate(R.layout.layout_recycler_footer, null)));
-        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
-                refreshlayout.finishRefresh(2000);
-            }
-        });
-        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                refreshLayout.finishLoadMore(2000);
-            }
-        });
+        refreshLayout.setEnableRefresh(false);
+        refreshLayout.setEnableLoadMore(false);
         adapter = new HomeAdapter(getActivity());
         rv_content.setHasFixedSize(false);
         rv_content.setNestedScrollingEnabled(false);
@@ -157,20 +149,26 @@ public class StorListFragment extends TitleBarFragment {
 
             @Override
             public void onNext(HomeData homeData) {
-                KLog.e(homeData);
+                refreshLayout.finishRefresh();
+                refreshLayout.finishLoadMore();
                 setData(homeData);
             }
         });
     }
 
     public void setData(HomeData response) {
-        String city = MMKVUtil.getInstance().decodeString(Appconfig.city);
+        String city = TextUtils.isEmpty(MMKVUtil.getInstance().decodeString(Appconfig.city))
+                ? LocalUtil.city : MMKVUtil.getInstance().decodeString(Appconfig.city);
         if (isOpenCity(response.getDistrictBean().getData(), city)) {
             int type = response.getHomeStoreBean().getData().getType();
             if (type == 1) {
                 ll_store_status.setVisibility(View.GONE);
             } else if (type == 2) {
                 ll_store_status.setVisibility(View.VISIBLE);
+                iv_l.setVisibility(View.VISIBLE);
+                iv_l1.setVisibility(View.VISIBLE);
+                tv_storemsg.setText(getResources().getString(R.string.string_next_city));
+                tv_storeStaus.setText(getResources().getString(R.string.string_next_city1));
             }
             response.setItemTpye(HomeData.TYPE_ITEM_STORE);
             rv_content.setLayoutManager(new LinearLayoutManager(outsideAty));
@@ -178,6 +176,10 @@ public class StorListFragment extends TitleBarFragment {
                     getResources().getColor(R.color.color_eeeeee), DensityUtils.dip2dp(getActivity(), 10), 0, 0));
         } else {
             ll_store_status.setVisibility(View.VISIBLE);
+            iv_l.setVisibility(View.GONE);
+            iv_l1.setVisibility(View.GONE);
+            tv_storemsg.setText(getResources().getString(R.string.home_service_error));
+            tv_storeStaus.setText(getResources().getString(R.string.string_open_city));
             response.setItemTpye(HomeData.TYPE_ITEM_CITY);
             ll_store_status.setVisibility(View.VISIBLE);
             rv_content.setLayoutManager(new LinearLayoutManager(outsideAty));

@@ -13,17 +13,20 @@ import com.runjing.ui.address.SelectAddressFragment;
 import com.runjing.ui.home.HomeFragment;
 import com.runjing.utils.store.MMKVUtil;
 
-public class LocalUtil  {
+public class LocalUtil {
     public static String lon;//经度
     public static String lat;//纬度
     public static String city;//城市
+    public static String currentLon;//当前经度
+    public static String currentLat;//当前纬度
+    public static String currentCity;//挡墙城市
     public static String address;//地址
     public static String poiName;
     public static TextView mTextView;
     public static Context mContext;
-    public static  boolean isReplace = false;
+    public static boolean isReplace = false;
     /**
-     *定义一个变量储存数据
+     * 定义一个变量储存数据
      */
     public static onReplace mListener;
 
@@ -38,8 +41,6 @@ public class LocalUtil  {
      * 定位监听
      */
     public static AMapLocationListener locationListener = new AMapLocationListener() {
-
-
 
 
         @Override
@@ -88,7 +89,7 @@ public class LocalUtil  {
                     if (!TextUtils.equals(MMKVUtil.getInstance().decodeString(Appconfig.city), location.getCity())) {
                         MMKVUtil.getInstance().encode(Appconfig.city, location.getCity());
                     }
-                    if(mListener!=null) {
+                    if (mListener != null) {
                         isReplace = true;
                         mListener.replace(true);
                     }
@@ -167,12 +168,12 @@ public class LocalUtil  {
         return str;
     }
 
-    public interface onReplace{
+    public interface onReplace {
         void replace(boolean b);
     }
 
 
-    public static void setListener( onReplace listener){
+    public static void setListener(onReplace listener) {
         mListener = listener;
     }
 }

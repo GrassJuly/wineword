@@ -43,6 +43,7 @@ public class SimpleBackActivity extends TitleBarActivity {
     public void setRootView() {
         dialog = new LoadingDialog(this);
         MyApplication.contextApp.addActivity(this);
+        KeyBoardUtil.init(this);
         setContentView(R.layout.aty_simple_back);
         int value = getIntent().getIntExtra(Appconfig.CONTENT_KEY, -1);
         if (value != -1) {

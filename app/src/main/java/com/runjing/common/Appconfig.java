@@ -27,7 +27,6 @@ public class Appconfig {
     public static String TAG = "runjing";
     public static final String FROMREGIST = "https%3a%2f%2fplogin.m.jd.com%2fuser%2flogin.action%3fappid%3d100%26returnurl%3dregist.openApp.jdMobile%3a%2f%2fcommunication";
     public static final int pageSize = 10;
-    public static  int pageNo = 1;
 
     /*是否强制升级*/
     public static String isFource;
@@ -80,5 +79,6 @@ public class Appconfig {
     public static final String JDPin = "JDPin";
     public static final String IsPhone = "IsPhone";
     public static final String IsPWD = "IsPWD";
+    public static final String SEARCH_HISTORY = "search_history";
 
 }

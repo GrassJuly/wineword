@@ -3,6 +3,8 @@ package com.runjing.ui.home;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager;
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexWrap;
+import com.google.android.flexbox.FlexboxLayoutManager;
 import com.runjing.base.SimpleBackPage;
 import com.runjing.bean.response.home.DistrictBean;
 import com.runjing.bean.response.home.GoodBean;
@@ -25,12 +31,14 @@ import com.runjing.wineworld.R;
 import com.socks.library.KLog;
 
 import org.runjing.rjframe.ui.ViewInject;
+import org.runjing.rjframe.utils.DensityUtils;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import top.zibin.luban.CompressionPredicate;
@@ -94,11 +102,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        //根据接口返回数据调整
-        if (response != null) {
-            return response.getItemTpye();
-        }
-        return super.getItemViewType(position);
+        return response.getItemTpye();
     }
 
     @Override
@@ -123,6 +127,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private TextView tv_desc;
         private TextView tv_price;
         private TextView tv_favprice;
+        private RecyclerView rv_tag;
+        private LinearLayout ll_plus;
+        private TextView tv_PlusPrice;
 
         public GoodHolder(@NonNull View itemView) {
             super(itemView);
@@ -132,17 +139,40 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             tv_desc = itemView.findViewById(R.id.lay_tv_desc);
             tv_price = itemView.findViewById(R.id.lay_tv_price);
             tv_favprice = itemView.findViewById(R.id.lay_tv_favorablePrice);
+            rv_tag = itemView.findViewById(R.id.lay_rv_tag);
+            rv_tag.setHasFixedSize(false);
+            rv_tag.setNestedScrollingEnabled(false);
+            ll_plus = itemView.findViewById(R.id.lay_ll_plus);
+            tv_favprice = itemView.findViewById(R.id.lay_tv_Plus_price);
         }
 
         public void setData(List<GoodBean.DataBean.ListBean> goods, int position) {
             if (goods != null && goods.size() > 0) {
+//                setMargin(ll_detail, position);
                 GlideUtils.getInstance().glideLoad(context, ApiServices.BasePic + goods.get(position).getImages().get(0).getImgUrl(), iv_good);
                 tv_name.setText(AppMethod.setDefault(goods.get(position).getGoodsName()));
                 List<GoodBean.DataBean.ListBean.SkuPromotionResultBean.PromoDescListBean> promoDescList = goods.get(position).getSkuPromotionResult().getPromoDescList();
-                //TODO 是不是只取直降的价格
-                String price = (promoDescList != null && promoDescList.size() > 0) ? promoDescList.get(0).getPrivilegePrice() + "" : "";
-                tv_price.setText("¥" + AppMethod.setDefault(price));
-                tv_favprice.setText("¥" + AppMethod.setDefault(AppMethod.setDefault(goods.get(position).getMarketPrice() + "")));
+                ChipsLayoutManager spanLayoutManager = ChipsLayoutManager.newBuilder(rv_tag.getContext())
+                        .setOrientation(ChipsLayoutManager.VERTICAL)
+                        .setMaxViewsInRow(4)
+                        .build();
+                FlexboxLayoutManager manager = new FlexboxLayoutManager(rv_tag.getContext(), FlexDirection.ROW, FlexWrap.WRAP) {
+                    @Override
+                    public boolean canScrollVertically() {
+                        return false;
+                    }
+                };
+                rv_tag.setLayoutManager(manager);
+                rv_tag.setAdapter(new TagAdapter(promoDescList));
+                if (TextUtils.isEmpty(privilegePrice(promoDescList))) {
+                    tv_price.setText("¥" + AppMethod.changTVsize(AppMethod.setDefault(AppMethod.setDefault(goods.get(position).getSalesPrice() + ""))));
+                    tv_favprice.setVisibility(View.INVISIBLE);
+                } else {
+                    tv_price.setText("¥" + privilegePrice(promoDescList));
+                    tv_favprice.setVisibility(View.VISIBLE);
+                }
+                AppMethod.setTextViewLine(tv_favprice);
+                tv_favprice.setText("¥" + AppMethod.changTVsize(AppMethod.setDefault(AppMethod.setDefault(goods.get(position).getMarketPrice() + ""))));
                 ll_detail.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -150,6 +180,44 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     }
                 });
             }
+        }
+
+        /**
+         * 获取优惠价格
+         * @param promoDescList
+         * @return
+         */
+        public String privilegePrice(List<GoodBean.DataBean.ListBean.SkuPromotionResultBean.PromoDescListBean> promoDescList) {
+            if (promoDescList != null && promoDescList.size() > 0) {
+                for (GoodBean.DataBean.ListBean.SkuPromotionResultBean.PromoDescListBean desc: promoDescList) {
+                    if (desc.getPromoSubType() == 100) {
+                        return AppMethod.changTVsize(AppMethod.setDefault(desc.getPrivilegePrice() + "")) + "";
+                    }
+                }
+            }
+            return "";
+        }
+
+        public void setMargin(CardView ll_content, int position) {
+            CardView.LayoutParams params = (CardView.LayoutParams) ll_content.getLayoutParams();
+            params.topMargin = DensityUtils.dip2dp(ll_content.getContext(), 10);
+            params.rightMargin = DensityUtils.dip2dp(ll_content.getContext(), 10);
+            if (isOne(position)) {
+                params.leftMargin = DensityUtils.dip2dp(ll_content.getContext(), 0);
+            } else {
+                params.leftMargin = DensityUtils.dip2dp(ll_content.getContext(), 10);
+            }
+        }
+
+        /**
+         * 设置编剧
+         *
+         * @param n
+         * @return
+         */
+        public boolean isOne(int n) {
+            if (n <= 0) return false;
+            return (n &= (n - 1)) == 0;
         }
     }
 
@@ -179,22 +247,24 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 GlideUtils.getInstance().displayImageCenter(iv_store, stores.get(position).getImage(), iv_store.getContext(), R.mipmap.ic_launcher);
                 tv_name.setText(AppMethod.setDefault(stores.get(position).getName()));
                 tv_address.setText(AppMethod.setDefault(stores.get(position).getAddressDetail()));
-                tv_distance.setText(AppMethod.setDefault(stores.get(position).getDistance()));
-                if (stores.get(position).getStatus() == 0) {
+                tv_distance.setText(AppMethod.setDefault(stores.get(position).getDistance()) + "km");
+                if (stores.get(position).getStatus() == 1) {
                     tv_rest.setVisibility(View.GONE);
-                } else if (stores.get(position).getStatus() == 1) {
+                } else if (stores.get(position).getStatus() == 2){
                     tv_rest.setVisibility(View.VISIBLE);
                 }
                 ll_location.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ViewInject.longToast("导航页面");
+//                        ViewInject.longToast("导航页面");
                     }
                 });
                 tv_store.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ViewInject.longToast("门店详情");
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(Appconfig.TAG, stores.get(position).getId());
+                        AppMethod.postShowWith(tv_store.getContext(), SimpleBackPage.StoreDetail, bundle);
                     }
                 });
             }

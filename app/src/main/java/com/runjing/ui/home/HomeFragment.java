@@ -18,7 +18,6 @@ import com.runjing.base.BaseRequest;
 import com.runjing.base.SimpleBackPage;
 import com.runjing.base.TitleBarFragment;
 import com.runjing.bean.request.BannerRequest;
-import com.runjing.bean.request.GoodRequest;
 import com.runjing.bean.request.HomeRequest;
 import com.runjing.bean.response.home.BannerBean;
 import com.runjing.bean.response.home.DistrictBean;
@@ -27,14 +26,11 @@ import com.runjing.bean.response.home.HomeData;
 import com.runjing.bean.response.home.HomeStoreBean;
 import com.runjing.common.AppMethod;
 import com.runjing.common.Appconfig;
-import com.runjing.common.RJBaseUrl;
 import com.runjing.http.ApiServices;
 import com.runjing.http.net.NetworkUtil;
 import com.runjing.http.net.RetrofitClient;
-import com.runjing.utils.ItemOffsetDecoration;
 import com.runjing.utils.PermissionUtils;
 import com.runjing.utils.RecyclerViewItemDecoration;
-import com.runjing.utils.SpacesItemDecoration;
 import com.runjing.utils.StatusBarUtil;
 import com.runjing.utils.location.LocalUtil;
 import com.runjing.utils.store.MMKVUtil;
@@ -65,8 +61,6 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func4;
 import rx.schedulers.Schedulers;
-
-import static com.runjing.utils.SpacesItemDecoration.STAGGEREDGRIDLAYOUT;
 
 
 /**
@@ -145,20 +139,12 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
     public static String strLocation;
     private HomeRequest request;
     private List<GoodBean.DataBean.ListBean> list;
-    private String mark;
+    public static int pageNo = 1;
 
     @Override
     protected View inflaterView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
         loadingDialog = new LoadingDialog(outsideAty);
-        request = new HomeRequest();
-        request.setPageNo(Appconfig.pageNo);
-        request.setPageSize(Appconfig.pageSize);
         list = new ArrayList<>();
-        bundle = outsideAty.getIntent().getBundleExtra(Appconfig.DATA_KEY);
-        if (bundle != null) {
-            mark = bundle.getString("mark");
-            Log.d("aaaaaa", mark);
-        }
         return inflater.inflate(R.layout.frag_home, null);
     }
 
@@ -174,22 +160,13 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
         super.initData();
         initLocation();
         startLocation();
-        if (mark == null || !"select".equals(mark)) {
-            initLocation();
-            startLocation();
-            Log.d("aaa", "bbbbbbbbbbbb");
-        }
         getData();
     }
 
     @Override
     protected void initWidget(View parentView) {
         super.initWidget(parentView);
-        if (mark != null && "select".equals(mark)) {
-            tv_address.setText(LocalUtil.address);
-        } else {
-            tv_address.setText("正在获取定位信息...");
-        }
+        tv_address.setText("正在获取定位信息...");
         refreshLayout.setRefreshHeader(new RJRefreshHeader(outsideAty).
                 setNormalColor(outsideAty.getResources().getColor(R.color.color_99000000)).
                 setAnimatingColor(outsideAty.getResources().getColor(R.color.color_99000000)).
@@ -198,14 +175,14 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                Appconfig.pageNo = 1;
+                pageNo = 1;
                 getData();
             }
         });
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                request.setPageNo(Appconfig.pageNo++);
+                pageNo++;
                 getData();
             }
         });
@@ -232,7 +209,7 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
                 AppMethod.postShowWith(outsideAty, SimpleBackPage.Search);
                 break;
             case R.id.lay_ll_order:
-                AppMethod.postShowWith(outsideAty, SimpleBackPage.Search);
+//                AppMethod.postShowWith(outsideAty, SimpleBackPage.Search);
                 break;
             case R.id.lay_ll_store:
                 AppMethod.postShowWith(outsideAty, SimpleBackPage.StoreList);
@@ -252,6 +229,9 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
     }
 
     public void getData() {
+        request = new HomeRequest();
+        request.setPageNo(pageNo);
+        request.setPageSize(Appconfig.pageSize);
         RetrofitClient retrofitClient = RetrofitClient.getInstance(outsideAty, RetrofitClient.baseUrl);
         Observable<DistrictBean> district = retrofitClient
                 .create(ApiServices.class)
@@ -320,19 +300,22 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
                 ll_banner.setVisibility(View.VISIBLE);
                 setMargin(ll_home, 0);
                 setMargin(rv_content, 0);
-                rv_content.setLayoutManager(new StaggeredGridLayoutManager(Appconfig.TAG_TWO, StaggeredGridLayoutManager.VERTICAL));
-//                rv_content.addItemDecoration(new ItemOffsetDecoration(7,7,7,7));
-                rv_content.addItemDecoration(new SpacesItemDecoration(DensityUtils.dip2dp(getActivity(), 7), STAGGEREDGRIDLAYOUT));
+                StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(Appconfig.TAG_TWO, StaggeredGridLayoutManager.VERTICAL);
+                rv_content.setLayoutManager(layoutManager);
+//                rv_content.addItemDecoration(new SpacesItemDecoration(DensityUtils.dip2dp(getActivity(), 10), STAGGEREDGRIDLAYOUT));
                 AppMethod.bannerWeight(outsideAty, banner, response.getBannerBean().getData());
-                if (Appconfig.pageNo == 1) {
+                if (pageNo == 1) {
                     if (list != null) {
                         list.clear();
                         list.addAll(response.getHomeGoodBean().getData().getList());
+                        refreshLayout.setEnableLoadMore(true);
+                        ll_nomore.setVisibility(View.GONE);
                     }
                 } else {
                     if (list != null) {
                         list.addAll(response.getHomeGoodBean().getData().getList());
                     }
+                    KLog.e(list);
                     if (response.getHomeGoodBean().getData().getList().size() < Appconfig.pageSize) {
                         ll_nomore.setVisibility(View.VISIBLE);
                         refreshLayout.setEnableLoadMore(false);
@@ -347,7 +330,7 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
                 ll_store_status.setVisibility(View.VISIBLE);
                 ll_search.setVisibility(View.GONE);
                 ll_banner.setVisibility(View.GONE);
-                setMargin(ll_home, 46);
+                setMargin(ll_home, 0);
                 setMargin(rv_content, 28);
                 rv_content.setLayoutManager(new LinearLayoutManager(outsideAty));
                 rv_content.addItemDecoration(new RecyclerViewItemDecoration(RecyclerViewItemDecoration.MODE_HORIZONTAL,
@@ -358,11 +341,11 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
             ll_store_status.setVisibility(View.VISIBLE);
             ll_search.setVisibility(View.GONE);
             ll_banner.setVisibility(View.GONE);
+            setMargin(ll_home, 0);
+            setMargin(rv_content, 28);
             rv_content.setLayoutManager(new LinearLayoutManager(outsideAty));
             rv_content.addItemDecoration(new RecyclerViewItemDecoration(RecyclerViewItemDecoration.MODE_HORIZONTAL,
                     getResources().getColor(R.color.color_eeeeee), DensityUtils.dip2dp(getActivity(), 1), 0, 0));
-            setMargin(ll_home, 0);
-            setMargin(rv_content, 28);
         }
         homeAdapter.setData(response);
     }
@@ -470,7 +453,7 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
     @Override
     public void onResume() {
         super.onResume();
-        getData();
+//        getData();
         if (PermissionUtils.checkPermissions(outsideAty, Appconfig.needPermissions)) {
             ll_localNet.setVisibility(View.GONE);
             ll_content.setVisibility(View.VISIBLE);
@@ -486,7 +469,8 @@ public class HomeFragment extends TitleBarFragment implements HomeObserver {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Appconfig.TAG_TENTHOUSAND_ONE) {
-            KLog.e(data);
+            tv_address.setText(LocalUtil.address);
+            getData();
         }
     }
 }

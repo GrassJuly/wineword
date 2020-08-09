@@ -204,8 +204,8 @@ public class ReceiveAddressAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         Bundle bundle = new Bundle();
         bundle.putString("mark", "select");
         LocalUtil.address = addressBean.getAddress();
-        LocalUtil.lat = addressBean.getLat();
-        LocalUtil.lon = addressBean.getLon();
+        LocalUtil.currentLat = addressBean.getLat();
+        LocalUtil.currentLon = addressBean.getLon();
         LocalUtil.poiName = addressBean.getAddress();
         Log.d("aaa",addressBean.getLat()+" "+ LocalUtil.lon);
 //        AppMethod.postShowWith(context, SimpleBackPage.Home, bundle);

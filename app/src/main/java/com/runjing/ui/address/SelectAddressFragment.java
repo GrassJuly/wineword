@@ -46,7 +46,9 @@ import com.runjing.common.AppMethod;
 import com.runjing.common.Appconfig;
 import com.runjing.ui.home.HomeFragment;
 import com.runjing.utils.EmptyUtil;
+import com.runjing.utils.KeyBoardUtil;
 import com.runjing.utils.PermissionUtils;
+import com.runjing.utils.StatusBarUtil;
 import com.runjing.utils.location.LocalUtil;
 import com.runjing.utils.RecyclerViewItemDecoration;
 
@@ -112,6 +114,8 @@ public class SelectAddressFragment extends TitleBarFragment implements PoiSearch
     private String mark; //页面跳转来源
     @Override
     protected View inflaterView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
+        StatusBarUtil.setColor(outsideAty, getResources().getColor(R.color.color_ffffff));
+        StatusBarUtil.setDarkMode(outsideAty);
         bundle = outsideAty.getIntent().getBundleExtra(Appconfig.DATA_KEY);
        if(bundle!=null) {
            mark = bundle.getString(Appconfig.DATA_KEY);

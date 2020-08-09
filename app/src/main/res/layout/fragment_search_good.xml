@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/frag_srl_content"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/color_f1f1f1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_ffffff"
+            android:orientation="vertical"
+            android:padding="@dimen/dp_10">
+
+            <LinearLayout
+                android:id="@+id/lay_ll_search_index"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/dp_44"
+                android:gravity="center|left">
+
+
+                <ImageView
+                    android:id="@+id/img_search_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/fh_back" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp_28"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_weight="7"
+                    android:background="@drawable/style_radius_bg_gray"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/dp_5">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/icon_search" />
+
+                    <EditText
+                        android:id="@+id/edit_search_goods"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/dp_10"
+                        android:layout_marginRight="@dimen/dp_10"
+                        android:background="@null"
+                        android:hint="@string/search_local"
+                        android:paddingLeft="@dimen/dp_2"
+                        android:singleLine="true"
+                        android:textColor="@color/color_999999"
+                        android:textSize="@dimen/sp_12" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/frag_rv_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none" />
+
+            <include
+                android:id="@+id/lay_ll_nomore"
+                layout="@layout/layout_recycler_nomore"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_search_no_goods"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_search_null" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/string_have_no_goods"
+            android:textColor="@color/color_666666"
+            android:textSize="@dimen/sp_15" />
+
+    </LinearLayout>
+
+</RelativeLayout>

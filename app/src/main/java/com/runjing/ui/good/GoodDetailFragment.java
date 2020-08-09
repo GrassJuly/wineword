@@ -1,6 +1,7 @@
 package com.runjing.ui.good;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,16 +14,22 @@ import android.widget.TextView;
 
 import com.runjing.base.BaseRequest;
 import com.runjing.base.TitleBarFragment;
-import com.runjing.bean.response.good.GoodDetailBaseBean;
 import com.runjing.bean.response.good.GoodDetailBean;
-import com.runjing.bean.test.HomeData;
+import com.runjing.bean.response.good.GoodsDetailBean;
+import com.runjing.bean.response.login.LoginResponse;
+import com.runjing.belogian.test.HomeData;
 import com.runjing.common.AppMethod;
-import com.runjing.common.Appconfig;
 import com.runjing.common.RJBaseUrl;
+import com.runjing.http.ApiServices;
+import com.runjing.http.net.BaseSubscriber;
+import com.runjing.http.net.ExceptionHandle;
+import com.runjing.http.net.RetrofitClient;
+import com.runjing.ui.login.LoginActivity;
 import com.runjing.utils.StatusBarUtil;
 import com.runjing.widget.GradationScrollView;
 import com.runjing.widget.seckill.SecondDownTimerView;
 import com.runjing.wineworld.R;
+import com.socks.library.KLog;
 import com.youth.banner.Banner;
 
 import org.runjing.rjframe.ui.BindView;
@@ -220,28 +227,26 @@ public class GoodDetailFragment extends TitleBarFragment implements GradationScr
     }
 
     public void getData() {
-//        OkHttpUtil.postRequest(RJBaseUrl.AppMain, new BaseRequest(), GoodDetailBaseBean.class, new MyRequestCallBack<GoodDetailBaseBean>() {
-//            @Override
-//            public void onPostResponse(GoodDetailBaseBean response) {
-//                if (Appconfig.RequestSuccess.equals(response.resultCode)) {
-//                    setData(response.getData());
-//                }
-//            }
-//
-//            @Override
-//            public void onPostErrorResponse(Exception e, String msg) {
-//
-//            }
-//
-//            @Override
-//            public void onNoNetWork() {
-//
-//            }
-//        });
+        RetrofitClient.getInstance(outsideAty, RJBaseUrl.BaseUrl).execute(
+                RetrofitClient.getInstance(outsideAty, RJBaseUrl.BaseUrl)
+                        .create(ApiServices.class)
+                        .goodDetail(ApiServices.MyRequestBody.createBody(new BaseRequest())),
+                new BaseSubscriber<GoodsDetailBean>(outsideAty) {
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        Log.e("Lyk", e.getMessage());
+
+                    }
+
+                    @Override
+                    public void onNext(GoodsDetailBean response) {
+                        KLog.i(response.getData());
+                    }
+                });
     }
 
     public void setData(GoodDetailBean response) {
-        AppMethod.DetailBanner(outsideAty, banner, HomeData.getBanner());
         adapter.setData(response);
     }
 

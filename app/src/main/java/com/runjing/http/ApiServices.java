@@ -1,12 +1,15 @@
 package com.runjing.http;
 
 import com.google.gson.Gson;
+import com.runjing.bean.response.good.GoodsDetailBean;
 import com.runjing.bean.response.guild.GuildBean;
 import com.runjing.bean.response.home.DistrictBean;
 import com.runjing.bean.response.home.GoodBean;
 import com.runjing.bean.response.home.BannerBean;
 import com.runjing.bean.response.home.HomeStoreBean;
 import com.runjing.bean.response.login.LoginResponse;
+import com.runjing.bean.response.search.SearchHotBean;
+import com.runjing.bean.response.store.DetailStroeBean;
 
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
@@ -24,8 +27,8 @@ import rx.Observable;
  */
 public interface ApiServices {
 
-        public final static String BasePic = "https://img11.360buyimg.com/xstore/";//线上正式环境
-        public final static String BaseUrl = "https://cxc.jd9sj.com/api/";//线上正式环境
+    public final static String BasePic = "https://img11.360buyimg.com/xstore/";//线上正式环境
+    public final static String BaseUrl = "https://cxc.jd9sj.com/api/";//线上正式环境
 //    public final static String BaseUrl = "https://pre-cxc.jd9sj.com/api/";//线上正式环境
 //    public final static String BaseUrl = "http://116.196.90.67:9002/api/";//测试环境
 
@@ -62,6 +65,22 @@ public interface ApiServices {
     /*首页-获取商品列表*/
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("product/wxStoreSku")
-    Observable<GoodBean> getGood(@Body RequestBody body);
+    Observable<GoodBean> getGood(@Body RequestBody body);  /*首页-获取商品列表*/
+
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("freshStore/detail")
+    Observable<DetailStroeBean> getStoreDetail(@Body RequestBody body);  /*首页-获取商品列表*/
+
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("freshStore/getGoodsByStoreId")
+    Observable<GoodBean> getStoreGood(@Body RequestBody body);
+
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("config/wxIndexGetHots")
+    Observable<SearchHotBean> searchHistory(@Body RequestBody body);
+
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("freshProduct/getFreshSkuDetail")
+    Observable<GoodsDetailBean> goodDetail(@Body RequestBody body);
 
 }

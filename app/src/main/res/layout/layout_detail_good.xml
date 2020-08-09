@@ -65,8 +65,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_10"
-                android:orientation="horizontal">
+                android:layout_marginTop="@dimen/dp_10">
 
                 <TextView
                     android:id="@+id/lay_tv_price"
@@ -82,12 +81,22 @@
                     android:id="@+id/lay_tv_favorablePrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_below="@id/lay_tv_price"
+                    android:layout_alignParentLeft="true"
                     android:gravity="right"
                     android:text="@string/app_default"
                     android:textColor="@color/color_666666"
                     android:textSize="@dimen/sp_12"
                     android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/lay_iv_add"
+                    android:layout_width="@dimen/dp_17"
+                    android:layout_height="@dimen/dp_17"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignTop="@id/lay_tv_price"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/icon_add" />
 
             </RelativeLayout>
 
@@ -95,8 +104,8 @@
                 android:id="@+id/lay_ll_plus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_10"
                 android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/dp_10"
                 android:orientation="horizontal"
                 android:visibility="gone">
 

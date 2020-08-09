@@ -2,20 +2,12 @@ package com.runjing;
 
 import android.app.Activity;
 import android.app.Application;
-import android.bluetooth.BluetoothSocket;
 
-import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.runjing.common.Appconfig;
 import com.socks.library.KLog;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.mmkv.MMKV;
 
 import org.runjing.rjframe.BuildConfig;
-import org.runjing.rjframe.utils.PreferenceHelper;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -42,7 +34,6 @@ public class MyApplication extends Application {
         super.onCreate();
         contextApp = this;
         activityList = new LinkedList<Activity>();
-        Fresco.initialize(this);
         MMKV.initialize(this);
         //线上检测
         CrashReport.initCrashReport(getApplicationContext(), "92a7c20823", true);

@@ -2,6 +2,7 @@ package com.runjing.common;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -9,7 +10,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Paint;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.SpannableString;
@@ -22,7 +22,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.runjing.MainActivity;
 import com.runjing.MyApplication;
 import com.runjing.base.SimpleBackActivity;
@@ -57,14 +56,13 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-//import androidx.fragment.app.Fragment;
 import top.zibin.luban.CompressionPredicate;
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
 
 import static android.content.Context.ACTIVITY_SERVICE;
 
-import android.app.Fragment;
+//import androidx.fragment.app.Fragment;
 
 /**
  * @Created by xiaoyu on 2017/1/6.
@@ -90,6 +88,14 @@ public class AppMethod {
      * @param data
      */
     public static void postShowWith(Activity cxt, SimpleBackPage page,
+                                    Bundle data) {
+        Intent intent = new Intent(cxt, SimpleBackActivity.class);
+        intent.putExtra(Appconfig.CONTENT_KEY, page.getValue());
+        intent.putExtra(Appconfig.DATA_KEY, data);
+        cxt.startActivity(intent);
+    }
+
+    public static void postShowWith(Context cxt, SimpleBackPage page,
                                     Bundle data) {
         Intent intent = new Intent(cxt, SimpleBackActivity.class);
         intent.putExtra(Appconfig.CONTENT_KEY, page.getValue());
@@ -346,45 +352,6 @@ public class AppMethod {
      */
     public static String setDefaultNumber(String str) {
         return StringUtils.isEmpty(str) ? "0" : str;
-    }
-
-    /**
-     * 设置图片
-     *
-     * @param url
-     * @param simpleImage
-     */
-    public static void setImageView(String url, SimpleDraweeView simpleImage) {
-        try {
-            if (url != null) {
-                Uri uri = Uri.parse(url);
-                simpleImage.setImageURI(uri);
-            } else {
-                setResImageView(String.valueOf(R.mipmap.ic_launcher), simpleImage);
-            }
-        } catch (OutOfMemoryError e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * 设置本地图片
-     *
-     * @param url
-     * @param simpleImage
-     */
-    public static void setResImageView(String url, SimpleDraweeView simpleImage) {
-        simpleImage.setImageURI((new Uri.Builder()).scheme("res").path(String.valueOf(url)).build());
-    }
-
-    /**
-     * 设置本地图片
-     *
-     * @param url
-     * @param simpleImage
-     */
-    public static void setResImageView(int url, SimpleDraweeView simpleImage) {
-        simpleImage.setImageURI((new Uri.Builder()).scheme("res").path(String.valueOf(url)).build());
     }
 
     /**
@@ -955,7 +922,6 @@ public class AppMethod {
 //    }
 
     /**
-     *
      * @param context
      * @param photos
      * @param file

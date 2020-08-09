@@ -2,8 +2,8 @@
     <string name="appbar_scrolling_view_behavior">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
     <string name="app_name">京东酒世界</string>
     <!--<string name="app_test">美农伙伴测试</string>-->
-    <!--<string name="app_default"></string>-->
-    <string name="app_default">京东酒世界</string>
+    <string name="app_default"></string>
+<!--    <string name="app_default">京东酒世界</string>-->
     <string name="pickerview_cancel">取消</string>
     <string name="pickerview_submit">确定</string>
     <string name="pickerview_year">年</string>
@@ -13,6 +13,7 @@
     <string name="pickerview_minutes">分</string>
     <string name="pickerview_seconds">秒</string>
     <string name="main_runjing_search">搜索</string>
+    <string name="search_goods">搜索店内商品</string>
     <string name="dialog_left_botton">取消</string>
     <string name="dialog_right_botton">确定</string>
     <string name="app_print">打印</string>
@@ -136,4 +137,7 @@
     <string name ="string_account">去结算</string>
     <string name ="string_choose_address">选择收货地址</string>
     <string name ="string_add_new_address">新增地址</string>
+    <string name="string_open_city">已开通29分钟送达城市</string>
+    <string name="string_next_city">很抱歉，此收货地址未开通29分钟送达服务</string>
+    <string name="string_next_city1">附近支持自提购买服务门店</string>
 </resources>
